@@ -1,6 +1,6 @@
 /* ========================================================
-   AUDIO SYSTEM (Web Audio API Synthesizer & Web Speech API)
-   Zero external audio files needed - 100% reliable!
+   AUDIO SYSTEM (Web Audio API Synthesizer & Neural TTS)
+   Zero external audio files needed - 100% reliable & rich!
    ======================================================== */
 
 class SoundSystem {
@@ -11,9 +11,13 @@ class SoundSystem {
     this.musicTimer = null;
     this.speechSynth = window.speechSynthesis;
     this.vietnameseVoice = null;
+    this.englishVoice = null;
     this.allViVoices = [];
     this.voicePitch = 1.25; // Gentle, sweet feminine pitch
     this.voiceRate = 0.86;  // Clear, friendly pace for 1st grade children
+    this.speechRatePreset = 'normal'; // 'slow' (-15%), 'normal' (+0%), 'fast' (+10%)
+    this.serverVoice = 'vi-VN-HoaiMyNeural'; // default Southern Female
+    this.currentAudio = null;
 
     this.initAudioContext();
     this.loadVoices();
@@ -46,7 +50,7 @@ class SoundSystem {
         v.name.toLowerCase().includes('vietnam')
       );
 
-      // Prioritize female voice (e.g. HoaiMy, Google Tiếng Việt, female keywords)
+      // Prioritize female voice (HoaiMy, Google Tiếng Việt, female keywords)
       const femaleSouthernVoice = this.allViVoices.find(v => {
         const n = v.name.toLowerCase();
         return n.includes('hoaimy') || n.includes('hoai my') || n.includes('southern') || n.includes('south') || n.includes('miennam') || n.includes('nu');
@@ -59,6 +63,12 @@ class SoundSystem {
       }) || this.allViVoices[0] || null;
 
       this.vietnameseVoice = femaleSouthernVoice;
+
+      // English voice for Grade 1 English module
+      this.englishVoice = voices.find(v => 
+        (v.lang && (v.lang.startsWith('en-US') || v.lang.startsWith('en-GB'))) && 
+        (v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('female'))
+      ) || voices.find(v => v.lang && v.lang.startsWith('en')) || null;
 
       if (typeof window.updateVoiceSelectorUI === 'function') {
         window.updateVoiceSelectorUI(this.allViVoices, this.vietnameseVoice);
@@ -74,6 +84,21 @@ class SoundSystem {
   setVoice(voiceIndex) {
     if (this.allViVoices && this.allViVoices[voiceIndex]) {
       this.vietnameseVoice = this.allViVoices[voiceIndex];
+    }
+  }
+
+  setServerVoice(voiceId) {
+    this.serverVoice = voiceId;
+  }
+
+  setSpeechRate(preset) {
+    this.speechRatePreset = preset;
+    if (preset === 'slow') {
+      this.voiceRate = 0.72;
+    } else if (preset === 'fast') {
+      this.voiceRate = 1.05;
+    } else {
+      this.voiceRate = 0.86;
     }
   }
 
@@ -148,6 +173,18 @@ class SoundSystem {
     });
   }
 
+  playCombo(count) {
+    if (!this.soundEnabled) return;
+    // Ascending celebratory arpeggio with brightness
+    const baseFreqs = [523.25, 659.25, 783.99, 1046.50, 1318.51];
+    const steps = Math.min(count, 5);
+    for (let i = 0; i < steps; i++) {
+      setTimeout(() => {
+        this.playTone(baseFreqs[i], 'triangle', 0.2, 0.14);
+      }, i * 65);
+    }
+  }
+
   playWrong() {
     if (!this.soundEnabled) return;
     // Low double bonk
@@ -166,10 +203,10 @@ class SoundSystem {
     if (!this.soundEnabled) return;
     // Joyful celebration fanfare
     const melody = [
-      { f: 523.25, d: 0.12 }, // C
-      { f: 659.25, d: 0.12 }, // E
-      { f: 783.99, d: 0.12 }, // G
-      { f: 1046.50, d: 0.35 } // C
+      { f: 523.25, d: 0.12 }, // C5
+      { f: 659.25, d: 0.12 }, // E5
+      { f: 783.99, d: 0.12 }, // G5
+      { f: 1046.50, d: 0.35 } // C6
     ];
     let time = 0;
     melody.forEach((note) => {
@@ -178,6 +215,43 @@ class SoundSystem {
       }, time * 1000);
       time += note.d + 0.04;
     });
+  }
+
+  // --- Real Acoustic-like Xylophone / Glockenspiel Synth ---
+  playXylophoneKey(freq, duration = 0.8) {
+    if (!this.soundEnabled || !this.audioCtx) return;
+    try {
+      const now = this.audioCtx.currentTime;
+
+      // Fundamental oscillator (sine)
+      const osc1 = this.audioCtx.createOscillator();
+      const gain1 = this.audioCtx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(freq, now);
+
+      gain1.gain.setValueAtTime(0.35, now);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+      osc1.connect(gain1);
+      gain1.connect(this.audioCtx.destination);
+
+      // 3rd harmonic overtone for chime wooden bar resonance
+      const osc2 = this.audioCtx.createOscillator();
+      const gain2 = this.audioCtx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(freq * 3.0, now);
+
+      gain2.gain.setValueAtTime(0.12, now);
+      gain2.gain.exponentialRampToValueAtTime(0.0001, now + (duration * 0.45));
+      osc2.connect(gain2);
+      gain2.connect(this.audioCtx.destination);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + duration);
+      osc2.stop(now + (duration * 0.45));
+    } catch (e) {
+      console.warn("Xylophone sound error", e);
+    }
   }
 
   // --- Background Melody Loop ---
@@ -204,7 +278,7 @@ class SoundSystem {
     this.currentAudio = null;
   }
 
-  // --- Speech Synthesis (Phát âm tiếng Việt cho bé) ---
+  // --- Vietnamese Speech Synthesis ---
   speak(text) {
     if (!this.soundEnabled || !text) return;
 
@@ -230,8 +304,13 @@ class SoundSystem {
 
     setSpeaking(true);
 
-    // Method 1: Play via local High-Quality Neural TTS endpoint (Microsoft HoaiMy)
-    const ttsUrl = `/api/tts?text=${encodeURIComponent(text)}`;
+    // Map rate preset to Edge-TTS rate string
+    let rateParam = '+0%';
+    if (this.speechRatePreset === 'slow') rateParam = '-15%';
+    else if (this.speechRatePreset === 'fast') rateParam = '+10%';
+
+    // Method 1: Play via local High-Quality Neural TTS endpoint (Microsoft HoaiMy or NamMinh)
+    const ttsUrl = `/api/tts?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(this.serverVoice)}&rate=${encodeURIComponent(rateParam)}`;
     const audio = new Audio(ttsUrl);
     this.currentAudio = audio;
 
@@ -241,7 +320,6 @@ class SoundSystem {
     };
 
     audio.onerror = () => {
-      console.warn("Local TTS endpoint error, falling back to Google Translate TTS...");
       // Method 2: Fallback to Google Translate Vietnamese TTS
       const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
       const fallbackAudio = new Audio(gUrl);
@@ -253,7 +331,6 @@ class SoundSystem {
       };
 
       fallbackAudio.onerror = () => {
-        console.warn("Audio fallback error, attempting Web Speech Synthesis...");
         // Method 3: Browser SpeechSynthesis
         try {
           const utterance = new SpeechSynthesisUtterance(text);
@@ -277,8 +354,7 @@ class SoundSystem {
     };
 
     audio.play().catch(err => {
-      console.warn("Audio play blocked or error:", err);
-      // If browser blocked autoplay, attempt SpeechSynthesis
+      // If browser blocked audio, fallback to SpeechSynthesis
       try {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
@@ -291,6 +367,47 @@ class SoundSystem {
       } catch (e) {
         setSpeaking(false);
       }
+    });
+  }
+
+  // --- English Speech Synthesis for Grade 1 English module ---
+  speakEnglish(text) {
+    if (!this.soundEnabled || !text) return;
+
+    if (this.currentAudio) {
+      try {
+        this.currentAudio.pause();
+        this.currentAudio.currentTime = 0;
+      } catch (e) {}
+      this.currentAudio = null;
+    }
+    if (this.speechSynth) {
+      try { this.speechSynth.cancel(); } catch (e) {}
+    }
+
+    // Google Translate TTS English
+    const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
+    const audio = new Audio(gUrl);
+    this.currentAudio = audio;
+
+    audio.onerror = () => {
+      try {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85;
+        if (this.englishVoice) utterance.voice = this.englishVoice;
+        this.speechSynth.speak(utterance);
+      } catch (e) {}
+    };
+
+    audio.play().catch(() => {
+      try {
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.85;
+        if (this.englishVoice) utterance.voice = this.englishVoice;
+        this.speechSynth.speak(utterance);
+      } catch (e) {}
     });
   }
 }

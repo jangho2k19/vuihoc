@@ -9,6 +9,7 @@ class MathApp {
     this.currentMode = 'math-counting';
     this.currentQuestion = null;
     this.score = 0;
+    this.streak = 0;
     this.emojis = ['🍎', '🐰', '🌟', '🚗', '🍓', '🐥', '🐟', '🌻', '🐶', '⚽', '🍦', '🎈'];
 
     this.initElements();
@@ -627,14 +628,23 @@ class MathApp {
     allBtns.forEach(b => b.disabled = true);
 
     if (isCorrect) {
+      this.streak += 1;
       buttonEl.classList.add('correct');
       this.feedback.className = 'feedback-box correct';
-      this.feedback.textContent = `🎉 ${this.currentQuestion.praise}`;
+
+      const comboText = this.streak >= 3 ? ` 🔥 Combo x${this.streak} liên tiếp!` : '';
+      this.feedback.textContent = `🎉 ${this.currentQuestion.praise}${comboText}`;
 
       this.score += 1;
       this.scoreEl.textContent = this.score;
 
-      window.rewards.addStars(1, "Bé giải toán xuất sắc quá chừng!");
+      if (this.streak >= 3) {
+        window.soundSys.playCombo(this.streak);
+      } else {
+        window.soundSys.playCorrect();
+      }
+
+      window.rewards.addStars(1, `Bé giải toán xuất sắc quá chừng!${comboText}`);
       window.rewards.recordActivity('mathScore', 1);
       window.soundSys.speak(this.currentQuestion.praise);
 
@@ -643,6 +653,7 @@ class MathApp {
         this.loadQuestion();
       }, 2400);
     } else {
+      this.streak = 0;
       buttonEl.classList.add('wrong');
       window.soundSys.playWrong();
       this.feedback.className = 'feedback-box wrong';

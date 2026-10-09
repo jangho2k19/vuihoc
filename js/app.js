@@ -1,37 +1,90 @@
 /* ========================================================
-   MAIN APPLICATION ORCHESTRATOR
+   MAIN APPLICATION ORCHESTRATOR - VƯỜN TUỔI THƠ 2.0
+   Orchestrates Navigation, Mascots, Night Mode, Speech Rate,
+   Math, Vietnamese, English, Science, Music, Games, Drawing & Awards
    ======================================================== */
 
 class MainApp {
   constructor() {
     this.currentTab = 'tab-home';
+    this.isNightMode = false;
     this.tips = [
       "Mỗi ngày học một chút điều mới, bé sẽ thông minh và đáng yêu hơn từng ngày! Chúc bé học thật vui nhé! 🌟",
       "Bé nhớ ngồi thẳng lưng và giữ khoảng cách mắt với màn hình để bảo vệ mắt sáng ngời nha! 👀",
       "Học xong nhớ khoe phiếu khen và các ngôi sao may mắn với bố mẹ nhé! Bố mẹ rất tự hào về bé! ❤️",
-      "Chăm chỉ làm toán và đọc bảng chữ cái sẽ giúp bé thành học sinh xuất sắc nhất lớp 1 đó! 🏆",
-      "Vừa học vừa chơi, tuổi thơ rạng rỡ tiếng cười! Cùng khám phá thêm nhiều điều kỳ thú nhé! 🎈"
+      "Chăm chỉ làm toán, đọc chữ cái và học tiếng Anh sẽ giúp bé thành học sinh xuất sắc nhất lớp 1 đó! 🏆",
+      "Vừa học vừa chơi, tuổi thơ rạng rỡ tiếng cười! Cùng khám phá thêm nhiều điều kỳ thú nhé! 🎈",
+      "Bé đã thử tài đánh đàn và tô màu chưa? Cùng rủ bố mẹ xem tác phẩm của bé nhé! 🎨"
     ];
 
     this.init();
   }
 
   init() {
+    this.initTheme();
     this.bindNavigation();
     this.bindHeaderButtons();
-    this.bindMascot();
+    this.bindMascotModal();
+    this.bindSpeechRateControls();
     this.setRandomTip();
 
-    // Initialize sub-modules
+    // Initialize all modules
     window.mathApp = new MathApp();
     window.vnApp = new VietnameseApp();
+    window.englishApp = new EnglishApp();
+    window.scienceApp = new ScienceApp();
+    window.musicApp = new MusicApp();
     window.balloonGame = new BalloonGame();
     window.memoryGame = new MemoryGame();
     window.drawingApp = new DrawingApp();
 
-    console.log("Vườn Tuổi Thơ - Lớp 1 App ready!");
+    console.log("🌟 Vườn Tuổi Thơ 2.0 - Bé Vui Học Lớp 1 Ready!");
   }
 
+  // --- Night Mode / Eye Protection Theme ---
+  initTheme() {
+    const saved = localStorage.getItem('vuon_tuoi_tho_theme');
+    if (saved === 'night') {
+      this.enableNightMode(false);
+    }
+  }
+
+  enableNightMode(animate = true) {
+    this.isNightMode = true;
+    document.body.classList.add('night-mode');
+    localStorage.setItem('vuon_tuoi_tho_theme', 'night');
+    const btn = document.getElementById('btnNightToggle');
+    if (btn) {
+      btn.querySelector('.btn-icon').textContent = '☀️';
+      btn.querySelector('.btn-text').textContent = 'Chế độ: Dịu mắt';
+      btn.classList.add('active');
+    }
+  }
+
+  disableNightMode() {
+    this.isNightMode = false;
+    document.body.classList.remove('night-mode');
+    localStorage.setItem('vuon_tuoi_tho_theme', 'day');
+    const btn = document.getElementById('btnNightToggle');
+    if (btn) {
+      btn.querySelector('.btn-icon').textContent = '🌙';
+      btn.querySelector('.btn-text').textContent = 'Chế độ: Ban đêm';
+      btn.classList.remove('active');
+    }
+  }
+
+  toggleNightMode() {
+    window.soundSys.playPop();
+    if (this.isNightMode) {
+      this.disableNightMode();
+      window.rewards.showToast("☀️ Đã chuyển sang Giao diện Ban Ngày tươi sáng!");
+    } else {
+      this.enableNightMode(true);
+      window.rewards.showToast("🌙 Đã bật Giao diện Dịu Mắt Ban Đêm giúp bảo vệ mắt bé!");
+    }
+  }
+
+  // --- Navigation ---
   bindNavigation() {
     const tabs = document.querySelectorAll('.nav-tab');
     tabs.forEach(tab => {
@@ -61,11 +114,15 @@ class MainApp {
 
     this.currentTab = targetId;
 
-    // Special behavior per tab
+    // Trigger tab-specific actions
     if (targetId === 'tab-math' && window.mathApp) {
       window.mathApp.loadQuestion();
-    } else if (targetId === 'tab-balloon' && window.balloonGame) {
-      // Prompt user to play
+    } else if (targetId === 'tab-english' && window.englishApp) {
+      window.englishApp.renderThemeCards();
+    } else if (targetId === 'tab-science' && window.scienceApp) {
+      window.scienceApp.renderLessons();
+    } else if (targetId === 'tab-music' && window.musicApp) {
+      window.musicApp.updateSongGuideUI();
     } else if (targetId === 'tab-awards') {
       window.rewards.updateUI();
     }
@@ -73,6 +130,7 @@ class MainApp {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
+  // --- Header Controls ---
   bindHeaderButtons() {
     // Sound Toggle
     const btnSound = document.getElementById('btnSoundToggle');
@@ -115,13 +173,22 @@ class MainApp {
       });
     }
 
+    // Night Mode Toggle
+    const btnNight = document.getElementById('btnNightToggle');
+    if (btnNight) {
+      btnNight.addEventListener('click', () => {
+        this.toggleNightMode();
+      });
+    }
+
     // Voice Test Button
     const btnVoice = document.getElementById('btnVoiceTest');
     if (btnVoice) {
       btnVoice.addEventListener('click', () => {
         window.soundSys.playPop();
-        const testPhrase = "Dạ cô chào bé cưng nghen! Cô là cô giáo miền Nam, cô đồng hành cùng bé học bài nè!";
-        window.rewards.showToast("👩‍🏫 Giọng cô giáo miền Nam: Ngọt ngào & ấm áp!", 3500);
+        const m = window.rewards.getMascot();
+        const testPhrase = `Dạ cô chào bé cưng nghen! Cô cùng bạn ${m.name} luôn đồng hành cùng bé học bài nè!`;
+        window.rewards.showToast(`👩‍🏫 Giọng cô giáo Hoài My (Nữ miền Nam): Ngọt ngào & ấm áp!`, 3500);
         window.soundSys.speak(testPhrase);
       });
     }
@@ -130,9 +197,14 @@ class MainApp {
     const voiceSelect = document.getElementById('voiceSelect');
     if (voiceSelect) {
       voiceSelect.addEventListener('change', (e) => {
-        const idx = parseInt(e.target.value, 10);
-        window.soundSys.setVoice(idx);
-        window.soundSys.speak("Cô đổi giọng đọc rồi nè bé ơi!");
+        const val = e.target.value;
+        if (val === 'vi-VN-NamMinhNeural') {
+          window.soundSys.setServerVoice('vi-VN-NamMinhNeural');
+          window.soundSys.speak("Thầy giáo chào các em học sinh lớp một thân mến!");
+        } else {
+          window.soundSys.setServerVoice('vi-VN-HoaiMyNeural');
+          window.soundSys.speak("Dạ cô chào bé cưng nghen!");
+        }
       });
     }
 
@@ -143,24 +215,76 @@ class MainApp {
         this.switchTab('tab-awards');
       });
     }
-  }
 
-  bindMascot() {
-    const avatar = document.getElementById('mascotAvatar');
-    if (avatar) {
-      avatar.addEventListener('click', () => {
+    // Lucky Wheel Trigger Button in Header or Awards
+    const btnOpenWheel = document.getElementById('btnOpenLuckyWheel');
+    const wheelModal = document.getElementById('luckyWheelModal');
+    const btnCloseWheel = document.getElementById('btnCloseWheelModal');
+
+    if (btnOpenWheel && wheelModal) {
+      btnOpenWheel.addEventListener('click', () => {
         window.soundSys.playPop();
-        const greetings = [
-          "Dạ cô chào bé cưng nghen! Chúc bé một ngày học thiệt là vui nè!",
-          "Bé của cô học giỏi và chăm chỉ quá chừng nè!",
-          "Cố lên nghen bé, bạn Gấu Nâu luôn thương và cổ vũ bé nè!",
-          "Bé đã thu thập thêm được bao nhiêu ngôi sao may mắn rồi ta?"
-        ];
-        const msg = greetings[Math.floor(Math.random() * greetings.length)];
-        window.rewards.showToast(`🐻 ${msg}`, 4000);
-        window.soundSys.speak(msg);
+        wheelModal.classList.add('active');
       });
     }
+
+    if (btnCloseWheel && wheelModal) {
+      btnCloseWheel.addEventListener('click', () => {
+        wheelModal.classList.remove('active');
+      });
+    }
+  }
+
+  // --- Mascot Companion Selector Modal ---
+  bindMascotModal() {
+    const avatar = document.getElementById('mascotAvatar');
+    const modal = document.getElementById('mascotSelectModal');
+    const btnClose = document.getElementById('btnCloseMascotModal');
+
+    if (avatar && modal) {
+      avatar.addEventListener('click', () => {
+        window.soundSys.playPop();
+        modal.classList.add('active');
+      });
+    }
+
+    if (btnClose && modal) {
+      btnClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+    }
+
+    // Mascot Option Cards
+    const mascotCards = document.querySelectorAll('.mascot-pick-card');
+    mascotCards.forEach(card => {
+      card.addEventListener('click', () => {
+        const mascotId = card.dataset.mascot;
+        window.rewards.setMascot(mascotId);
+        mascotCards.forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        setTimeout(() => {
+          if (modal) modal.classList.remove('active');
+        }, 500);
+      });
+    });
+  }
+
+  // --- Speech Rate Preset Controls ---
+  bindSpeechRateControls() {
+    const rateBtns = document.querySelectorAll('.speed-pill-btn');
+    rateBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        rateBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const speed = btn.dataset.speed; // 'slow', 'normal', 'fast'
+        window.soundSys.setSpeechRate(speed);
+        window.soundSys.playPop();
+
+        const labels = { slow: 'Chậm (0.75x)', normal: 'Chuẩn (1.0x)', fast: 'Nhanh (1.1x)' };
+        window.rewards.showToast(`⏱️ Đã đặt tốc độ đọc: ${labels[speed] || speed}`);
+        window.soundSys.speak("Cô đã điều chỉnh tốc độ nói rồi nè bé!");
+      });
+    });
   }
 
   setRandomTip() {
@@ -172,32 +296,19 @@ class MainApp {
   }
 }
 
-// Global hook to populate voice dropdown when voices are loaded
+// Global voice selector callback
 window.updateVoiceSelectorUI = function(voices, selectedVoice) {
   const select = document.getElementById('voiceSelect');
   const statusText = document.getElementById('voiceStatusText');
   if (!select) return;
 
-  select.innerHTML = '';
-  if (!voices || voices.length === 0) {
-    const opt = document.createElement('option');
-    opt.value = '0';
-    opt.textContent = 'Giọng mặc định (Nữ)';
-    select.appendChild(opt);
-    return;
-  }
+  // Populate server voices & browser voices
+  select.innerHTML = `
+    <option value="vi-VN-HoaiMyNeural" selected>Cô giáo Hoài My (Nữ miền Nam)</option>
+    <option value="vi-VN-NamMinhNeural">Thầy giáo Nam Minh (Nam miền Bắc)</option>
+  `;
 
-  voices.forEach((v, idx) => {
-    const opt = document.createElement('option');
-    opt.value = idx;
-    opt.textContent = v.name.replace('Microsoft ', '').replace('Online (Natural)', '').replace(' - Vietnamese (Vietnam)', ' (VN)');
-    if (selectedVoice && v === selectedVoice) {
-      opt.selected = true;
-    }
-    select.appendChild(opt);
-  });
-
-  if (statusText && selectedVoice) {
+  if (statusText) {
     statusText.textContent = `Giọng: Nữ miền Nam`;
   }
 };
@@ -205,8 +316,4 @@ window.updateVoiceSelectorUI = function(voices, selectedVoice) {
 // Start app on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   window.app = new MainApp();
-  // Attempt initial populate if voices already ready
-  if (window.soundSys && window.soundSys.allViVoices) {
-    window.updateVoiceSelectorUI(window.soundSys.allViVoices, window.soundSys.vietnameseVoice);
-  }
 });

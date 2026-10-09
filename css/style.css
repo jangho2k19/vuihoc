@@ -1891,8 +1891,879 @@ body {
   font-family: var(--font-body);
 }
 
-.math-sub-nav, .vn-sub-nav {
+.math-sub-nav, .vn-sub-nav, .sub-nav {
   justify-content: center;
+}
+
+/* ================= SPEED CONTROLS & NIGHT MODE BUTTONS ================= */
+.speed-control-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(67, 97, 238, 0.15);
+  border-radius: var(--radius-pill);
+  padding: 3px 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.speed-label {
+  font-size: 0.8rem;
+  margin-right: 2px;
+}
+
+.speed-pill-btn {
+  background: transparent;
+  border: none;
+  padding: 3px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+}
+
+.speed-pill-btn:hover {
+  background: rgba(67, 97, 238, 0.1);
+}
+
+.speed-pill-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(67, 97, 238, 0.35);
+}
+
+.night-btn {
+  background: #334155;
+  color: #f8fafc;
+  border-color: #475569;
+}
+
+.night-btn.active {
+  background: #f59e0b;
+  color: #1e293b;
+  border-color: #fbbf24;
+}
+
+.lucky-wheel-btn {
+  background: linear-gradient(135deg, #f72585, #7209b7);
+  color: #ffffff;
+  border-color: #ffb703;
+  animation: pulseWheelBtn 2.2s infinite ease-in-out;
+}
+
+@keyframes pulseWheelBtn {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); box-shadow: 0 0 16px rgba(247, 37, 133, 0.6); }
+}
+
+/* ================= EYE PROTECTION / NIGHT MODE THEME ================= */
+body.night-mode {
+  --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 35%, #172554 70%, #090d16 100%);
+  --card-bg: rgba(30, 41, 59, 0.94);
+  --glass-bg: rgba(15, 23, 42, 0.88);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  color: #f8fafc;
+}
+
+body.night-mode .main-header {
+  background: rgba(15, 23, 42, 0.92);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+body.night-mode .site-title {
+  color: #60a5fa;
+  text-shadow: 0 0 15px rgba(96, 165, 250, 0.4);
+}
+
+body.night-mode .speech-bubble {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: #3b82f6;
+  color: #f8fafc;
+}
+
+body.night-mode .feature-card {
+  background: rgba(30, 41, 59, 0.92);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #f8fafc;
+}
+
+body.night-mode .feature-card h3 {
+  color: #93c5fd;
+}
+
+body.night-mode .feature-card p {
+  color: #cbd5e1;
+}
+
+body.night-mode .game-board-card,
+body.night-mode .drawing-app-card,
+body.night-mode .awards-summary-card {
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+body.night-mode .speed-control-box {
+  background: rgba(15, 23, 42, 0.7);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #cbd5e1;
+}
+
+body.night-mode .speed-pill-btn {
+  color: #cbd5e1;
+}
+
+body.night-mode .constructed-sentence-box {
+  background: #1e293b;
+  border-color: #475569;
+  color: #93c5fd;
+}
+
+/* ================= HEROES FOR NEW TABS ================= */
+.english-hero {
+  background: linear-gradient(135deg, #1d4ed8 0%, #3b82f6 50%, #60a5fa 100%);
+  box-shadow: 0 8px 24px rgba(29, 78, 216, 0.25);
+}
+
+.science-hero {
+  background: linear-gradient(135deg, #047857 0%, #10b981 50%, #34d399 100%);
+  box-shadow: 0 8px 24px rgba(4, 120, 87, 0.25);
+}
+
+.music-hero {
+  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
+  box-shadow: 0 8px 24px rgba(124, 58, 237, 0.25);
+}
+
+.mode-switch-bar {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+/* ================= 🇬🇧 ENGLISH FLASHCARDS & QUIZ ================= */
+.english-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 18px;
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.english-flashcard {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 3px solid rgba(59, 130, 246, 0.2);
+  padding: 20px 14px;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: all 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.english-flashcard:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 16px 28px rgba(59, 130, 246, 0.22);
+  border-color: #3b82f6;
+}
+
+.card-icon-bubble {
+  font-size: 3.2rem;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.card-english-word {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1d4ed8;
+  margin-bottom: 2px;
+}
+
+.card-ipa {
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 6px;
+}
+
+.card-vn-meaning {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 12px;
+}
+
+.eng-speak-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.eng-speak-btn:hover {
+  filter: brightness(1.1);
+  transform: scale(1.02);
+}
+
+.english-quiz-badge {
+  font-size: 4.8rem;
+  text-align: center;
+  margin: 12px auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+}
+
+.eng-choice-btn {
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.eng-choice-btn .choice-sub {
+  font-size: 0.88rem;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-left: 6px;
+}
+
+/* ================= 🔬 SCIENCE LESSONS & QUIZ ================= */
+.science-lessons-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+.science-lesson-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-md);
+  border: 3px solid rgba(16, 185, 129, 0.25);
+  padding: 22px 20px;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.28s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.science-lesson-card:hover {
+  transform: translateY(-6px);
+  border-color: #10b981;
+  box-shadow: 0 14px 28px rgba(16, 185, 129, 0.2);
+}
+
+.science-card-icon {
+  font-size: 3.4rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.science-lesson-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  color: #047857;
+  margin-bottom: 8px;
+  text-align: center;
+}
+
+.lesson-desc {
+  font-size: 1rem;
+  color: var(--text-main);
+  line-height: 1.55;
+  margin-bottom: 12px;
+  flex-grow: 1;
+}
+
+.lesson-tip {
+  background: #fef3c7;
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 0.9rem;
+  color: #92400e;
+  margin-bottom: 14px;
+}
+
+.sci-speak-btn {
+  align-self: center;
+  background: #10b981;
+  color: #ffffff;
+}
+
+.science-quiz-badge {
+  font-size: 4.8rem;
+  text-align: center;
+  margin: 10px 0;
+}
+
+/* ================= 🎹 XYLOPHONE & MUSIC ================= */
+.music-guide-box {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(168, 85, 247, 0.3);
+  padding: 16px 20px;
+  margin: 16px auto 0;
+  max-width: 900px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.music-guide-info {
+  font-size: 1.15rem;
+  color: #475569;
+  font-weight: 700;
+}
+
+.highlight-target-note {
+  display: inline-block;
+  background: #facc15;
+  color: #78350f;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  font-weight: 800;
+  box-shadow: 0 0 12px #facc15;
+  animation: pulseGlow 1.2s infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 8px #facc15; }
+  50% { transform: scale(1.1); box-shadow: 0 0 18px #eab308; }
+}
+
+.music-guide-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-stat-tag {
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  font-size: 0.88rem;
+  color: #334155;
+}
+
+.xylophone-container {
+  max-width: 920px;
+  margin: 28px auto 40px;
+  padding: 20px;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.95), rgba(241, 245, 249, 0.8));
+  border-radius: var(--radius-lg);
+  border: 4px solid #cbd5e1;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+}
+
+.xylophone-stand {
+  position: relative;
+  padding: 30px 14px;
+}
+
+.xylo-beam {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  height: 18px;
+  background: linear-gradient(to bottom, #78350f, #451a03);
+  border-radius: 9px;
+  box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.3), 0 4px 8px rgba(0, 0, 0, 0.25);
+}
+.beam-top { top: 48px; }
+.beam-bottom { bottom: 48px; }
+
+.xylophone-board {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  height: 380px;
+  position: relative;
+  z-index: 2;
+  gap: 10px;
+}
+
+.xylo-bar {
+  flex: 1;
+  max-width: 85px;
+  border-radius: 18px;
+  box-shadow: inset 0 3px 5px rgba(255, 255, 255, 0.5), 0 10px 0 rgba(0, 0, 0, 0.18), 0 14px 20px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 6px;
+  user-select: none;
+  position: relative;
+  transition: transform 0.08s ease, filter 0.08s ease;
+}
+
+.xylo-bar:hover {
+  filter: brightness(1.12);
+  transform: translateY(-4px);
+}
+
+.xylo-bar:active,
+.xylo-bar.struck {
+  transform: translateY(6px);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.6), 0 3px 0 rgba(0, 0, 0, 0.25);
+  filter: brightness(1.3);
+}
+
+.xylo-bar.guiding-pulse {
+  animation: keyPulseGuide 1s infinite alternate;
+  border: 3px solid #facc15;
+}
+
+@keyframes keyPulseGuide {
+  0% { transform: scale(1); box-shadow: 0 0 12px #facc15, 0 10px 0 rgba(0, 0, 0, 0.2); }
+  100% { transform: scale(1.05); box-shadow: 0 0 26px #eab308, 0 10px 0 rgba(0, 0, 0, 0.2); }
+}
+
+.xylo-bar.wrong-hit {
+  animation: wrongWobble 0.3s ease;
+}
+
+@keyframes wrongWobble {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+.xylo-pin {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 4px 4px, #e2e8f0, #475569);
+  border: 2px solid #1e293b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.xylo-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.xylo-solfege {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  font-weight: 800;
+}
+
+.xylo-note {
+  font-size: 1rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.music-note-bubble {
+  position: absolute;
+  top: 10px;
+  font-size: 1.5rem;
+  color: #ffffff;
+  pointer-events: none;
+  animation: floatNoteBubble 0.85s ease-out forwards;
+}
+
+@keyframes floatNoteBubble {
+  0% { transform: translateY(0) scale(0.6); opacity: 1; }
+  100% { transform: translateY(-70px) scale(1.2); opacity: 0; }
+}
+
+/* ================= 🎨 DRAWING STUDIO ENHANCEMENTS ================= */
+.template-select {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 2px solid #cbd5e1;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  background: #ffffff;
+  cursor: pointer;
+  outline: none;
+}
+
+.tool-buttons-box {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn-action.active-tool {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary-dark);
+  box-shadow: 0 4px 10px rgba(67, 97, 238, 0.35);
+}
+
+/* ================= 📜 AWARDS & CERTIFICATE ================= */
+.awards-action-bar {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+
+/* ================= 🐾 MODALS SYSTEM ================= */
+.app-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.28s ease;
+}
+
+.app-modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-card {
+  background: var(--card-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border: 3px solid rgba(255, 255, 255, 0.8);
+  max-width: 650px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.92);
+  transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.app-modal.active .modal-card {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.modal-header h3 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--text-main);
+}
+
+.modal-close-btn {
+  background: #f1f5f9;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-subtitle {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  margin-bottom: 18px;
+}
+
+/* Mascot Selection Cards */
+.mascot-picks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+.mascot-pick-card {
+  background: #f8fafc;
+  border: 3px solid #e2e8f0;
+  border-radius: var(--radius-md);
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mascot-pick-card:hover {
+  transform: translateY(-4px);
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.mascot-pick-card.selected {
+  border-color: #3b82f6;
+  background: #dbeafe;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
+}
+
+.pick-emoji {
+  font-size: 3.5rem;
+  margin-bottom: 6px;
+}
+
+.mascot-pick-card h4 {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.pick-tag {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* Lucky Wheel Modal */
+.wheel-modal-card {
+  max-width: 440px;
+  text-align: center;
+}
+
+.wheel-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wheel-pointer {
+  font-size: 2.2rem;
+  color: #dc2626;
+  line-height: 1;
+  margin-bottom: -10px;
+  z-index: 5;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+#luckyWheelCanvas {
+  max-width: 100%;
+  height: auto;
+  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.15));
+}
+
+.wheel-controls {
+  margin-top: 18px;
+  width: 100%;
+}
+
+.spin-btn {
+  font-size: 1.3rem;
+  padding: 12px 32px;
+  box-shadow: 0 8px 0 #b45309;
+}
+
+.wheel-result-msg {
+  margin-top: 14px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  min-height: 48px;
+}
+
+/* Certificate Modal */
+.cert-modal-card {
+  max-width: 820px;
+}
+
+.cert-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.cert-input-bar label {
+  font-weight: 800;
+  color: var(--text-main);
+  font-size: 1.05rem;
+}
+
+.cert-input-bar input {
+  flex-grow: 1;
+  padding: 10px 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 700;
+  outline: none;
+}
+
+.certificate-paper {
+  background: #fffdfa;
+  border: 10px solid #d97706;
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 20px;
+}
+
+.cert-gold-border {
+  border: 3px solid #f59e0b;
+  border-radius: var(--radius-sm);
+  padding: 28px 24px;
+  text-align: center;
+}
+
+.cert-emblem {
+  font-size: 3.5rem;
+  margin-bottom: 4px;
+}
+
+.cert-title {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: #b45309;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+.cert-program {
+  font-size: 1rem;
+  color: #64748b;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.cert-intro {
+  font-size: 1.15rem;
+  color: #334155;
+  margin-bottom: 10px;
+}
+
+.cert-student-name {
+  font-family: var(--font-heading);
+  font-size: 2.5rem;
+  color: #1e3a8a;
+  margin-bottom: 8px;
+}
+
+.cert-rank {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #d97706;
+  margin-bottom: 6px;
+}
+
+.cert-score-line {
+  font-size: 1.15rem;
+  color: #475569;
+  margin-bottom: 24px;
+}
+
+.cert-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 20px;
+  border-top: 2px dashed #fde68a;
+  padding-top: 18px;
+}
+
+.cert-stamp-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: #dc2626;
+}
+
+.cert-red-seal {
+  font-size: 3rem;
+  color: #dc2626;
+}
+
+.cert-sign-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cert-sign-title {
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cert-sign-name {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: #0284c7;
+  font-weight: 800;
+}
+
+.cert-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+/* Print styles */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #certificatePrintArea, #certificatePrintArea * {
+    visibility: visible;
+  }
+  #certificatePrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin: 0;
+    box-shadow: none;
+  }
 }
 
 /* ================= RESPONSIVE DESIGN ================= */
@@ -1924,4 +2795,27 @@ body {
     flex-direction: column;
     text-align: center;
   }
+  .xylophone-board {
+    height: 300px;
+    gap: 6px;
+  }
+  .xylo-solfege {
+    font-size: 1.2rem;
+  }
+  .xylo-bar {
+    max-width: 48px;
+    padding: 12px 2px;
+  }
+  .speed-control-box {
+    display: none;
+  }
+  .header-container {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .header-right {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
+

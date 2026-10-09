@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vườn Tuổi Thơ - Bé Học Vui Lớp 1 🌟</title>
+  <meta name="description" content="Trang web học tập và vui chơi tương tác dành cho học sinh lớp 1: Học toán, bảng chữ cái Tiếng Việt, ghép vần, trò chơi trí tuệ và góc vẽ tranh sáng tạo.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌟</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Floating background decorations -->
+  <div class="bg-decorations" aria-hidden="true">
+    <div class="cloud cloud-1">☁️</div>
+    <div class="cloud cloud-2">☁️</div>
+    <div class="cloud cloud-3">☁️</div>
+    <div class="floating-star star-1">⭐</div>
+    <div class="floating-star star-2">✨</div>
+    <div class="floating-star star-3">🌟</div>
+    <div class="balloon balloon-1">🎈</div>
+    <div class="balloon balloon-2">🎈</div>
+  </div>
+
+  <!-- Header & Navigation -->
+  <header class="main-header">
+    <div class="header-container">
+      <div class="logo-area">
+        <div class="mascot-avatar" id="mascotAvatar" title="Chào bạn nhỏ!">
+          <span class="avatar-emoji">🐻</span>
+          <span class="sparkle-badge">✨</span>
+        </div>
+        <div class="site-title-box">
+          <h1 class="site-title">Vườn Tuổi Thơ</h1>
+          <p class="site-subtitle">Bé Vui Học Lớp 1 • Tự Tin Khám Phá 🎉</p>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Sound Controls -->
+        <button id="btnSoundToggle" class="pill-btn sound-btn" title="Bật / Tắt Âm thanh">
+          <span class="btn-icon">🔊</span>
+          <span class="btn-text">Âm thanh: Bật</span>
+        </button>
+
+        <button id="btnMusicToggle" class="pill-btn music-btn" title="Nhạc nền vui tươi">
+          <span class="btn-icon">🎵</span>
+          <span class="btn-text">Nhạc nền: Tắt</span>
+        </button>
+
+        <!-- Southern Female Voice Selector & Test Button -->
+        <div class="voice-picker-box">
+          <button id="btnVoiceTest" class="pill-btn voice-btn active" title="Nghe thử giọng cô giáo miền Nam">
+            <span class="btn-icon">👩‍🏫</span>
+            <span class="btn-text" id="voiceStatusText">Giọng: Nữ miền Nam</span>
+          </button>
+          <select id="voiceSelect" class="voice-select" title="Danh sách giọng đọc trên máy"></select>
+        </div>
+
+        <!-- Star Rewards Badge -->
+        <div class="star-badge" id="starBadge" title="Số sao bé đã thu thập được">
+          <span class="star-icon">⭐</span>
+          <span class="star-count" id="totalStars">0</span>
+          <span class="star-label">Sao</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="main-nav" aria-label="Menu chính">
+      <button class="nav-tab active" data-tab="tab-home">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-title">Trang Chủ</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-math">
+        <span class="nav-icon">🔢</span>
+        <span class="nav-title">Bé Học Toán</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-vietnamese">
+        <span class="nav-icon">🔤</span>
+        <span class="nav-title">Học Tiếng Việt</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-balloon">
+        <span class="nav-icon">🎈</span>
+        <span class="nav-title">Bóng Bay Kì Diệu</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-memory">
+        <span class="nav-icon">🧠</span>
+        <span class="nav-title">Lật Thẻ Trí Nhớ</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-draw">
+        <span class="nav-icon">🎨</span>
+        <span class="nav-title">Bé Tô Màu</span>
+      </button>
+      <button class="nav-tab" data-tab="tab-awards">
+        <span class="nav-icon">🏆</span>
+        <span class="nav-title">Góc Khen Thưởng</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main class="app-main">
+    
+    <!-- ================= TAB 1: HOME ================= -->
+    <section id="tab-home" class="tab-pane active">
+      <!-- Mascot Greeting Banner -->
+      <div class="welcome-banner">
+        <div class="welcome-speech">
+          <div class="speech-bubble">
+            <h2>Xin chào Bé cưng! 👋 Chào mừng bé đến với Lớp 1 diệu kỳ nghen!</h2>
+            <p>Hôm nay chúng mình cùng học đếm số, ghép chữ cái và chơi trò chơi để rinh thiệt nhiều <strong>Ngôi Sao May Mắn ⭐</strong> nha!</p>
+            <div class="speech-actions">
+              <button class="btn-primary start-explore-btn" onclick="app.switchTab('tab-math')">
+                🚀 Bắt đầu học Toán ngay!
+              </button>
+              <button class="btn-secondary" onclick="app.switchTab('tab-vietnamese')">
+                📖 Học Bảng Chữ Cái
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="welcome-character">
+          <div class="big-mascot">
+            <div class="mascot-body">🐻</div>
+            <div class="mascot-tag">Gấu Nâu Thông Thái</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Feature Cards -->
+      <div class="feature-grid">
+        <div class="feature-card math-card" onclick="app.switchTab('tab-math')">
+          <div class="card-badge">Vui nhộn</div>
+          <div class="card-icon-big">🔢</div>
+          <h3>Toán Học Lớp 1</h3>
+          <p>Tập đếm đồ vật, so sánh lớn bé, cộng trừ trong phạm vi 10 & 20 thật dễ hiểu!</p>
+          <span class="card-cta">Chơi & Học ➜</span>
+        </div>
+
+        <div class="feature-card vn-card" onclick="app.switchTab('tab-vietnamese')">
+          <div class="card-badge">Chuẩn âm thanh</div>
+          <div class="card-icon-big">🔤</div>
+          <h3>Tiếng Việt Kỳ Thú</h3>
+          <p>Bảng 29 chữ cái, dấu thanh, nghe phát âm chuẩn và trò chơi ghép vần đón chữ!</p>
+          <span class="card-cta">Khám phá ➜</span>
+        </div>
+
+        <div class="feature-card balloon-card" onclick="app.switchTab('tab-balloon')">
+          <div class="card-badge">Nhanh tay</div>
+          <div class="card-icon-big">🎈</div>
+          <h3>Nổ Bóng Bay Kỳ Diệu</h3>
+          <p>Bấm nổ những quả bóng bay mang chữ và số, luyện phản xạ siêu tốc cực vui!</p>
+          <span class="card-cta">Bắn bóng ➜</span>
+        </div>
+
+        <div class="feature-card memory-card" onclick="app.switchTab('tab-memory')">
+          <div class="card-badge">Rèn trí nhớ</div>
+          <div class="card-icon-big">🐱</div>
+          <h3>Lật Hình Động Vật</h3>
+          <p>Tìm các cặp con vật ngộ nghĩnh giống nhau, rèn luyện tư duy và sự tập trung!</p>
+          <span class="card-cta">Thử tài ➜</span>
+        </div>
+
+        <div class="feature-card draw-card" onclick="app.switchTab('tab-draw')">
+          <div class="card-badge">Sáng tạo</div>
+          <div class="card-icon-big">🎨</div>
+          <h3>Góc Bé Vẽ & Tô Màu</h3>
+          <p>Bảng vẽ đa màu sắc với cọ vẽ, dán hình sticker con vật và lưu bức tranh của bé!</p>
+          <span class="card-cta">Vẽ tranh ➜</span>
+        </div>
+
+        <div class="feature-card award-card" onclick="app.switchTab('tab-awards')">
+          <div class="card-badge">Thành tích</div>
+          <div class="card-icon-big">🏆</div>
+          <h3>Góc Huy Hiệu & Quà</h3>
+          <p>Xem bé đã tích lũy được bao nhiêu sao và mở khóa những huy hiệu dũng cảm nào!</p>
+          <span class="card-cta">Xem cúp ➜</span>
+        </div>
+      </div>
+
+      <!-- Daily Motivation -->
+      <div class="daily-tip-box">
+        <div class="tip-icon">💡</div>
+        <div class="tip-content">
+          <h4>Lời nhắn nhủ của cô giáo & bố mẹ:</h4>
+          <p id="dailyTipText">"Mỗi ngày học một chút điều mới, bé sẽ thông minh và đáng yêu hơn từng ngày! Chúc bé học thật vui nhé!"</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 2: BÉ HỌC TOÁN ================= -->
+    <section id="tab-math" class="tab-pane">
+      <div class="section-hero math-hero">
+        <div class="hero-text">
+          <h2>🔢 Toán Học Vui Vẻ Lớp 1</h2>
+          <p>Cùng bé làm quen với số, đếm hình và tập làm tính thật nhanh nhé!</p>
+        </div>
+        <!-- Math Sub Navigation -->
+        <div class="sub-nav math-sub-nav">
+          <button class="sub-btn active" data-sub="math-counting">🍎 Đếm Số (1-20)</button>
+          <button class="sub-btn" data-sub="math-sequence">🔢 Dãy Số & Liền Trước/Sau</button>
+          <button class="sub-btn" data-sub="math-compare">⚖️ So Sánh Lớn Bé</button>
+          <button class="sub-btn" data-sub="math-split">🧩 Tách - Gộp Số</button>
+          <button class="sub-btn" data-sub="math-addition">➕ Phép Cộng (10 & 20)</button>
+          <button class="sub-btn" data-sub="math-subtraction">➖ Phép Trừ (10 & 20)</button>
+          <button class="sub-btn" data-sub="math-shapes">📐 Hình Học & Vị Trí</button>
+          <button class="sub-btn" data-sub="math-clock">⏰ Xem Đồng Hồ Kim</button>
+          <button class="sub-btn" data-sub="math-wordproblems">📖 Bài Toán Có Lời Văn</button>
+        </div>
+      </div>
+
+      <!-- Math Game Container -->
+      <div class="game-board-card">
+        <div class="game-header-bar">
+          <div class="game-info">
+            <span class="badge-level" id="mathLevelTag">Mức độ: Dễ (1 - 10)</span>
+            <span class="badge-score">Điểm: <strong id="mathCurrentScore">0</strong></span>
+          </div>
+          <div class="game-controls-right">
+            <button class="small-pill-btn" id="btnMathNewQuestion">🔄 Câu hỏi khác</button>
+            <button class="small-pill-btn" id="btnMathSpeak">🔊 Đọc câu hỏi</button>
+          </div>
+        </div>
+
+        <div class="question-display-area" id="mathQuestionArea">
+          <!-- Dynamic Math Content injected here -->
+        </div>
+
+        <div class="answers-area" id="mathAnswersArea">
+          <!-- Dynamic Answer buttons -->
+        </div>
+
+        <div class="feedback-box" id="mathFeedbackBox" aria-live="polite">
+          <!-- Feedback message -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 3: HỌC TIẾNG VIỆT ================= -->
+    <section id="tab-vietnamese" class="tab-pane">
+      <div class="section-hero vn-hero">
+        <div class="hero-text">
+          <h2>🔤 Bé Khám Phá Tiếng Việt</h2>
+          <p>Học 29 chữ cái, nghe phát âm chuẩn và tập ghép vần với hình ảnh ngộ nghĩnh!</p>
+        </div>
+        <div class="sub-nav vn-sub-nav">
+          <button class="sub-btn active" data-sub="vn-alphabet">🅰️ Bảng Chữ Cái</button>
+          <button class="sub-btn" data-sub="vn-tones">🏷️ 5 Dấu Thanh</button>
+          <button class="sub-btn" data-sub="vn-spelling">✍️ Luật Chính Tả (c/k, g/gh, ng/ngh)</button>
+          <button class="sub-btn" data-sub="vn-compounds">🔤 Âm Ghép (ch, nh, th, kh...)</button>
+          <button class="sub-btn" data-sub="vn-quiz">❓ Bé Chọn Chữ Đúng</button>
+          <button class="sub-btn" data-sub="vn-rhyme">🧩 Bé Ghép Vần</button>
+          <button class="sub-btn" data-sub="vn-sentence">📝 Xếp Câu Hoàn Chỉnh</button>
+        </div>
+      </div>
+
+      <!-- Alphabet Grid Sub-view -->
+      <div id="sub-vn-alphabet" class="vn-sub-view active">
+        <div class="letter-instruction-bar">
+          <span>👆 <strong>Bé chạm vào từng chữ cái</strong> để nghe tiếng đọc và xem từ ngữ mẫu nha!</span>
+          <div class="case-toggle">
+            <button class="toggle-btn active" id="btnLetterUpper">Chữ IN HOA (A)</button>
+            <button class="toggle-btn" id="btnLetterLower">Chữ in thường (a)</button>
+          </div>
+        </div>
+
+        <div class="alphabet-grid" id="alphabetGrid">
+          <!-- Letters will be generated by JS -->
+        </div>
+
+        <!-- Selected Letter Modal/Drawer View -->
+        <div class="letter-detail-card" id="letterDetailCard">
+          <div class="detail-letter-box" id="detailLetterBox">A a</div>
+          <div class="detail-illustration" id="detailIllustration">🍎</div>
+          <div class="detail-info">
+            <h3 id="detailWord">Quả Bưởi</h3>
+            <p id="detailSentence">Chữ <strong>A</strong> trong tiếng "An"</p>
+            <button class="btn-sound-big" id="btnPlayLetterSound">
+              🔊 Nghe phát âm chữ này
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VN Tones Sub-view -->
+      <div id="sub-vn-tones" class="vn-sub-view">
+        <div class="game-board-card">
+          <div class="game-header-bar">
+            <div class="game-info">
+              <span class="badge-level">5 Dấu Thanh Tiếng Việt</span>
+              <span class="badge-score">Điểm: <strong id="vnTonesScore">0</strong></span>
+            </div>
+            <button class="small-pill-btn" id="btnVnTonesNew">🔄 Câu hỏi khác</button>
+          </div>
+          <div class="question-display-area" id="vnTonesQuestionArea"></div>
+          <div class="answers-area" id="vnTonesAnswersArea"></div>
+          <div class="feedback-box" id="vnTonesFeedbackBox"></div>
+        </div>
+      </div>
+
+      <!-- VN Spelling Rules Sub-view -->
+      <div id="sub-vn-spelling" class="vn-sub-view">
+        <div class="game-board-card">
+          <div class="game-header-bar">
+            <div class="game-info">
+              <span class="badge-level">Mẹo Chính Tả Lớp 1</span>
+              <span class="badge-score">Điểm: <strong id="vnSpellingScore">0</strong></span>
+            </div>
+            <button class="small-pill-btn" id="btnVnSpellingNew">🔄 Đổi câu hỏi</button>
+          </div>
+          <div class="question-display-area" id="vnSpellingQuestionArea"></div>
+          <div class="answers-area" id="vnSpellingAnswersArea"></div>
+          <div class="feedback-box" id="vnSpellingFeedbackBox"></div>
+        </div>
+      </div>
+
+      <!-- VN Compounds Sub-view -->
+      <div id="sub-vn-compounds" class="vn-sub-view">
+        <div class="game-board-card">
+          <div class="game-header-bar">
+            <div class="game-info">
+              <span class="badge-level">Âm Đôi & Âm Ghép</span>
+              <span class="badge-score">Điểm: <strong id="vnCompoundsScore">0</strong></span>
+            </div>
+            <button class="small-pill-btn" id="btnVnCompoundsNew">🔄 Đổi câu hỏi</button>
+          </div>
+          <div class="question-display-area" id="vnCompoundsQuestionArea"></div>
+          <div class="answers-area" id="vnCompoundsAnswersArea"></div>
+          <div class="feedback-box" id="vnCompoundsFeedbackBox"></div>
+        </div>
+      </div>
+
+      <!-- VN Quiz Sub-view -->
+      <div id="sub-vn-quiz" class="vn-sub-view">
+        <div class="game-board-card">
+          <div class="game-header-bar">
+            <div class="game-info">
+              <span class="badge-level">Thử tài tìm chữ</span>
+              <span class="badge-score">Điểm: <strong id="vnQuizScore">0</strong></span>
+            </div>
+            <button class="small-pill-btn" id="btnVnQuizNew">🔄 Đổi câu hỏi</button>
+          </div>
+          <div class="question-display-area" id="vnQuizQuestionArea"></div>
+          <div class="answers-area" id="vnQuizAnswersArea"></div>
+          <div class="feedback-box" id="vnQuizFeedbackBox"></div>
+        </div>
+      </div>
+
+      <!-- VN Rhyme / Spelling Sub-view -->
+      <div id="sub-vn-rhyme" class="vn-sub-view">
+        <div class="game-board-card">
+          <div class="game-header-bar">
+            <div class="game-info">
+              <span class="badge-level">Ghép chữ thành tiếng</span>
+              <span class="badge-score">Điểm: <strong id="vnRhymeScore">0</strong></span>
+            </div>
+            <button class="small-pill-btn" id="btnVnRhymeNew">🔄 Câu tiếp theo</button>
+          </div>
+          <div class="question-display-area" id="vnRhymeQuestionArea"></div>
+          <div class="answers-area" id="vnRhymeAnswersArea"></div>
+          <div class="feedback-box" id="vnRhymeFeedbackBox"></div>
+        </div>
+      </div>
+
+      <!-- VN Sentence Building Sub-view -->
+      <div id="sub-vn-sentence" class="vn-sub-view">
+        <div class="game-board-card">
+          <div class="game-header-bar">
+            <div class="game-info">
+              <span class="badge-level">Xếp từ thành câu</span>
+              <span class="badge-score">Điểm: <strong id="vnSentenceScore">0</strong></span>
+            </div>
+            <button class="small-pill-btn" id="btnVnSentenceNew">🔄 Đổi câu hỏi</button>
+          </div>
+          <div class="question-display-area" id="vnSentenceQuestionArea"></div>
+          <div class="answers-area" id="vnSentenceAnswersArea"></div>
+          <div class="feedback-box" id="vnSentenceFeedbackBox"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 4: BÓNG BAY KÌ DIỆU ================= -->
+    <section id="tab-balloon" class="tab-pane">
+      <div class="section-hero balloon-hero">
+        <div class="hero-text">
+          <h2>🎈 Nhanh Tay Bắn Bóng Bay</h2>
+          <p>Những quả bóng bay sặc sỡ đang bay lên! Bé hãy bấm vào đúng bóng theo yêu cầu nhé!</p>
+        </div>
+        <div class="game-score-board">
+          <div class="stat-box">
+            <span class="stat-label">🎯 Điểm:</span>
+            <span class="stat-val" id="balloonScore">0</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">⏳ Thời gian:</span>
+            <span class="stat-val" id="balloonTimer">30s</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">❤️ Mạng:</span>
+            <span class="stat-val" id="balloonLives">❤️❤️❤️</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="balloon-game-container">
+        <!-- Target Mission Prompt -->
+        <div class="balloon-target-banner">
+          <span>Yêu cầu: Hãy bấm vào bóng có chữ/số: </span>
+          <strong class="target-symbol" id="balloonTargetSymbol">A</strong>
+          <button class="small-pill-btn" id="btnBalloonSpeakTarget" title="Nghe lại yêu cầu">🔊</button>
+        </div>
+
+        <div class="balloon-sky" id="balloonSky">
+          <div class="game-start-overlay" id="balloonStartOverlay">
+            <h3>Bé đã sẵn sàng chưa? 🎈</h3>
+            <p>Bấm nút bắt đầu để cùng thi đua xem ai nổ được nhiều bóng nhất nhé!</p>
+            <div class="mode-select">
+              <label><input type="radio" name="balloonMode" value="numbers" checked> Học Đếm Số (1 - 10)</label>
+              <label><input type="radio" name="balloonMode" value="letters"> Bảng Chữ Cái (A - Z)</label>
+            </div>
+            <button class="btn-primary" id="btnStartBalloonGame">▶️ Bắt Đầu Chơi Ngay!</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 5: LẬT THẺ TRÍ NHỚ ================= -->
+    <section id="tab-memory" class="tab-pane">
+      <div class="section-hero memory-hero">
+        <div class="hero-text">
+          <h2>🧠 Thử Tài Trí Nhớ Cùng Động Vật</h2>
+          <p>Lật các tấm thẻ để tìm ra 2 con vật giống hệt nhau. Bé hãy nhớ vị trí nhé!</p>
+        </div>
+        <div class="game-score-board">
+          <div class="stat-box">
+            <span class="stat-label">Cặp đã tìm:</span>
+            <span class="stat-val" id="memoryPairsFound">0 / 6</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-label">Số lượt lật:</span>
+            <span class="stat-val" id="memoryMoves">0</span>
+          </div>
+          <button class="btn-secondary" id="btnResetMemory">🔄 Chơi lại</button>
+        </div>
+      </div>
+
+      <div class="memory-grid-wrapper">
+        <div class="memory-grid" id="memoryGrid">
+          <!-- Cards populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 6: GÓC BÉ TÔ MÀU ================= -->
+    <section id="tab-draw" class="tab-pane">
+      <div class="section-hero draw-hero">
+        <div class="hero-text">
+          <h2>🎨 Góc Họa Sĩ Nhí</h2>
+          <p>Thỏa sức sáng tạo, chọn màu bé thích để vẽ tranh hoặc dán sticker đáng yêu!</p>
+        </div>
+      </div>
+
+      <div class="drawing-app-card">
+        <!-- Drawing Toolbar -->
+        <div class="draw-toolbar">
+          <div class="tool-group">
+            <label class="toolbar-label">Màu sắc:</label>
+            <div class="color-palette" id="colorPalette">
+              <button class="color-dot active" style="background-color: #e63946;" data-color="#e63946" title="Đỏ"></button>
+              <button class="color-dot" style="background-color: #ffb703;" data-color="#ffb703" title="Vàng"></button>
+              <button class="color-dot" style="background-color: #2a9d8f;" data-color="#2a9d8f" title="Xanh lá"></button>
+              <button class="color-dot" style="background-color: #4361ee;" data-color="#4361ee" title="Xanh dương"></button>
+              <button class="color-dot" style="background-color: #7209b7;" data-color="#7209b7" title="Tím"></button>
+              <button class="color-dot" style="background-color: #fb8500;" data-color="#fb8500" title="Cam"></button>
+              <button class="color-dot" style="background-color: #ff70a6;" data-color="#ff70a6" title="Hồng"></button>
+              <button class="color-dot" style="background-color: #2b2d42;" data-color="#2b2d42" title="Đen"></button>
+            </div>
+            <input type="color" id="customColorPicker" value="#4361ee" title="Màu tự chọn">
+          </div>
+
+          <div class="tool-group">
+            <label class="toolbar-label">Nét vẽ:</label>
+            <div class="brush-sizes">
+              <button class="size-btn" data-size="4">Nhỏ</button>
+              <button class="size-btn active" data-size="10">Vừa</button>
+              <button class="size-btn" data-size="20">To</button>
+            </div>
+          </div>
+
+          <div class="tool-group">
+            <label class="toolbar-label">Dán Tem (Sticker):</label>
+            <div class="sticker-selector" id="stickerSelector">
+              <button class="sticker-btn" data-sticker="⭐">⭐</button>
+              <button class="sticker-btn" data-sticker="❤️">❤️</button>
+              <button class="sticker-btn" data-sticker="🌸">🌸</button>
+              <button class="sticker-btn" data-sticker="🐱">🐱</button>
+              <button class="sticker-btn" data-sticker="🐶">🐶</button>
+              <button class="sticker-btn" data-sticker="🚀">🚀</button>
+              <button class="sticker-btn" data-sticker="🌈">🌈</button>
+            </div>
+          </div>
+
+          <div class="tool-group action-tools">
+            <button class="btn-action" id="btnEraser" title="Tẩy nét vẽ">🧹 Tẩy</button>
+            <button class="btn-action" id="btnClearCanvas" title="Xóa toàn bộ">🗑️ Xóa hết</button>
+            <button class="btn-action highlight" id="btnSaveCanvas" title="Tải tranh về máy">💾 Lưu tranh</button>
+          </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="canvas-container">
+          <canvas id="paintCanvas" width="900" height="520"></canvas>
+          <div class="canvas-hint">💡 Chấm chuột hoặc ngón tay để vẽ và thả sticker lên trang giấy nhé!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= TAB 7: GÓC KHEN THƯỞNG ================= -->
+    <section id="tab-awards" class="tab-pane">
+      <div class="section-hero award-hero">
+        <div class="hero-text">
+          <h2>🏆 Bảng Vàng Thành Tích Của Bé</h2>
+          <p>Mỗi khi bé hoàn thành bài tập, bé sẽ nhận được thêm Sao và mở khóa các Huân Chương siêu xịn!</p>
+        </div>
+      </div>
+
+      <div class="awards-summary-card">
+        <div class="summary-stars">
+          <div class="stars-icon-circle">⭐</div>
+          <div class="stars-text">
+            <h3>Tổng số sao may mắn</h3>
+            <span class="stars-number" id="awardTotalStars">0</span>
+            <p>Bé hãy tiếp tục học giỏi để đạt mốc 100 Sao nhé!</p>
+          </div>
+        </div>
+        <div class="summary-level" id="userRankBox">
+          <div class="rank-badge">🌱</div>
+          <div class="rank-info">
+            <h4 id="userRankTitle">Mầm Non Tinh Anh</h4>
+            <p id="userRankDesc">Bé mới bắt đầu chuyến hành trình kỳ thú!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Badges Grid -->
+      <h3 class="section-title">🎖️ Bộ Sưu Tập Huy Hiệu Của Bé</h3>
+      <div class="badges-grid" id="badgesGrid">
+        <!-- Badges rendered by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Confetti Canvas overlay for celebrations -->
+  <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+  <!-- Mascot popup speech helper -->
+  <div id="mascotToast" class="mascot-toast" role="alert" aria-live="assertive">
+    <div class="toast-avatar">🐻</div>
+    <div class="toast-content" id="toastMessage">Bé làm tốt lắm! Tiếp tục phát huy nhé!</div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/audio.js"></script>
+  <script src="js/rewards.js"></script>
+  <script src="js/math.js"></script>
+  <script src="js/vietnamese.js"></script>
+  <script src="js/games.js"></script>
+  <script src="js/draw.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

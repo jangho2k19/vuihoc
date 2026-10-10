@@ -521,12 +521,12 @@ class SoundSystem {
       });
     };
 
-    // Watchdog timer: if audio takes longer than 1.4s, fallback to Google TTS or device
+    // Watchdog timer: if audio takes longer than 0.9s, fallback to Google TTS or device
     const watchdog = setTimeout(() => {
       if (!hasStarted) {
         runFallback();
       }
-    }, 1400);
+    }, 900);
 
     audio.onplaying = () => {
       hasStarted = true;

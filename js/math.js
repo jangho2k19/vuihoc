@@ -197,7 +197,7 @@ class MathApp {
           <div class="single-number-badge">${n}</div>
           <div class="math-question-text">Số liền trước của số <strong>${n}</strong> là số mấy vậy bé?</div>
         `,
-        speechText: `Số liền trước của số ${n} là số mấy vậy bé cưng?`,
+        speechText: `Số liền trước của số ${n} là số mấy vậy bé yêu?`,
         choices: choices,
         correctAnswer: answer,
         praise: `Giỏi quá! Số liền trước của số ${n} là số ${answer} nè!`
@@ -313,7 +313,7 @@ class MathApp {
           </div>
           <div class="math-question-text">Gộp ${partA} và ${partB} được mấy?</div>
         `,
-        speechText: `Gộp ${partA} và ${partB} được mấy hả bé cưng?`,
+        speechText: `Gộp ${partA} và ${partB} được mấy hả bé yêu?`,
         choices: choices,
         correctAnswer: total,
         praise: `Rất chính xác! Gộp ${partA} và ${partB} được ${total} nè!`
@@ -485,60 +485,140 @@ class MathApp {
     }
   }
 
-  // 8. Bé Xem Giờ Đúng Trên Đồng Hồ Kim (SGK Lớp 1)
+  // 8. Bé Xem Giờ Đúng & Lịch Tuần Lễ (SGK Toán 1 Tập 2 - Chủ đề 9)
   generateClockQuestion() {
-    this.levelTag.textContent = "Chủ đề: Bé tập xem đồng hồ kim (Giờ đúng)";
-    const hour = this.randomInt(1, 12);
-    // Angle of hour hand: (hour % 12) * 30 degrees
-    const hourAngle = (hour % 12) * 30;
+    const isClock = Math.random() < 0.6;
 
-    // SVG clock face
-    const clockSvg = `
-      <svg width="220" height="220" viewBox="0 0 200 200" style="margin: 10px auto;">
-        <circle cx="100" cy="100" r="92" fill="#ffffff" stroke="#4361ee" stroke-width="8" />
-        <circle cx="100" cy="100" r="82" fill="#f8fafc" />
-        
-        <!-- Number indicators -->
-        <text x="100" y="32" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">12</text>
-        <text x="170" y="106" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">3</text>
-        <text x="100" y="178" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">6</text>
-        <text x="30" y="106" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">9</text>
+    if (isClock) {
+      this.levelTag.textContent = "Chủ đề: Bé tập xem đồng hồ kim (Giờ đúng)";
+      const hour = this.randomInt(1, 12);
+      const hourAngle = (hour % 12) * 30;
 
-        <!-- Center pin -->
-        <circle cx="100" cy="100" r="6" fill="#d90429" />
+      const routines = {
+        6: 'Bé dậy tập thể dục',
+        7: 'Bé vào lớp học',
+        8: 'Bé học bài cùng cô',
+        11: 'Bé ăn cơm trưa',
+        16: 'Bé tan học về nhà',
+        19: 'Cả nhà ăn cơm tối',
+        20: 'Bé ngồi vào bàn học bài',
+        21: 'Bé đi ngủ ngon'
+      };
+      const noteHint = routines[hour] ? `<div style="font-size:0.95rem; color:#475569; margin-top:6px;">🕒 (${routines[hour]})</div>` : '';
 
-        <!-- Minute hand (always points to 12 for exact hour in Grade 1) -->
-        <line x1="100" y1="100" x2="100" y2="38" stroke="#4361ee" stroke-width="5" stroke-linecap="round" />
+      // SVG clock face
+      const clockSvg = `
+        <svg width="220" height="220" viewBox="0 0 200 200" style="margin: 10px auto;">
+          <circle cx="100" cy="100" r="92" fill="#ffffff" stroke="#4361ee" stroke-width="8" />
+          <circle cx="100" cy="100" r="82" fill="#f8fafc" />
+          
+          <!-- Number indicators -->
+          <text x="100" y="32" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">12</text>
+          <text x="170" y="106" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">3</text>
+          <text x="100" y="178" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">6</text>
+          <text x="30" y="106" font-size="18" font-weight="bold" text-anchor="middle" fill="#1e293b">9</text>
 
-        <!-- Hour hand rotated according to hour -->
-        <line x1="100" y1="100" x2="100" y2="58" stroke="#d90429" stroke-width="7" stroke-linecap="round" transform="rotate(${hourAngle} 100 100)" />
-      </svg>
-    `;
+          <!-- Center pin -->
+          <circle cx="100" cy="100" r="6" fill="#d90429" />
 
-    const choices = [`${hour} giờ`];
-    while (choices.length < 4) {
-      const wrongH = this.randomInt(1, 12);
-      const str = `${wrongH} giờ`;
-      if (!choices.includes(str)) choices.push(str);
+          <!-- Minute hand (always points to 12 for exact hour in Grade 1) -->
+          <line x1="100" y1="100" x2="100" y2="38" stroke="#4361ee" stroke-width="5" stroke-linecap="round" />
+
+          <!-- Hour hand rotated according to hour -->
+          <line x1="100" y1="100" x2="100" y2="58" stroke="#d90429" stroke-width="7" stroke-linecap="round" transform="rotate(${hourAngle} 100 100)" />
+        </svg>
+      `;
+
+      const choices = [`${hour} giờ`];
+      while (choices.length < 4) {
+        const wrongH = this.randomInt(1, 12);
+        const str = `${wrongH} giờ`;
+        if (!choices.includes(str)) choices.push(str);
+      }
+      choices.sort(() => Math.random() - 0.5);
+
+      this.currentQuestion = {
+        html: `
+          <div class="math-prompt-hint">Kim dài màu xanh chỉ số 12, kim ngắn màu đỏ chỉ vào giờ nè:</div>
+          ${clockSvg}
+          ${noteHint}
+          <div class="math-question-text">Đồng hồ đang chỉ mấy giờ vậy bé?</div>
+        `,
+        speechText: `Đồng hồ đang chỉ mấy giờ vậy bé ơi? Kim ngắn màu đỏ chỉ số mấy nè?`,
+        choices: choices,
+        correctAnswer: `${hour} giờ`,
+        praise: `Chính xác rồi nè! Đồng hồ chỉ đúng ${hour} giờ nhé!`
+      };
+    } else {
+      // Các ngày trong tuần và lịch (Bài 35 SGK Toán 1 Tập 2)
+      this.levelTag.textContent = "Chủ đề: Các ngày trong tuần và lịch";
+      const dayQuestions = [
+        {
+          q: "Một tuần lễ có bao nhiêu ngày hả bé?",
+          say: "Một tuần lễ có bao nhiêu ngày hả bé?",
+          ans: "7 ngày",
+          choices: ["7 ngày", "5 ngày", "10 ngày", "6 ngày"],
+          praise: "Giỏi quá! Một tuần lễ có đúng 7 ngày bé nhé!"
+        },
+        {
+          q: "Các ngày trong tuần em đi học là từ Thứ mấy đến Thứ mấy?",
+          say: "Các ngày em đi học là từ Thứ mấy đến Thứ mấy nè?",
+          ans: "Từ Thứ Hai đến Thứ Sáu",
+          choices: ["Từ Thứ Hai đến Thứ Sáu", "Từ Thứ Hai đến Chủ Nhật", "Chỉ Thứ Hai và Thứ Ba", "Từ Thứ Bảy đến Chủ Nhật"],
+          praise: "Rất chính xác! Bé đi học từ Thứ Hai đến Thứ Sáu, Thứ Bảy và Chủ Nhật được nghỉ ở nhà nhé!"
+        },
+        {
+          q: "Những ngày nào trong tuần bé được nghỉ học ở nhà cùng gia đình?",
+          say: "Những ngày nào trong tuần bé được nghỉ học ở nhà cùng gia đình nè?",
+          ans: "Thứ Bảy và Chủ Nhật",
+          choices: ["Thứ Bảy và Chủ Nhật", "Thứ Hai và Thứ Ba", "Thứ Năm và Thứ Sáu", "Thứ Tư và Thứ Năm"],
+          praise: "Đúng rồi! Thứ Bảy và Chủ Nhật là ngày cuối tuần bé được nghỉ ngơi vui vẻ bên gia đình!"
+        },
+        {
+          q: "Hôm nay là Thứ Ba, ngày mai sẽ là ngày Thứ mấy?",
+          say: "Hôm nay là Thứ Ba, ngày mai sẽ là ngày Thứ mấy vậy bé?",
+          ans: "Thứ Tư",
+          choices: ["Thứ Tư", "Thứ Năm", "Thứ Hai", "Chủ Nhật"],
+          praise: "Chính xác! Sau Thứ Ba là đến Thứ Tư bé nhé!"
+        },
+        {
+          q: "Hôm nay là Thứ Bảy, hôm qua là ngày Thứ mấy?",
+          say: "Hôm nay là Thứ Bảy, hôm qua là ngày Thứ mấy vậy bé?",
+          ans: "Thứ Sáu",
+          choices: ["Thứ Sáu", "Thứ Năm", "Chủ Nhật", "Thứ Hai"],
+          praise: "Giỏi quá! Ngày trước Thứ Bảy chính là Thứ Sáu nè!"
+        },
+        {
+          q: "Ngày đầu tiên của một tuần lễ là ngày Thứ mấy?",
+          say: "Ngày đầu tiên của một tuần lễ là ngày Thứ mấy hả bé?",
+          ans: "Thứ Hai",
+          choices: ["Thứ Hai", "Thứ Ba", "Chủ Nhật", "Thứ Bảy"],
+          praise: "Rất đúng! Thứ Hai là ngày đầu tuần mở đầu một tuần học mới tràn đầy niềm vui!"
+        }
+      ];
+
+      const item = dayQuestions[Math.floor(Math.random() * dayQuestions.length)];
+      const choices = [...item.choices].sort(() => Math.random() - 0.5);
+
+      this.currentQuestion = {
+        html: `
+          <div class="math-prompt-hint">Kiến thức về Tuần lễ và Lịch (SGK Lớp 1):</div>
+          <div class="word-problem-card" style="background:#eff6ff; border-color:#93c5fd;">
+            <p class="word-problem-text" style="color:#1e3a8a;">📅 "${item.q}"</p>
+          </div>
+          <div class="math-question-text">Bé hãy chọn câu trả lời đúng nhất nhé:</div>
+        `,
+        speechText: item.say,
+        choices: choices,
+        correctAnswer: item.ans,
+        praise: item.praise
+      };
     }
-    choices.sort(() => Math.random() - 0.5);
-
-    this.currentQuestion = {
-      html: `
-        <div class="math-prompt-hint">Kim dài chỉ số 12, kim ngắn màu đỏ chỉ vào giờ nè:</div>
-        ${clockSvg}
-        <div class="math-question-text">Đồng hồ đang chỉ mấy giờ vậy bé?</div>
-      `,
-      speechText: `Đồng hồ đang chỉ mấy giờ vậy bé ơi? Kim ngắn màu đỏ chỉ số mấy nè?`,
-      choices: choices,
-      correctAnswer: `${hour} giờ`,
-      praise: `Chính xác rồi nè! Đồng hồ chỉ đúng ${hour} giờ nhé!`
-    };
   }
 
   // 9. Bài Toán Có Lời Văn (Tình huống thực tế SGK Lớp 1)
   generateWordProblemQuestion() {
-    this.levelTag.textContent = "Chủ đề: Bài toán có lời văn thực tế";
+    this.levelTag.textContent = "Chủ đề: Bài toán có lời văn thực tế (SGK Toán 1)";
     const problems = [
       {
         text: "Trên cành cây có 4 chú chim 🐦, sau đó có thêm 3 chú chim bay tới đậu cùng. Hỏi trên cành cây có tất cả bao nhiêu chú chim?",
@@ -575,6 +655,78 @@ class MathApp {
         say: "Tổ Một có 10 bạn, tổ Hai có 5 bạn. Hỏi cả hai tổ có tất cả mấy bạn vậy bé?",
         ans: 15,
         formula: "10 + 5 = 15"
+      },
+      {
+        text: "Bạn Nam có 8 viên bi đỏ 🔴, Nam chia cho bạn Minh 2 viên bi. Hỏi bạn Nam còn lại bao nhiêu viên bi?",
+        say: "Nam có 8 viên bi đỏ, cho bạn Minh 2 viên. Hỏi Nam còn lại mấy viên bi nè?",
+        ans: 6,
+        formula: "8 - 2 = 6"
+      },
+      {
+        text: "Bạn Hoa cắm vào lọ 5 bông hoa hồng 🌹 và 3 bông hoa cúc vàng 🌼. Hỏi trong lọ có tất cả bao nhiêu bông hoa?",
+        say: "Hoa cắm 5 bông hoa hồng và 3 bông hoa cúc. Hỏi trong lọ có tất cả bao nhiêu bông hoa vậy bé?",
+        ans: 8,
+        formula: "5 + 3 = 8"
+      },
+      {
+        text: "Trên đĩa có 12 quả dâu tây chín mọng 🍓, bé ăn bớt 2 quả. Hỏi trên đĩa còn lại bao nhiêu quả dâu tây?",
+        say: "Trên đĩa có 12 quả dâu tây, bé ăn bớt 2 quả. Hỏi còn lại bao nhiêu quả dâu tây nè?",
+        ans: 10,
+        formula: "12 - 2 = 10"
+      },
+      {
+        text: "Trong hộp có 6 cây bút sáp màu 🖍️, mẹ mua cho bé thêm 4 cây bút nữa. Hỏi bé có tất cả bao nhiêu cây bút màu?",
+        say: "Trong hộp có 6 cây bút sáp màu, mẹ mua thêm 4 cây nữa. Hỏi bé có tất cả mấy cây bút màu vậy?",
+        ans: 10,
+        formula: "6 + 4 = 10"
+      },
+      {
+        text: "Đàn gà nhà bà có 9 chú gà con 🐥, 3 chú gà chạy vào chuồng ngủ. Hỏi ngoài sân còn lại mấy chú gà con?",
+        say: "Đàn gà có 9 chú gà con, 3 chú chạy vào chuồng. Hỏi ngoài sân còn lại mấy chú gà con nè?",
+        ans: 6,
+        formula: "9 - 3 = 6"
+      },
+      {
+        text: "Trong bể cá có 7 con cá vàng 🐠, bố thả thêm vào 3 con cá nữa. Hỏi trong bể có tất cả bao nhiêu con cá?",
+        say: "Trong bể có 7 con cá vàng, bố thả thêm 3 con nữa. Hỏi có tất cả bao nhiêu con cá trong bể?",
+        ans: 10,
+        formula: "7 + 3 = 10"
+      },
+      {
+        text: "Trên sân trường có 8 bạn đang chơi nhảy dây, 4 bạn khác chạy đến chơi cùng. Hỏi có tất cả bao nhiêu bạn đang chơi?",
+        say: "Có 8 bạn đang chơi nhảy dây, 4 bạn nữa đến cùng chơi. Hỏi có tất cả bao nhiêu bạn đang chơi vậy bé?",
+        ans: 12,
+        formula: "8 + 4 = 12"
+      },
+      {
+        text: "Vườn rau nhà Mai có 15 cây bắp cải 🥬, mẹ hái 5 cây nấu canh. Hỏi trong vườn còn lại bao nhiêu cây bắp cải?",
+        say: "Vườn rau có 15 cây bắp cải, mẹ hái 5 cây nấu canh. Hỏi trong vườn còn lại mấy cây bắp cải nè?",
+        ans: 10,
+        formula: "15 - 5 = 10"
+      },
+      {
+        text: "Bé có 7 tờ giấy màu 🎨, cô giáo phát thêm cho bé 3 tờ giấy nữa. Hỏi bé có tất cả bao nhiêu tờ giấy màu?",
+        say: "Bé có 7 tờ giấy màu, cô phát thêm 3 tờ nữa. Hỏi bé có tất cả mấy tờ giấy màu vậy?",
+        ans: 10,
+        formula: "7 + 3 = 10"
+      },
+      {
+        text: "Lớp Một có 18 bạn học sinh, có 6 bạn nghỉ học vì bị bệnh. Hỏi hôm nay lớp Một có bao nhiêu bạn đi học?",
+        say: "Lớp Một có 18 bạn, có 6 bạn nghỉ bệnh. Hỏi hôm nay lớp có mấy bạn đi học nè?",
+        ans: 12,
+        formula: "18 - 6 = 12"
+      },
+      {
+        text: "Bé có 11 viên kẹo 🍬, bé chia cho các bạn trong tổ 4 viên kẹo. Hỏi bé còn lại bao nhiêu viên kẹo?",
+        say: "Bé có 11 viên kẹo, chia cho các bạn 4 viên. Hỏi bé còn lại mấy viên kẹo nè?",
+        ans: 7,
+        formula: "11 - 4 = 7"
+      },
+      {
+        text: "Mẹ mua 3 kg thịt heo 🥩 và 4 kg cá tươi 🐟. Hỏi mẹ mua tất cả bao nhiêu kg thực phẩm?",
+        say: "Mẹ mua 3 kg thịt heo và 4 kg cá tươi. Hỏi mẹ mua tất cả mấy ký thực phẩm vậy bé?",
+        ans: 7,
+        formula: "3 + 4 = 7"
       }
     ];
 

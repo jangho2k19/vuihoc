@@ -73,6 +73,21 @@ class ScienceApp {
           { q: 'Sau cơn mưa rào mùa hạ, hiện tượng lung linh 7 màu nào thường xuất hiện?', icon: '🌈', choices: ['Cầu vồng rực rỡ', 'Tuyết rơi trắng xóa', 'Mặt trăng tròn', 'Sấm chớp giật'], ans: 'Cầu vồng rực rỡ', exp: 'Cầu vồng 7 sắc lung linh thường xuất hiện sau cơn mưa rào!' }
         ]
       },
+      school_family: {
+        title: 'Trường Học & Gia Đình',
+        lessons: [
+          { name: 'Kể Về Gia Đình Em', icon: '👨‍👩‍👧', desc: 'Gia đình gồm ông bà, bố mẹ, anh chị em; mọi người luôn yêu thương, quan tâm và chăm sóc lẫn nhau!', tip: 'Bé nhớ lễ phép với ông bà cha mẹ và giúp đỡ việc nhà vừa sức nhé!' },
+          { name: 'Ngôi Nhà Thân Yêu', icon: '🏡', desc: 'Ngôi nhà là tổ ấm ấm cúng, có góc học tập xinh xắn, phòng ngủ, phòng khách và bếp ăn.', tip: 'Giữ nhà cửa luôn sạch sẽ, đồ dùng học tập để ngăn nắp đúng nơi quy định!' },
+          { name: 'Lớp Học Của Em', icon: '🏫', desc: 'Lớp Một thân yêu có thầy cô dạy bảo, các bạn bè cùng học tập và vui chơi đoàn kết.', tip: 'Tích cực giơ tay phát biểu, giữ trật tự và chăm chỉ nghe giảng nhé!' },
+          { name: 'Vui Chơi An Toàn Ở Trường', icon: '🤝', desc: 'Giờ ra chơi cùng nhau đọc sách báo, chơi nhảy dây, rồng rắn lên mây thật vui.', tip: 'Không leo trèo lan can, không chạy xô đẩy nhau ở cầu thang!' }
+        ],
+        quizQuestions: [
+          { q: 'Trong gia đình, khi nhận quà hay đồ vật từ người lớn, bé nên làm gì?', icon: '🎁', choices: ['Nhận bằng hai tay và nói lời cảm ơn', 'Cầm lấy một tay rồi chạy đi', 'Không nói gì', 'Lắc đầu hờn dỗi'], ans: 'Nhận bằng hai tay và nói lời cảm ơn', exp: 'Nhận bằng hai tay và cảm ơn thể hiện sự ngoan ngoãn, lễ phép của bé!' },
+          { q: 'Để góc học tập luôn gọn gàng, sau khi học xong bé cần làm gì?', icon: '📚', choices: ['Xếp sách vở, đồ dùng vào ngăn nắp', 'Vứt sách vở bừa bãi ra sàn', 'Bỏ mặc cho mẹ dọn', 'Để bút chì lăn lóc'], ans: 'Xếp sách vở, đồ dùng vào ngăn nắp', exp: 'Cất sách vở ngăn nắp giúp đồ dùng bền đẹp và dễ tìm khi học!' },
+          { q: 'Hành động nào an toàn và đúng đắn nhất trong giờ ra chơi ở trường?', icon: '🤸', choices: ['Cùng các bạn chơi nhảy dây, đọc sách dưới bóng cây', 'Trèo lên lan can tầng hai', 'Đuổi bắt xô đẩy bạn ngã', 'Ném đất cát vào bạn'], ans: 'Cùng các bạn chơi nhảy dây, đọc sách dưới bóng cây', exp: 'Vui chơi nhẹ nhàng, lành mạnh giúp bé thư giãn và an toàn tuyệt đối!' },
+          { q: 'Khi gặp thầy cô giáo và người lớn tuổi trong trường, bé nên làm gì?', icon: '🙇', choices: ['Đứng ngay ngắn, khoanh tay chào lễ phép', 'Chạy lướt qua làm ngơ', 'Quay mặt đi chỗ khác', 'Nói to trêu chọc'], ans: 'Đứng ngay ngắn, khoanh tay chào lễ phép', exp: 'Chào hỏi lễ phép là nét đẹp của học sinh lớp Một chăm ngoan!' }
+        ]
+      },
       safety: {
         title: 'An Toàn Quanh Bé',
         lessons: [
@@ -84,6 +99,21 @@ class ScienceApp {
           { q: 'Khi gặp tín hiệu đèn giao thông màu ĐỎ, người đi đường phải làm gì?', icon: '🔴', choices: ['Dừng lại ngay ngắn', 'Phóng thật nhanh qua', 'Đi tiếp không cần nhìn', 'Bấm còi to'], ans: 'Dừng lại ngay ngắn', exp: 'Đèn đỏ dừng lại để đảm bảo an toàn cho mọi người!' },
           { q: 'Khi được bố mẹ chở đi bằng xe máy, bé bắt buộc phải làm gì?', icon: '🪖', choices: ['Đội mũ bảo hiểm đúng cách', 'Đứng nhún nhảy trên xe', 'Buông hai tay ra', 'Cúi đầu nhìn xuống đất'], ans: 'Đội mũ bảo hiểm đúng cách', exp: 'Đội mũ bảo hiểm bảo vệ an toàn cho bé trên mọi nẻo đường!' },
           { q: 'Đồ vật nào trong nhà rất nguy hiểm mà bé tuyệt đối không được nghịch?', icon: '⚡', choices: ['Ổ cắm điện và phích nước sôi', 'Gấu bông mềm mại', 'Sách vở học tập', 'Cây bút chì sáp'], ans: 'Ổ cắm điện và phích nước sôi', exp: 'Ổ điện và nước sôi rất nguy hiểm, bé tuyệt đối không chạm vào nha!' }
+        ]
+      },
+      ethics: {
+        title: 'Đạo Đức & Kỹ Năng Sống',
+        lessons: [
+          { name: 'Biết Ơn và Lễ Phép', icon: '🙏', desc: 'Bé biết nói cảm ơn khi được giúp đỡ, biết xin lỗi khi làm sai và chào hỏi người lớn lễ phép.', tip: 'Mỗi ngày nói "cảm ơn" và "xin lỗi" là bé đã thể hiện tấm lòng tốt đẹp rồi nha!' },
+          { name: 'Chia Sẻ và Giúp Đỡ', icon: '🤝', desc: 'Bé biết chia đồ ăn, đồ chơi với bạn bè và người thân, sẵn lòng giúp đỡ khi bạn gặp khó khăn.', tip: 'Chia sẻ với bạn giúp bé có thêm nhiều bạn thân và cảm thấy thật vui vẻ!' },
+          { name: 'Trung Thực Thật Thà', icon: '💎', desc: 'Bé luôn nói thật, không nói dối bố mẹ và thầy cô, không lấy đồ vật của người khác khi chưa được phép.', tip: 'Người trung thực luôn được mọi người tin yêu và quý mến!' },
+          { name: 'Kính Trên Nhường Dưới', icon: '👴', desc: 'Bé nhường chỗ ngồi cho ông bà và người lớn tuổi, nhường đồ chơi cho em nhỏ và không tranh giành.', tip: 'Nhường nhịn thể hiện bé có trái tim nhân hậu và được thầy cô, bố mẹ khen ngợi!' }
+        ],
+        quizQuestions: [
+          { q: 'Khi bạn cho bé mượn bút màu để tô tranh, bé nên nói gì với bạn?', icon: '🖍️', choices: ['Cảm ơn bạn đã cho mình mượn nhé!', 'Lấy bút rồi bỏ đi không nói gì', 'Nói "bạn cho mình mãi mãi đi"', 'Im lặng và tiếp tục tô'], ans: 'Cảm ơn bạn đã cho mình mượn nhé!', exp: 'Nói lời cảm ơn thể hiện bé biết lễ phép và trân trọng lòng tốt của bạn!' },
+          { q: 'Bé vô tình làm vỡ lọ hoa của bà. Bé nên làm gì?', icon: '🌸', choices: ['Thành thật nhận lỗi với bà và nói xin lỗi', 'Im lặng và giả vờ không biết', 'Đổ lỗi cho em trai', 'Chạy trốn sang phòng khác'], ans: 'Thành thật nhận lỗi với bà và nói xin lỗi', exp: 'Trung thực và biết xin lỗi là đức tính quý giá nhất của người ngoan!' },
+          { q: 'Khi trên xe buýt chỉ còn một chỗ ngồi, bé nên làm gì với bà cụ đứng cạnh?', icon: '🚌', choices: ['Nhường ghế cho bà và đứng một lúc', 'Ngồi yên và giả vờ không thấy', 'Nói "con ngồi trước bà ngồi sau"', 'Bảo bà đứng xa ra'], ans: 'Nhường ghế cho bà và đứng một lúc', exp: 'Nhường ghế cho người lớn tuổi là cử chỉ đẹp mà thầy cô và bố mẹ rất tự hào!' },
+          { q: 'Bé nhìn thấy bạn đánh rơi một cái bút và không biết. Bé nên làm gì?', icon: '✏️', choices: ['Nhặt lên và trả lại cho bạn ngay', 'Nhặt lên và cất vào túi mình', 'Bỏ qua và đi tiếp', 'Nhặt lên và vứt đi'], ans: 'Nhặt lên và trả lại cho bạn ngay', exp: 'Trả lại đồ của bạn thể hiện bé thật thà và có tấm lòng tốt bụng!' }
         ]
       }
     };

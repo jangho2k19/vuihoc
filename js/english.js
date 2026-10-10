@@ -91,10 +91,40 @@ class EnglishApp {
         { word: 'Pen', ipa: '/pen/', vn: 'Cây bút mực', icon: '🖊️', sample: 'Write with a pen' },
         { word: 'Pencil', ipa: '/ˈpen.səl/', vn: 'Cây bút chì', icon: '✏️', sample: 'Draw with a pencil' },
         { word: 'Ruler', ipa: '/ˈruː.lər/', vn: 'Thước kẻ', icon: '📏', sample: 'Measure with a ruler' },
-        { word: 'Eraser', ipa: '/ɪˈreɪ.zər/', vn: 'Cục tẩy', icon: '🧹', sample: 'Erase mistakes' },
+        { word: 'Eraser', ipa: '/ɪˈreɪ.zər/', vn: 'Cục tẩy', icon: '🧽', sample: 'Erase mistakes' },
         { word: 'School Bag', ipa: '/ˈskuːl bæɡ/', vn: 'Cặp sách', icon: '🎒', sample: 'My red school bag' },
         { word: 'Desk', ipa: '/desk/', vn: 'Bàn học', icon: '🪑', sample: 'Sit at my desk' },
         { word: 'Crayon', ipa: '/ˈkreɪ.ɒn/', vn: 'Bút màu sáp', icon: '🖍️', sample: 'Coloring with crayons' }
+      ],
+      body: [
+        { word: 'Face', ipa: '/feɪs/', vn: 'Khuôn mặt', icon: '👦', sample: 'Wash your face' },
+        { word: 'Hand', ipa: '/hænd/', vn: 'Bàn tay', icon: '✋', sample: 'Clap your hands' },
+        { word: 'Foot', ipa: '/fʊt/', vn: 'Bàn chân', icon: '🦶', sample: 'Tap your foot' },
+        { word: 'Hair', ipa: '/heər/', vn: 'Mái tóc', icon: '💇', sample: 'Touch your hair' },
+        { word: 'Head', ipa: '/hed/', vn: 'Cái đầu', icon: '🗣️', sample: 'Nod your head' },
+        { word: 'Eye', ipa: '/aɪ/', vn: 'Đôi mắt', icon: '👁️', sample: 'Open your eyes' },
+        { word: 'Ear', ipa: '/ɪər/', vn: 'Cái tai', icon: '👂', sample: 'Listen with your ears' },
+        { word: 'Nose', ipa: '/nəʊz/', vn: 'Chiếc mũi', icon: '👃', sample: 'Smell with your nose' }
+      ],
+      food: [
+        { word: 'Cake', ipa: '/keɪk/', vn: 'Bánh ngọt', icon: '🍰', sample: 'A yummy cake' },
+        { word: 'Milk', ipa: '/mɪlk/', vn: 'Sữa tươi', icon: '🥛', sample: 'I like milk' },
+        { word: 'Chicken', ipa: '/ˈtʃɪk.ɪn/', vn: 'Thịt gà', icon: '🍗', sample: 'Crispy chicken' },
+        { word: 'Fish', ipa: '/fɪʃ/', vn: 'Món cá', icon: '🐟', sample: 'Fresh fish' },
+        { word: 'Apple', ipa: '/ˈæp.əl/', vn: 'Quả táo', icon: '🍎', sample: 'A red apple' },
+        { word: 'Banana', ipa: '/bəˈnɑː.nə/', vn: 'Quả chuối', icon: '🍌', sample: 'Sweet banana' },
+        { word: 'Noodles', ipa: '/ˈnuː.dəlz/', vn: 'Mì / Phở', icon: '🍜', sample: 'Having noodles' },
+        { word: 'Water', ipa: '/ˈwɔː.tər/', vn: 'Nước uống', icon: '💧', sample: 'Drink water' }
+      ],
+      toys: [
+        { word: 'Teddy bear', ipa: '/ˈted.i ˌbeər/', vn: 'Gấu bông', icon: '🧸', sample: 'A cute teddy bear' },
+        { word: 'Car', ipa: '/kɑːr/', vn: 'Xe ô tô', icon: '🚗', sample: 'I have a car' },
+        { word: 'Ball', ipa: '/bɔːl/', vn: 'Quả bóng', icon: '⚽', sample: 'Kick the ball' },
+        { word: 'Kite', ipa: '/kaɪt/', vn: 'Con diều', icon: '🪁', sample: 'Fly a kite' },
+        { word: 'Top', ipa: '/tɒp/', vn: 'Con quay', icon: '🪀', sample: 'Spin a top' },
+        { word: 'Robot', ipa: '/ˈrəʊ.bɒt/', vn: 'Người máy', icon: '🤖', sample: 'A cool robot' },
+        { word: 'Bike', ipa: '/baɪk/', vn: 'Xe đạp', icon: '🚲', sample: 'Ride a bike' },
+        { word: 'Boat', ipa: '/bəʊt/', vn: 'Thuyền buồm', icon: '⛵', sample: 'A toy boat' }
       ]
     };
 

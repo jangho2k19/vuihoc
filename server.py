@@ -158,8 +158,8 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
                         comm = edge_tts.Communicate(text, edge_voice, rate=rate)
                         await comm.save(cache_file)
                     
-                    # 1.6s timeout: if Edge TTS is fast, use it. Otherwise fallback to Google immediately
-                    asyncio.run(asyncio.wait_for(fetch_edge(), timeout=1.6))
+                    # 1.0s timeout: if Edge TTS is fast, use it. Otherwise fallback to Google immediately
+                    asyncio.run(asyncio.wait_for(fetch_edge(), timeout=1.0))
                     if os.path.exists(cache_file) and os.path.getsize(cache_file) > 0:
                         with open(cache_file, "rb") as f:
                             content = f.read()

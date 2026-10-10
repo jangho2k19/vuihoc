@@ -381,7 +381,7 @@ class RewardManager {
             resultEl.innerHTML = `🎉 <strong>CHÚC MỪNG BÉ!</strong> Bé trúng: <span style="color:#d97706; font-size:1.3rem;">${wonSlice.text}</span>!`;
           }
 
-          window.soundSys.speak(`Chúc mừng bé cưng! Bé quay trúng ${wonSlice.text} rồi nè!`);
+          window.soundSys.speak(`Chúc mừng bé yêu! Bé quay trúng ${wonSlice.text} rồi nhé!`);
         }, 300);
       }
     };

@@ -29,7 +29,7 @@ ALPHABET = [
     ('G', 'Ghế Gỗ'), ('H', 'Bông Hoa'), ('I', 'Viên Bi'),
     ('K', 'Cây Kem'), ('L', 'Chiếc Lá'), ('M', 'Con Mèo'),
     ('N', 'Nụ Hoa'), ('O', 'Con Ong'), ('Ô', 'Cái Ô'),
-    ('Ơ', 'Lá Cờ'), ('P', 'Cây Bút'), ('Q', 'Quả Quýt'),
+    ('Ơ', 'Lá Cờ'), ('P', 'Đèn Pin'), ('Q', 'Quả Quýt'),
     ('R', 'Con Rùa'), ('S', 'Ngôi Sao'), ('T', 'Con Tôm'),
     ('U', 'Búp Bê'), ('Ư', 'Con Hươu'), ('V', 'Con Vịt'),
     ('X', 'Xe Đạp'), ('Y', 'Chim Yến')

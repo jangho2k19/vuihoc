@@ -26,7 +26,7 @@ class VietnameseApp {
       { upper: 'O', lower: 'o', word: 'Con Ong', icon: '🐝', sentence: 'Chữ O trong Con Ong' },
       { upper: 'Ô', lower: 'ô', word: 'Cái Ô', icon: '☂️', sentence: 'Chữ Ô trong Cái Ô' },
       { upper: 'Ơ', lower: 'ơ', word: 'Lá Cờ', icon: '🚩', sentence: 'Chữ Ơ trong Lá Cờ' },
-      { upper: 'P', lower: 'p', word: 'Tô Phở', icon: '✏️', sentence: 'Chữ Pờ trong Tô Phở' },
+      { upper: 'P', lower: 'p', word: 'Đèn Pin', icon: '🔦', sentence: 'Chữ Pờ trong Đèn Pin' },
       { upper: 'Q', lower: 'q', word: 'Quả Quýt', icon: '🍊', sentence: 'Chữ Quy trong Quả Quýt' },
       { upper: 'R', lower: 'r', word: 'Con Rùa', icon: '🐢', sentence: 'Chữ Rờ trong Con Rùa' },
       { upper: 'S', lower: 's', word: 'Ngôi Sao', icon: '⭐', sentence: 'Chữ Sờ trong Ngôi Sao' },
@@ -239,7 +239,12 @@ class VietnameseApp {
       { word: 'GÀ', icon: '🐔', tone: 'Dấu huyền (\\)', say: 'Tiếng Gà có dấu huyền' },
       { word: 'HỔ', icon: '🐯', tone: 'Dấu hỏi (?)', say: 'Tiếng Hổ có dấu hỏi' },
       { word: 'MẸ', icon: '👩‍👧', tone: 'Dấu nặng (.)', say: 'Tiếng Mẹ có dấu nặng' },
-      { word: 'MŨ', icon: '🧢', tone: 'Dấu ngã (~)', say: 'Tiếng Mũ có dấu ngã' }
+      { word: 'MŨ', icon: '🧢', tone: 'Dấu ngã (~)', say: 'Tiếng Mũ có dấu ngã' },
+      { word: 'BÉ', icon: '👶', tone: 'Dấu sắc (/)', say: 'Tiếng Bé có dấu sắc' },
+      { word: 'CỜ', icon: '🚩', tone: 'Dấu huyền (\\)', say: 'Tiếng Cờ có dấu huyền' },
+      { word: 'CỎ', icon: '🌱', tone: 'Dấu hỏi (?)', say: 'Tiếng Cỏ có dấu hỏi' },
+      { word: 'GỖ', icon: '🪵', tone: 'Dấu ngã (~)', say: 'Tiếng Gỗ có dấu ngã' },
+      { word: 'VỊT', icon: '🦆', tone: 'Dấu nặng (.)', say: 'Tiếng Vịt có dấu nặng' }
     ];
 
     const q = tonesList[Math.floor(Math.random() * tonesList.length)];
@@ -317,6 +322,33 @@ class VietnameseApp {
         hint: "Đứng trước chữ 'a' thì bé điền 'c' hay 'k' nè?"
       },
       {
+        rule: "k đứng trước e, ê, i; c đứng trước a, o, ô, u...",
+        word: "Cái _ính",
+        ans: "k",
+        full: "Cái kính",
+        icon: "🥽",
+        options: ["c", "k"],
+        hint: "Đứng trước chữ 'i' thì bé điền 'c' hay 'k' nè?"
+      },
+      {
+        rule: "k đứng trước e, ê, i; c đứng trước a, o, ô, u...",
+        word: "Con _iến",
+        ans: "k",
+        full: "Con kiến",
+        icon: "🐜",
+        options: ["c", "k"],
+        hint: "Đứng trước chữ 'i' thì bé điền 'c' hay 'k' nè?"
+      },
+      {
+        rule: "k đứng trước e, ê, i; c đứng trước a, o, ô, u...",
+        word: "Quả _am",
+        ans: "c",
+        full: "Quả cam",
+        icon: "🍊",
+        options: ["c", "k"],
+        hint: "Đứng trước chữ 'a' thì bé điền 'c' hay 'k' nè?"
+      },
+      {
         rule: "gh đứng trước e, ê, i; g đứng trước a, o, ô, u...",
         word: "Cái _ế",
         ans: "gh",
@@ -335,6 +367,24 @@ class VietnameseApp {
         hint: "Đứng trước chữ 'a' thì bé điền 'g' hay 'gh' nè?"
       },
       {
+        rule: "gh đứng trước e, ê, i; g đứng trước a, o, ô, u...",
+        word: "_i bài",
+        ans: "gh",
+        full: "Ghi bài",
+        icon: "📝",
+        options: ["g", "gh"],
+        hint: "Đứng trước chữ 'i' thì bé điền 'g' hay 'gh' nè?"
+      },
+      {
+        rule: "gh đứng trước e, ê, i; g đứng trước a, o, ô, u...",
+        word: "Con _ẹ",
+        ans: "gh",
+        full: "Con ghẹ",
+        icon: "🦀",
+        options: ["g", "gh"],
+        hint: "Đứng trước chữ 'e' thì bé điền 'g' hay 'gh' nè?"
+      },
+      {
         rule: "ngh đứng trước e, ê, i; ng đứng trước a, o, ô, u...",
         word: "Củ _ệ",
         ans: "ngh",
@@ -349,6 +399,24 @@ class VietnameseApp {
         ans: "ng",
         full: "Con ngựa",
         icon: "🐴",
+        options: ["ng", "ngh"],
+        hint: "Đứng trước chữ 'ư' thì bé điền 'ng' hay 'ngh' nè?"
+      },
+      {
+        rule: "ngh đứng trước e, ê, i; ng đứng trước a, o, ô, u...",
+        word: "Con _é",
+        ans: "ngh",
+        full: "Con nghé",
+        icon: "🐃",
+        options: ["ng", "ngh"],
+        hint: "Đứng trước chữ 'e' thì bé điền 'ng' hay 'ngh' nè?"
+      },
+      {
+        rule: "ngh đứng trước e, ê, i; ng đứng trước a, o, ô, u...",
+        word: "Cá _ừ",
+        ans: "ng",
+        full: "Cá ngừ",
+        icon: "🐟",
         options: ["ng", "ngh"],
         hint: "Đứng trước chữ 'ư' thì bé điền 'ng' hay 'ngh' nè?"
       }
@@ -414,7 +482,14 @@ class VietnameseApp {
       { full: 'Cây khế', missing: '_ _ ế', ans: 'kh', icon: '⭐', choices: ['kh', 'th', 'ph', 'gh'], say: 'Cây khế có âm khờ' },
       { full: 'Ngôi nhà', missing: '_ _ à', ans: 'nh', icon: '🏠', choices: ['nh', 'ng', 'ch', 'th'], say: 'Ngôi nhà có âm nhờ' },
       { full: 'Phố cổ', missing: '_ _ ố', ans: 'ph', icon: '🏮', choices: ['ph', 'th', 'qu', 'kh'], say: 'Phố cổ có âm phờ' },
-      { full: 'Quả quýt', missing: '_ _ ýt', ans: 'qu', icon: '🍊', choices: ['qu', 'cu', 'kh', 'ph'], say: 'Quả quýt có âm quờ' }
+      { full: 'Quả quýt', missing: '_ _ ýt', ans: 'qu', icon: '🍊', choices: ['qu', 'cu', 'kh', 'ph'], say: 'Quả quýt có âm quờ' },
+      { full: 'Cây tre', missing: '_ _ e', ans: 'tr', icon: '🎋', choices: ['tr', 'ch', 'th', 'nh'], say: 'Cây tre có âm trờ' },
+      { full: 'Giỏ hoa', missing: '_ _ ỏ', ans: 'gi', icon: '🧺', choices: ['gi', 'd', 'r', 'g'], say: 'Giỏ hoa có âm gi' },
+      { full: 'Ghế gỗ', missing: '_ _ ế', ans: 'gh', icon: '🪑', choices: ['gh', 'g', 'kh', 'ngh'], say: 'Ghế gỗ có âm ghê' },
+      { full: 'Con ngựa', missing: '_ _ ựa', ans: 'ng', icon: '🐴', choices: ['ng', 'ngh', 'nh', 'm'], say: 'Con ngựa có âm ngờ' },
+      { full: 'Củ nghệ', missing: '_ _ ệ', ans: 'ngh', icon: '🍠', choices: ['ngh', 'ng', 'gh', 'nh'], say: 'Củ nghệ có âm nghê' },
+      { full: 'Con trâu', missing: '_ _ âu', ans: 'tr', icon: '🐃', choices: ['tr', 'ch', 'th', 'ph'], say: 'Con trâu có âm trờ' },
+      { full: 'Khỉ con', missing: '_ _ ỉ', ans: 'kh', icon: '🐵', choices: ['kh', 'th', 'ph', 'ch'], say: 'Khỉ con có âm khờ' }
     ];
 
     const q = list[Math.floor(Math.random() * list.length)];
@@ -540,7 +615,15 @@ class VietnameseApp {
       { full: 'BÓNG', missing: '_ Ó N G', answer: 'B', icon: '⚽', choices: ['B', 'P', 'V', 'T'], say: 'Quả bóng' },
       { full: 'MÈO', missing: '_ È O', answer: 'M', icon: '🐱', choices: ['M', 'N', 'D', 'K'], say: 'Con mèo' },
       { full: 'RÙA', missing: '_ Ù A', answer: 'R', icon: '🐢', choices: ['R', 'S', 'G', 'C'], say: 'Con rùa' },
-      { full: 'HOA', missing: 'H _ A', answer: 'O', icon: '🌸', choices: ['O', 'U', 'A', 'E'], say: 'Bông hoa' }
+      { full: 'HOA', missing: 'H _ A', answer: 'O', icon: '🌸', choices: ['O', 'U', 'A', 'E'], say: 'Bông hoa' },
+      { full: 'NẤM', missing: 'N _ M', answer: 'Â', icon: '🍄', choices: ['Â', 'A', 'Ă', 'Ơ'], say: 'Cây nấm' },
+      { full: 'BÚP BÊ', missing: 'B _ P B Ê', answer: 'Ú', icon: '🪆', choices: ['Ú', 'Ó', 'Á', 'É'], say: 'Búp bê' },
+      { full: 'LÁ CỜ', missing: 'L Á C _', answer: 'Ờ', icon: '🚩', choices: ['Ờ', 'À', 'Ò', 'Ơ'], say: 'Lá cờ' },
+      { full: 'CON VỊT', missing: 'V _ T', answer: 'Ị', icon: '🦆', choices: ['Ị', 'Ạ', 'Ẹ', 'Ọ'], say: 'Con vịt' },
+      { full: 'CÂY KEM', missing: 'K _ M', answer: 'E', icon: '🍦', choices: ['E', 'Ê', 'A', 'O'], say: 'Cây kem' },
+      { full: 'XE ĐẠP', missing: '_ E ĐẠP', answer: 'X', icon: '🚲', choices: ['X', 'S', 'C', 'K'], say: 'Xe đạp' },
+      { full: 'ĐỒNG HỒ', missing: '_ Ồ N G H Ồ', answer: 'Đ', icon: '⏰', choices: ['Đ', 'D', 'B', 'T'], say: 'Đồng hồ' },
+      { full: 'MẶT TRĂNG', missing: 'M _ T T R Ă N G', answer: 'Ặ', icon: '🌙', choices: ['Ặ', 'Ậ', 'Ạ', 'Ă'], say: 'Mặt trăng' }
     ];
 
     const q = rhymeWords[Math.floor(Math.random() * rhymeWords.length)];
@@ -623,6 +706,56 @@ class VietnameseApp {
         correct: "Mặt trời mọc buổi sáng.",
         shuffled: ["buổi sáng.", "mọc", "Mặt trời"],
         say: "Mặt trời mọc buổi sáng"
+      },
+      {
+        correct: "Bé yêu trường lớp của bé.",
+        shuffled: ["của bé.", "trường lớp", "Bé yêu"],
+        say: "Bé yêu trường lớp của bé"
+      },
+      {
+        correct: "Hoa sen nở thơm ngát dưới hồ.",
+        shuffled: ["dưới hồ.", "thơm ngát", "Hoa sen", "nở"],
+        say: "Hoa sen nở thơm ngát dưới hồ"
+      },
+      {
+        correct: "Cô giáo dạy bé tập đọc chữ.",
+        shuffled: ["tập đọc chữ.", "dạy bé", "Cô giáo"],
+        say: "Cô giáo dạy bé tập đọc chữ"
+      },
+      {
+        correct: "Chim hót líu lo trên cành.",
+        shuffled: ["trên cành.", "líu lo", "Chim hót"],
+        say: "Chim hót líu lo trên cành"
+      },
+      {
+        correct: "Bé giữ gìn sách vở cẩn thận.",
+        shuffled: ["cẩn thận.", "sách vở", "Bé giữ gìn"],
+        say: "Bé giữ gìn sách vở cẩn thận"
+      },
+      {
+        correct: "Bé chào thầy cô lễ phép.",
+        shuffled: ["lễ phép.", "Bé chào", "thầy cô"],
+        say: "Bé chào thầy cô lễ phép"
+      },
+      {
+        correct: "Ông bà yêu thương các cháu.",
+        shuffled: ["các cháu.", "Ông bà", "yêu thương"],
+        say: "Ông bà yêu thương các cháu"
+      },
+      {
+        correct: "Bé tự đánh răng buổi sáng.",
+        shuffled: ["buổi sáng.", "tự đánh răng", "Bé"],
+        say: "Bé tự đánh răng buổi sáng"
+      },
+      {
+        correct: "Con vịt lội trong hồ nước.",
+        shuffled: ["trong hồ nước.", "lội", "Con vịt"],
+        say: "Con vịt lội trong hồ nước"
+      },
+      {
+        correct: "Trẻ em được vui chơi học hành.",
+        shuffled: ["vui chơi học hành.", "Trẻ em", "được"],
+        say: "Trẻ em được vui chơi học hành"
       }
     ];
 

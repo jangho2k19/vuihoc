@@ -19,6 +19,12 @@ class MusicApp {
 
     this.songs = [
       {
+        id: 'doremi',
+        title: '🎵 Bậc Thang Đô - Rê - Mi (SGK Lớp 1)',
+        notes: ['C4', 'D4', 'E4', 'C4', 'D4', 'E4', 'E4', 'D4', 'C4'],
+        lyrics: ['Đồ', 'Rê', 'Mi,', 'Đồ', 'Rê', 'Mi,', 'Mi', 'Rê', 'Đồ.']
+      },
+      {
         id: 'butterfly',
         title: '🦋 Kìa Con Bướm Vàng',
         notes: ['C4', 'D4', 'E4', 'C4', 'C4', 'D4', 'E4', 'C4', 'E4', 'F4', 'G4', 'E4', 'F4', 'G4'],
@@ -41,6 +47,24 @@ class MusicApp {
         title: '🐸 Chú Ếch Con',
         notes: ['C4', 'D4', 'E4', 'G4', 'E4', 'D4', 'C4', 'C4', 'D4', 'E4', 'G4', 'A4', 'G4', 'E4'],
         lyrics: ['Kìa', 'chú', 'là', 'chú', 'ếch', 'con,', 'có', 'hai', 'là', 'hai', 'mắt', 'tròn', 'xoe...']
+      },
+      {
+        id: 'homeland',
+        title: '🌾 Quê Hương Tươi Đẹp (SGK Lớp 1)',
+        notes: ['E4', 'G4', 'A4', 'G4', 'E4', 'D4', 'C4', 'D4', 'E4', 'G4', 'E4', 'D4', 'C4'],
+        lyrics: ['Quê', 'hương', 'tươi', 'đẹp,', 'quê', 'hương', 'em,', 'nơi', 'em', 'lớn', 'lên', 'thân', 'yêu...']
+      },
+      {
+        id: 'dove',
+        title: '🕊️ Em Như Chim Câu Trắng',
+        notes: ['C4', 'E4', 'G4', 'E4', 'C4', 'D4', 'E4', 'G4', 'G4', 'A4', 'G4', 'E4', 'C4'],
+        lyrics: ['Em', 'như', 'chim', 'câu', 'trắng,', 'bay', 'vào', 'bầu', 'trời', 'xanh', 'bao', 'la,', 'vui!']
+      },
+      {
+        id: 'bonghua',
+        title: '🌸 Lý Cây Xanh (Dân Ca Nam Bộ)',
+        notes: ['G4', 'A4', 'G4', 'E4', 'G4', 'A4', 'C5', 'A4', 'G4', 'E4', 'D4', 'E4', 'G4'],
+        lyrics: ['Cây', 'xanh', 'thì', 'lá', 'cũng', 'xanh,', 'mấy', 'cây', 'chín', 'ở', 'trên', 'cành', 'vàng...']
       }
     ];
 

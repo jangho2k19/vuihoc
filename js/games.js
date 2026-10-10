@@ -93,7 +93,7 @@ class BalloonGame {
     if (this.mode === 'numbers') {
       this.target = String(Math.floor(Math.random() * 10) + 1); // 1-10
     } else {
-      const letters = ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V'];
+      const letters = ['A', 'Ă', 'Â', 'B', 'C', 'D', 'Đ', 'E', 'Ê', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'Ô', 'Ơ', 'P', 'Q', 'R', 'S', 'T', 'U', 'Ư', 'V', 'X', 'Y'];
       this.target = letters[Math.floor(Math.random() * letters.length)];
     }
     this.targetSymbolEl.textContent = this.target;
@@ -115,7 +115,7 @@ class BalloonGame {
       if (this.mode === 'numbers') {
         symbol = String(Math.floor(Math.random() * 10) + 1);
       } else {
-        const letters = ['A', 'B', 'C', 'D', 'E', 'G', 'H', 'I', 'M', 'N', 'O', 'P', 'R', 'S', 'T', 'U', 'V'];
+        const letters = ['A', 'Ă', 'Â', 'B', 'C', 'D', 'Đ', 'E', 'Ê', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'O', 'Ô', 'Ơ', 'P', 'Q', 'R', 'S', 'T', 'U', 'Ư', 'V', 'X', 'Y'];
         symbol = letters[Math.floor(Math.random() * letters.length)];
       }
     }

@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=2.2">
 </head>
 <body>
   <!-- Floating background decorations -->
@@ -64,13 +64,13 @@
           <button class="speed-pill-btn" data-speed="fast" title="Đọc nhanh">Nhanh</button>
         </div>
 
-        <!-- Southern Voice Selector & Test Button -->
+        <!-- Voice Selector & Test Button -->
         <div class="voice-picker-box">
-          <button id="btnVoiceTest" class="pill-btn voice-btn active" title="Nghe thử giọng cô giáo mẫu">
+          <button id="btnVoiceTest" class="pill-btn voice-btn active" title="Bấm để chọn giọng đọc và nghe thử">
             <span class="btn-icon">👩‍🏫</span>
-            <span class="btn-text" id="voiceStatusText">Giọng: Nữ miền Nam</span>
+            <span class="btn-text" id="voiceStatusText">Giọng: Cô Hoài My</span>
           </button>
-          <select id="voiceSelect" class="voice-select" title="Đổi giọng đọc"></select>
+          <select id="voiceSelect" class="voice-select" title="Đổi nhanh giọng đọc"></select>
         </div>
 
         <!-- Lucky Wheel Header Button -->
@@ -888,6 +888,93 @@
     </div>
   </div>
 
+  <!-- 4. Voice Studio Selection Modal -->
+  <div class="app-modal" id="voiceStudioModal" role="dialog" aria-modal="true" aria-labelledby="voiceStudioModalTitle">
+    <div class="modal-card voice-modal-card">
+      <div class="modal-header">
+        <h3 id="voiceStudioModalTitle">🎙️ Phòng Chọn Giọng Đọc & Âm Thanh</h3>
+        <button class="modal-close-btn" id="btnCloseVoiceModal" aria-label="Đóng">✕</button>
+      </div>
+      <div class="modal-body voice-modal-body">
+        <p class="modal-subtitle">Bé và phụ huynh có thể chọn giọng nói truyền cảm yêu thích nhất, phát âm chuẩn rõ ràng và không độ trễ:</p>
+
+        <div class="voice-studio-grid">
+          <!-- Voice 1: Hoài My -->
+          <div class="voice-studio-card selected" data-voice-id="vi-VN-HoaiMyNeural" onclick="window.soundSys.setVoice('vi-VN-HoaiMyNeural')">
+            <div class="voice-card-top">
+              <div class="voice-avatar">👩‍🏫</div>
+              <div class="voice-info">
+                <h4>Cô giáo Hoài My</h4>
+                <div class="voice-region">🌸 Nữ miền Nam • Dịu dàng, truyền cảm</div>
+              </div>
+              <span class="voice-badge-tag neural">🌟 Neural AI</span>
+            </div>
+            <p class="voice-desc">Giọng cô giáo miền Nam ngọt ngào, ấm áp như mẹ kể chuyện, đọc chậm rãi cho bé lớp 1 dễ nghe.</p>
+            <div class="voice-actions">
+              <button class="btn-voice-preview" data-voice-id="vi-VN-HoaiMyNeural" onclick="event.stopPropagation(); window.soundSys.previewVoice('vi-VN-HoaiMyNeural');">▶️ Nghe Thử</button>
+              <button class="btn-select-voice active" data-voice-id="vi-VN-HoaiMyNeural" onclick="event.stopPropagation(); window.soundSys.setVoice('vi-VN-HoaiMyNeural'); window.soundSys.previewVoice('vi-VN-HoaiMyNeural');">✓ Đang Dùng</button>
+            </div>
+          </div>
+
+          <!-- Voice 2: Nam Minh -->
+          <div class="voice-studio-card" data-voice-id="vi-VN-NamMinhNeural" onclick="window.soundSys.setVoice('vi-VN-NamMinhNeural')">
+            <div class="voice-card-top">
+              <div class="voice-avatar">👨‍🏫</div>
+              <div class="voice-info">
+                <h4>Thầy giáo Nam Minh</h4>
+                <div class="voice-region">🌟 Nam miền Bắc • Chuẩn phổ thông, rõ ràng</div>
+              </div>
+              <span class="voice-badge-tag neural">🌟 Neural AI</span>
+            </div>
+            <p class="voice-desc">Giọng thầy giáo miền Bắc phát âm chuẩn từng phụ âm, nguyên âm, rất phù hợp khi luyện bảng chữ cái.</p>
+            <div class="voice-actions">
+              <button class="btn-voice-preview" data-voice-id="vi-VN-NamMinhNeural" onclick="event.stopPropagation(); window.soundSys.previewVoice('vi-VN-NamMinhNeural');">▶️ Nghe Thử</button>
+              <button class="btn-select-voice" data-voice-id="vi-VN-NamMinhNeural" onclick="event.stopPropagation(); window.soundSys.setVoice('vi-VN-NamMinhNeural'); window.soundSys.previewVoice('vi-VN-NamMinhNeural');">Chọn Giọng Này</button>
+            </div>
+          </div>
+
+          <!-- Voice 3: Google Fast -->
+          <div class="voice-studio-card" data-voice-id="google-fast" onclick="window.soundSys.setVoice('google-fast')">
+            <div class="voice-card-top">
+              <div class="voice-avatar">⚡</div>
+              <div class="voice-info">
+                <h4>Google Tiếng Việt Siêu Tốc</h4>
+                <div class="voice-region">🚀 Phản hồi ngay 0.1s • Không độ trễ</div>
+              </div>
+              <span class="voice-badge-tag fast">⚡ Siêu Tốc</span>
+            </div>
+            <p class="voice-desc">Tốc độ cực nhanh, bấm chữ nào nghe ngay lập tức không cần chờ tải, học tập mượt mà nhất.</p>
+            <div class="voice-actions">
+              <button class="btn-voice-preview" data-voice-id="google-fast" onclick="event.stopPropagation(); window.soundSys.previewVoice('google-fast');">▶️ Nghe Thử</button>
+              <button class="btn-select-voice" data-voice-id="google-fast" onclick="event.stopPropagation(); window.soundSys.setVoice('google-fast'); window.soundSys.previewVoice('google-fast');">Chọn Giọng Này</button>
+            </div>
+          </div>
+
+          <!-- Voice 4: Browser Device -->
+          <div class="voice-studio-card" data-voice-id="browser" onclick="window.soundSys.setVoice('browser')">
+            <div class="voice-card-top">
+              <div class="voice-avatar">📱</div>
+              <div class="voice-info">
+                <h4>Giọng Thiết Bị Trình Duyệt</h4>
+                <div class="voice-region">🔋 Web Speech API • Chạy Offline 0ms</div>
+              </div>
+              <span class="voice-badge-tag offline">📱 Offline</span>
+            </div>
+            <p class="voice-desc">Sử dụng giọng nói phần cứng của điện thoại hoặc máy tính, hoạt động ngay cả khi mất mạng.</p>
+            <div class="voice-actions">
+              <button class="btn-voice-preview" data-voice-id="browser" onclick="event.stopPropagation(); window.soundSys.previewVoice('browser');">▶️ Nghe Thử</button>
+              <button class="btn-select-voice" data-voice-id="browser" onclick="event.stopPropagation(); window.soundSys.setVoice('browser'); window.soundSys.previewVoice('browser');">Chọn Giọng Này</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="voice-studio-footer-note">
+          <span>💡 <strong>Tối ưu tốc độ:</strong> Hệ thống tự động lưu vào bộ nhớ đệm (Cache) để mọi chữ cái, con số bé bấm lại đều phát ngay lập tức 0ms!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Confetti Canvas overlay for celebrations -->
   <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 
@@ -897,16 +984,16 @@
     <div class="toast-content" id="toastMessage">Bé làm tốt lắm! Tiếp tục phát huy nhé!</div>
   </div>
 
-  <!-- Scripts -->
-  <script src="js/audio.js"></script>
-  <script src="js/rewards.js"></script>
-  <script src="js/math.js"></script>
-  <script src="js/vietnamese.js"></script>
-  <script src="js/english.js"></script>
-  <script src="js/science.js"></script>
-  <script src="js/music.js"></script>
-  <script src="js/games.js"></script>
-  <script src="js/draw.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Scripts with cache busting -->
+  <script src="js/audio.js?v=2.2"></script>
+  <script src="js/rewards.js?v=2.2"></script>
+  <script src="js/math.js?v=2.2"></script>
+  <script src="js/vietnamese.js?v=2.2"></script>
+  <script src="js/english.js?v=2.2"></script>
+  <script src="js/science.js?v=2.2"></script>
+  <script src="js/music.js?v=2.2"></script>
+  <script src="js/games.js?v=2.2"></script>
+  <script src="js/draw.js?v=2.2"></script>
+  <script src="js/app.js?v=2.2"></script>
 </body>
 </html>

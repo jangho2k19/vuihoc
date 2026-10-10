@@ -15,8 +15,22 @@ class SoundSystem {
     this.allViVoices = [];
     this.voicePitch = 1.25; // Gentle, sweet feminine pitch
     this.voiceRate = 0.86;  // Clear, friendly pace for 1st grade children
-    this.speechRatePreset = 'normal'; // 'slow' (-15%), 'normal' (+0%), 'fast' (+10%)
-    this.serverVoice = 'vi-VN-HoaiMyNeural'; // default Southern Female
+    
+    // Persistent voice preference
+    let savedVoice = 'vi-VN-HoaiMyNeural';
+    let savedRate = 'normal';
+    try {
+      savedVoice = localStorage.getItem('vuon_tuoi_tho_voice') || 'vi-VN-HoaiMyNeural';
+      savedRate = localStorage.getItem('vuon_tuoi_tho_rate') || 'normal';
+    } catch (e) {}
+
+    this.selectedVoiceId = savedVoice;
+    this.serverVoice = savedVoice;
+    this.speechRatePreset = savedRate;
+    this.setSpeechRate(savedRate, false);
+
+    // Client-side in-memory audio cache for instant 0ms replays
+    this.audioCache = new Map();
     this.currentAudio = null;
 
     this.initAudioContext();
@@ -70,9 +84,8 @@ class SoundSystem {
         (v.name.toLowerCase().includes('natural') || v.name.toLowerCase().includes('google') || v.name.toLowerCase().includes('female'))
       ) || voices.find(v => v.lang && v.lang.startsWith('en')) || null;
 
-      if (typeof window.updateVoiceSelectorUI === 'function') {
-        window.updateVoiceSelectorUI(this.allViVoices, this.vietnameseVoice);
-      }
+      // Update UI while preserving user's saved choice
+      this.updateVoiceUI();
     };
 
     findVoice();
@@ -81,17 +94,97 @@ class SoundSystem {
     }
   }
 
-  setVoice(voiceIndex) {
-    if (this.allViVoices && this.allViVoices[voiceIndex]) {
-      this.vietnameseVoice = this.allViVoices[voiceIndex];
+  setVoice(voiceId) {
+    this.selectedVoiceId = voiceId;
+    this.serverVoice = voiceId;
+    try {
+      localStorage.setItem('vuon_tuoi_tho_voice', voiceId);
+    } catch (e) {}
+
+    // Match device voice if browser mode
+    if (voiceId === 'browser') {
+      if (this.allViVoices && this.allViVoices.length > 0) {
+        this.vietnameseVoice = this.allViVoices[0];
+      }
     }
+
+    this.updateVoiceUI();
   }
 
   setServerVoice(voiceId) {
-    this.serverVoice = voiceId;
+    this.setVoice(voiceId);
   }
 
-  setSpeechRate(preset) {
+  getVoiceTitle(voiceId) {
+    const id = voiceId || this.selectedVoiceId;
+    switch(id) {
+      case 'vi-VN-NamMinhNeural':
+        return { name: 'Thầy giáo Nam Minh (Nam miền Bắc)', short: 'Thầy Nam Minh', icon: '👨‍🏫' };
+      case 'google-fast':
+        return { name: 'Google Tiếng Việt Siêu Tốc', short: 'Google Siêu Tốc', icon: '⚡' };
+      case 'browser':
+        return { name: 'Giọng Thiết Bị Trình Duyệt', short: 'Giọng Thiết Bị', icon: '📱' };
+      case 'vi-VN-HoaiMyNeural':
+      default:
+        return { name: 'Cô giáo Hoài My (Nữ miền Nam)', short: 'Cô Hoài My', icon: '👩‍🏫' };
+    }
+  }
+
+  updateVoiceUI() {
+    const info = this.getVoiceTitle(this.selectedVoiceId);
+    
+    // Header Status Badge
+    const statusText = document.getElementById('voiceStatusText');
+    if (statusText) {
+      statusText.textContent = `Giọng: ${info.short}`;
+    }
+
+    // Header voice button icon
+    const voiceBtn = document.getElementById('btnVoiceTest');
+    if (voiceBtn) {
+      const iconSpan = voiceBtn.querySelector('.btn-icon');
+      if (iconSpan) iconSpan.textContent = info.icon;
+    }
+
+    // Dropdown Sync
+    const select = document.getElementById('voiceSelect');
+    if (select) {
+      if (select.children.length === 0) {
+        select.innerHTML = `
+          <option value="vi-VN-HoaiMyNeural">👩‍🏫 Cô giáo Hoài My (Nữ miền Nam)</option>
+          <option value="vi-VN-NamMinhNeural">👨‍🏫 Thầy giáo Nam Minh (Nam miền Bắc)</option>
+          <option value="google-fast">⚡ Google Tiếng Việt Siêu Tốc</option>
+          <option value="browser">📱 Giọng Thiết Bị Trình Duyệt</option>
+        `;
+      }
+      select.value = this.selectedVoiceId;
+    }
+
+    // Voice Modal Cards Highlight
+    document.querySelectorAll('.voice-studio-card').forEach(card => {
+      const cardVoiceId = card.dataset.voiceId;
+      const isSelected = (cardVoiceId === this.selectedVoiceId);
+      card.classList.toggle('selected', isSelected);
+      const selectBtn = card.querySelector('.btn-select-voice');
+      if (selectBtn) {
+        selectBtn.textContent = isSelected ? '✓ Đang Dùng' : 'Chọn Giọng Này';
+        selectBtn.classList.toggle('active', isSelected);
+      }
+    });
+  }
+
+  previewVoice(voiceId) {
+    const sampleMap = {
+      'vi-VN-HoaiMyNeural': 'Dạ cô chào bé cưng nghen! Chúc bé một ngày học tập thật vui và đạt nhiều điểm mười nhé!',
+      'vi-VN-NamMinhNeural': 'Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!',
+      'google-fast': 'Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!',
+      'browser': 'Chào bé! Đây là giọng đọc thiết bị trên trình duyệt của bé, không cần mạng internet.'
+    };
+    const sampleText = sampleMap[voiceId] || 'Dạ cô chào bé!';
+    this.speakWithVoice(sampleText, voiceId);
+  }
+
+  setSpeechRate(preset, save = true) {
     this.speechRatePreset = preset;
     if (preset === 'slow') {
       this.voiceRate = 0.72;
@@ -99,6 +192,9 @@ class SoundSystem {
       this.voiceRate = 1.05;
     } else {
       this.voiceRate = 0.86;
+    }
+    if (save) {
+      try { localStorage.setItem('vuon_tuoi_tho_rate', preset); } catch (e) {}
     }
   }
 
@@ -280,7 +376,13 @@ class SoundSystem {
 
   // --- Vietnamese Speech Synthesis ---
   speak(text) {
+    this.speakWithVoice(text, this.selectedVoiceId);
+  }
+
+  speakWithVoice(text, voiceId) {
     if (!this.soundEnabled || !text) return;
+
+    const activeVoiceId = voiceId || this.selectedVoiceId || 'vi-VN-HoaiMyNeural';
 
     // Visual speaking indicator on the teacher badge
     const voiceBtn = document.getElementById('btnVoiceTest');
@@ -304,57 +406,8 @@ class SoundSystem {
 
     setSpeaking(true);
 
-    // Map rate preset to Edge-TTS rate string
-    let rateParam = '+0%';
-    if (this.speechRatePreset === 'slow') rateParam = '-15%';
-    else if (this.speechRatePreset === 'fast') rateParam = '+10%';
-
-    // Method 1: Play via local High-Quality Neural TTS endpoint (Microsoft HoaiMy or NamMinh)
-    const ttsUrl = `/api/tts?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(this.serverVoice)}&rate=${encodeURIComponent(rateParam)}`;
-    const audio = new Audio(ttsUrl);
-    this.currentAudio = audio;
-
-    audio.onended = () => {
-      setSpeaking(false);
-      this.currentAudio = null;
-    };
-
-    audio.onerror = () => {
-      // Method 2: Fallback to Google Translate Vietnamese TTS
-      const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
-      const fallbackAudio = new Audio(gUrl);
-      this.currentAudio = fallbackAudio;
-
-      fallbackAudio.onended = () => {
-        setSpeaking(false);
-        this.currentAudio = null;
-      };
-
-      fallbackAudio.onerror = () => {
-        // Method 3: Browser SpeechSynthesis
-        try {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'vi-VN';
-          utterance.rate = this.voiceRate || 0.86;
-          utterance.pitch = this.voicePitch || 1.25;
-          if (this.vietnameseVoice) {
-            utterance.voice = this.vietnameseVoice;
-          }
-          utterance.onend = () => setSpeaking(false);
-          utterance.onerror = () => setSpeaking(false);
-          this.speechSynth.speak(utterance);
-        } catch (e) {
-          setSpeaking(false);
-        }
-      };
-
-      fallbackAudio.play().catch(() => {
-        setSpeaking(false);
-      });
-    };
-
-    audio.play().catch(err => {
-      // If browser blocked audio, fallback to SpeechSynthesis
+    // Mode: Browser Device Voice (Web Speech API - 0ms offline)
+    if (activeVoiceId === 'browser') {
       try {
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = 'vi-VN';
@@ -367,6 +420,117 @@ class SoundSystem {
       } catch (e) {
         setSpeaking(false);
       }
+      return;
+    }
+
+    // Map rate preset to Edge-TTS rate string
+    let rateParam = '+0%';
+    if (this.speechRatePreset === 'slow') rateParam = '-15%';
+    else if (this.speechRatePreset === 'fast') rateParam = '+10%';
+
+    // Check Client In-Memory Cache (0ms instant playback)
+    const cacheKey = `${text}_${activeVoiceId}_${rateParam}`;
+    if (this.audioCache.has(cacheKey)) {
+      const cached = this.audioCache.get(cacheKey);
+      try {
+        cached.currentTime = 0;
+        this.currentAudio = cached;
+        cached.onended = () => {
+          setSpeaking(false);
+          this.currentAudio = null;
+        };
+        cached.play().catch(() => {
+          setSpeaking(false);
+        });
+        return;
+      } catch (e) {
+        // Fallback to fresh instantiation if cached audio fails
+      }
+    }
+
+    // Server TTS Endpoint
+    const ttsUrl = `/api/tts?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(activeVoiceId)}&rate=${encodeURIComponent(rateParam)}`;
+    const audio = new Audio(ttsUrl);
+    this.currentAudio = audio;
+
+    let hasStarted = false;
+    let fallbackTriggered = false;
+
+    const runFallback = () => {
+      if (fallbackTriggered) return;
+      fallbackTriggered = true;
+
+      // Fallback 1: Google Translate TTS (~0.18s)
+      const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
+      const fallbackAudio = new Audio(gUrl);
+      this.currentAudio = fallbackAudio;
+
+      fallbackAudio.onended = () => {
+        setSpeaking(false);
+        this.currentAudio = null;
+      };
+
+      fallbackAudio.onerror = () => {
+        // Fallback 2: Device SpeechSynthesis (0ms)
+        try {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'vi-VN';
+          utterance.rate = this.voiceRate || 0.86;
+          utterance.pitch = this.voicePitch || 1.25;
+          if (this.vietnameseVoice) utterance.voice = this.vietnameseVoice;
+          utterance.onend = () => setSpeaking(false);
+          utterance.onerror = () => setSpeaking(false);
+          this.speechSynth.speak(utterance);
+        } catch (e) {
+          setSpeaking(false);
+        }
+      };
+
+      fallbackAudio.play().catch(() => {
+        try {
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = 'vi-VN';
+          utterance.rate = this.voiceRate || 0.86;
+          utterance.pitch = this.voicePitch || 1.25;
+          if (this.vietnameseVoice) utterance.voice = this.vietnameseVoice;
+          utterance.onend = () => setSpeaking(false);
+          utterance.onerror = () => setSpeaking(false);
+          this.speechSynth.speak(utterance);
+        } catch (e) {
+          setSpeaking(false);
+        }
+      });
+    };
+
+    // Watchdog timer: if audio takes longer than 1.4s, fallback to Google TTS or device
+    const watchdog = setTimeout(() => {
+      if (!hasStarted) {
+        runFallback();
+      }
+    }, 1400);
+
+    audio.onplaying = () => {
+      hasStarted = true;
+      clearTimeout(watchdog);
+    };
+
+    audio.onended = () => {
+      clearTimeout(watchdog);
+      setSpeaking(false);
+      this.currentAudio = null;
+    };
+
+    audio.onerror = () => {
+      clearTimeout(watchdog);
+      runFallback();
+    };
+
+    // Cache the successfully created audio object for future instant replay
+    this.audioCache.set(cacheKey, audio);
+
+    audio.play().catch(err => {
+      clearTimeout(watchdog);
+      runFallback();
     });
   }
 

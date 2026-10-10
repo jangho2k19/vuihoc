@@ -25,6 +25,7 @@ class MainApp {
     this.bindNavigation();
     this.bindHeaderButtons();
     this.bindMascotModal();
+    this.bindVoiceModal();
     this.bindSpeechRateControls();
     this.setRandomTip();
 
@@ -181,30 +182,30 @@ class MainApp {
       });
     }
 
-    // Voice Test Button
+    // Voice Selection & Studio Modal Trigger
     const btnVoice = document.getElementById('btnVoiceTest');
     if (btnVoice) {
       btnVoice.addEventListener('click', () => {
         window.soundSys.playPop();
-        const m = window.rewards.getMascot();
-        const testPhrase = `Dạ cô chào bé cưng nghen! Cô cùng bạn ${m.name} luôn đồng hành cùng bé học bài nè!`;
-        window.rewards.showToast(`👩‍🏫 Giọng cô giáo Hoài My (Nữ miền Nam): Ngọt ngào & ấm áp!`, 3500);
-        window.soundSys.speak(testPhrase);
+        const modal = document.getElementById('voiceStudioModal');
+        if (modal) {
+          modal.classList.add('active');
+          window.soundSys.updateVoiceUI();
+        } else {
+          window.soundSys.previewVoice(window.soundSys.selectedVoiceId);
+        }
       });
     }
 
-    // Voice Selector Dropdown
+    // Header Quick Voice Selector Dropdown
     const voiceSelect = document.getElementById('voiceSelect');
     if (voiceSelect) {
       voiceSelect.addEventListener('change', (e) => {
         const val = e.target.value;
-        if (val === 'vi-VN-NamMinhNeural') {
-          window.soundSys.setServerVoice('vi-VN-NamMinhNeural');
-          window.soundSys.speak("Thầy giáo chào các em học sinh lớp một thân mến!");
-        } else {
-          window.soundSys.setServerVoice('vi-VN-HoaiMyNeural');
-          window.soundSys.speak("Dạ cô chào bé cưng nghen!");
-        }
+        window.soundSys.setVoice(val);
+        const info = window.soundSys.getVoiceTitle(val);
+        window.rewards.showToast(`🎙️ Đã chọn: ${info.name}`, 3000);
+        window.soundSys.previewVoice(val);
       });
     }
 
@@ -278,9 +279,62 @@ class MainApp {
     });
   }
 
+  // --- Voice Studio Modal Controls ---
+  bindVoiceModal() {
+    const modal = document.getElementById('voiceStudioModal');
+    const btnClose = document.getElementById('btnCloseVoiceModal');
+
+    if (btnClose && modal) {
+      btnClose.addEventListener('click', () => {
+        modal.classList.remove('active');
+      });
+    }
+
+    // Voice Preview Buttons
+    document.querySelectorAll('.btn-voice-preview').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.soundSys.playPop();
+        const voiceId = btn.dataset.voiceId;
+        window.soundSys.previewVoice(voiceId);
+      });
+    });
+
+    // Voice Select Buttons
+    document.querySelectorAll('.btn-select-voice').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        window.soundSys.playPop();
+        const voiceId = btn.dataset.voiceId;
+        window.soundSys.setVoice(voiceId);
+        const info = window.soundSys.getVoiceTitle(voiceId);
+        window.rewards.showToast(`🎉 Đã chọn: ${info.name}!`, 3500);
+        window.soundSys.previewVoice(voiceId);
+      });
+    });
+
+    // Voice Card Click Select
+    document.querySelectorAll('.voice-studio-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-voice-preview')) return;
+        window.soundSys.playPop();
+        const voiceId = card.dataset.voiceId;
+        window.soundSys.setVoice(voiceId);
+        const info = window.soundSys.getVoiceTitle(voiceId);
+        window.rewards.showToast(`🎉 Đã chọn: ${info.name}!`, 3500);
+        window.soundSys.previewVoice(voiceId);
+      });
+    });
+  }
+
   // --- Speech Rate Preset Controls ---
   bindSpeechRateControls() {
     const rateBtns = document.querySelectorAll('.speed-pill-btn');
+    const currentPreset = window.soundSys.speechRatePreset || 'normal';
+    rateBtns.forEach(b => {
+      b.classList.toggle('active', b.dataset.speed === currentPreset);
+    });
+
     rateBtns.forEach(btn => {
       btn.addEventListener('click', () => {
         rateBtns.forEach(b => b.classList.remove('active'));
@@ -307,18 +361,8 @@ class MainApp {
 
 // Global voice selector callback
 window.updateVoiceSelectorUI = function(voices, selectedVoice) {
-  const select = document.getElementById('voiceSelect');
-  const statusText = document.getElementById('voiceStatusText');
-  if (!select) return;
-
-  // Populate server voices & browser voices
-  select.innerHTML = `
-    <option value="vi-VN-HoaiMyNeural" selected>Cô giáo Hoài My (Nữ miền Nam)</option>
-    <option value="vi-VN-NamMinhNeural">Thầy giáo Nam Minh (Nam miền Bắc)</option>
-  `;
-
-  if (statusText) {
-    statusText.textContent = `Giọng: Nữ miền Nam`;
+  if (window.soundSys && typeof window.soundSys.updateVoiceUI === 'function') {
+    window.soundSys.updateVoiceUI();
   }
 };
 

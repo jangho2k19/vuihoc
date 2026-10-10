@@ -99,6 +99,12 @@ class MainApp {
   switchTab(targetId) {
     if (this.currentTab === targetId) return;
 
+    // Immediately stop any active speech or story reading when navigating
+    if (window.soundSys) window.soundSys.stop();
+    if (window.vnApp && typeof window.vnApp.stopFullStory === 'function') {
+      window.vnApp.stopFullStory();
+    }
+
     window.soundSys.playPop();
 
     // Update nav buttons

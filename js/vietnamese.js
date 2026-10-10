@@ -145,6 +145,9 @@ class VietnameseApp {
         const targetView = document.getElementById(viewId);
         if (targetView) targetView.classList.add('active');
 
+        if (window.soundSys) window.soundSys.stop();
+        this.stopFullStory();
+
         switch (btn.dataset.sub) {
           case 'vn-tones':
             this.loadTonesQuestion();

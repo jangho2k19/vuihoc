@@ -29,12 +29,34 @@ class SoundSystem {
     this.speechRatePreset = savedRate;
     this.setSpeechRate(savedRate, false);
 
-    // Client-side in-memory audio cache for instant 0ms replays
-    this.audioCache = new Map();
-    this.currentAudio = null;
+    // Dedicated Single Audio Player instance for zero concurrency/overlap
+    this.audioPlayer = new Audio();
+    this.speechToken = 0;
+    this.activeCallback = null;
 
     this.initAudioContext();
+    this.initAudioPlayer();
     this.loadVoices();
+  }
+
+  initAudioPlayer() {
+    this.audioPlayer.addEventListener('ended', () => {
+      this.handleAudioEnded();
+    });
+    this.audioPlayer.addEventListener('error', () => {
+      this.handleAudioEnded();
+    });
+  }
+
+  handleAudioEnded() {
+    const voiceBtn = document.getElementById('btnVoiceTest');
+    if (voiceBtn) voiceBtn.classList.remove('speaking');
+
+    if (typeof this.activeCallback === 'function') {
+      const cb = this.activeCallback;
+      this.activeCallback = null;
+      try { cb(); } catch (e) {}
+    }
   }
 
   initAudioContext() {
@@ -350,192 +372,122 @@ class SoundSystem {
       clearInterval(this.musicTimer);
       this.musicTimer = null;
     }
-    this.currentAudio = null;
   }
 
-  // --- Vietnamese Speech Synthesis ---
-  speak(text) {
-    this.speakWithVoice(text, this.selectedVoiceId);
+  playCelebration() {
+    this.playFanfare();
   }
 
-  speakWithVoice(text, voiceId) {
-    if (!this.soundEnabled || !text) return;
+  // --- Strict Single-Voice Controller: Stops all sound completely ---
+  stop() {
+    // 1. Invalidate any ongoing asynchronous speech token
+    this.speechToken = (this.speechToken || 0) + 1;
+    this.activeCallback = null;
 
-    // Exclusively use Cô giáo Hoài My Neural Voice
-    const activeVoiceId = 'vi-VN-HoaiMyNeural';
+    // 2. Clear any pending timers
+    if (this.speechTimer) {
+      clearTimeout(this.speechTimer);
+      this.speechTimer = null;
+    }
 
-    // Visual speaking indicator on the teacher badge
-    const voiceBtn = document.getElementById('btnVoiceTest');
-    const setSpeaking = (isSpeaking) => {
-      if (voiceBtn) {
-        voiceBtn.classList.toggle('speaking', isSpeaking);
-      }
-    };
-
-    // Stop any existing playing speech
-    if (this.currentAudio) {
+    // 3. Immediately halt and reset single audio player
+    if (this.audioPlayer) {
       try {
-        this.currentAudio.pause();
-        this.currentAudio.currentTime = 0;
+        this.audioPlayer.pause();
+        this.audioPlayer.removeAttribute('src');
+        this.audioPlayer.load();
       } catch (e) {}
-      this.currentAudio = null;
     }
+
+    // 4. Hard stop any browser Web Speech synthesis
     if (this.speechSynth) {
-      try { this.speechSynth.cancel(); } catch (e) {}
+      try {
+        this.speechSynth.cancel();
+      } catch (e) {}
     }
 
-    setSpeaking(true);
+    // 5. Reset speaking badge animation
+    const voiceBtn = document.getElementById('btnVoiceTest');
+    if (voiceBtn) {
+      voiceBtn.classList.remove('speaking');
+    }
+  }
 
-    // Map rate preset to Edge-TTS rate string
+  // --- Vietnamese Speech Synthesis (Exclusively Cô giáo Hoài My) ---
+  speak(text, onEnd) {
+    this.speakWithVoice(text, 'vi-VN-HoaiMyNeural', onEnd);
+  }
+
+  speakWithVoice(text, voiceId, onEnd) {
+    if (!this.soundEnabled || !text || !String(text).trim()) {
+      if (typeof onEnd === 'function') onEnd();
+      return;
+    }
+
+    // 1. Immediately abort and stop any previous speech
+    this.stop();
+
+    // 2. Generation token for strict single-voice concurrency control
+    const currentToken = this.speechToken;
+    this.activeCallback = onEnd;
+
+    // Visual speaking indicator on the teacher button
+    const voiceBtn = document.getElementById('btnVoiceTest');
+    if (voiceBtn) voiceBtn.classList.add('speaking');
+
+    // Rate preset calculation
     let rateParam = '+0%';
     if (this.speechRatePreset === 'slow') rateParam = '-15%';
     else if (this.speechRatePreset === 'fast') rateParam = '+10%';
 
-    // Check Client In-Memory Cache (0ms instant playback)
-    const cacheKey = `${text}_${activeVoiceId}_${rateParam}`;
-    if (this.audioCache.has(cacheKey)) {
-      const cached = this.audioCache.get(cacheKey);
-      try {
-        cached.currentTime = 0;
-        this.currentAudio = cached;
-        cached.onended = () => {
-          setSpeaking(false);
-          this.currentAudio = null;
-        };
-        cached.play().catch(() => {
-          setSpeaking(false);
+    const targetVoice = 'vi-VN-HoaiMyNeural';
+    const cleanText = String(text).trim();
+    const ttsUrl = `/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(targetVoice)}&rate=${encodeURIComponent(rateParam)}`;
+
+    try {
+      this.audioPlayer.src = ttsUrl;
+      const playPromise = this.audioPlayer.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          if (this.speechToken === currentToken) {
+            this.handleAudioEnded();
+          }
         });
-        return;
-      } catch (e) {
-        // Fallback to fresh instantiation if cached audio fails
+      }
+    } catch (e) {
+      if (this.speechToken === currentToken) {
+        this.handleAudioEnded();
       }
     }
-
-    // Server TTS Endpoint
-    const ttsUrl = `/api/tts?text=${encodeURIComponent(text)}&voice=${encodeURIComponent(activeVoiceId)}&rate=${encodeURIComponent(rateParam)}`;
-    const audio = new Audio(ttsUrl);
-    this.currentAudio = audio;
-
-    let hasStarted = false;
-    let fallbackTriggered = false;
-
-    const runFallback = () => {
-      if (fallbackTriggered) return;
-      fallbackTriggered = true;
-
-      // Fallback 1: Google Translate TTS (~0.18s)
-      const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(text)}`;
-      const fallbackAudio = new Audio(gUrl);
-      this.currentAudio = fallbackAudio;
-
-      fallbackAudio.onended = () => {
-        setSpeaking(false);
-        this.currentAudio = null;
-      };
-
-      fallbackAudio.onerror = () => {
-        // Fallback 2: Device SpeechSynthesis (0ms)
-        try {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'vi-VN';
-          utterance.rate = this.voiceRate || 0.86;
-          utterance.pitch = this.voicePitch || 1.25;
-          if (this.vietnameseVoice) utterance.voice = this.vietnameseVoice;
-          utterance.onend = () => setSpeaking(false);
-          utterance.onerror = () => setSpeaking(false);
-          this.speechSynth.speak(utterance);
-        } catch (e) {
-          setSpeaking(false);
-        }
-      };
-
-      fallbackAudio.play().catch(() => {
-        try {
-          const utterance = new SpeechSynthesisUtterance(text);
-          utterance.lang = 'vi-VN';
-          utterance.rate = this.voiceRate || 0.86;
-          utterance.pitch = this.voicePitch || 1.25;
-          if (this.vietnameseVoice) utterance.voice = this.vietnameseVoice;
-          utterance.onend = () => setSpeaking(false);
-          utterance.onerror = () => setSpeaking(false);
-          this.speechSynth.speak(utterance);
-        } catch (e) {
-          setSpeaking(false);
-        }
-      });
-    };
-
-    // Watchdog timer: if audio takes longer than 0.9s, fallback to Google TTS or device
-    const watchdog = setTimeout(() => {
-      if (!hasStarted) {
-        runFallback();
-      }
-    }, 900);
-
-    audio.onplaying = () => {
-      hasStarted = true;
-      clearTimeout(watchdog);
-    };
-
-    audio.onended = () => {
-      clearTimeout(watchdog);
-      setSpeaking(false);
-      this.currentAudio = null;
-    };
-
-    audio.onerror = () => {
-      clearTimeout(watchdog);
-      runFallback();
-    };
-
-    // Cache the successfully created audio object for future instant replay
-    this.audioCache.set(cacheKey, audio);
-
-    audio.play().catch(err => {
-      clearTimeout(watchdog);
-      runFallback();
-    });
   }
 
   // --- English Speech Synthesis for Grade 1 English module ---
-  speakEnglish(text) {
-    if (!this.soundEnabled || !text) return;
-
-    if (this.currentAudio) {
-      try {
-        this.currentAudio.pause();
-        this.currentAudio.currentTime = 0;
-      } catch (e) {}
-      this.currentAudio = null;
-    }
-    if (this.speechSynth) {
-      try { this.speechSynth.cancel(); } catch (e) {}
+  speakEnglish(text, onEnd) {
+    if (!this.soundEnabled || !text || !String(text).trim()) {
+      if (typeof onEnd === 'function') onEnd();
+      return;
     }
 
-    // Google Translate TTS English
-    const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(text)}`;
-    const audio = new Audio(gUrl);
-    this.currentAudio = audio;
+    this.stop();
+    const currentToken = this.speechToken;
+    this.activeCallback = onEnd;
 
-    audio.onerror = () => {
-      try {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.85;
-        if (this.englishVoice) utterance.voice = this.englishVoice;
-        this.speechSynth.speak(utterance);
-      } catch (e) {}
-    };
-
-    audio.play().catch(() => {
-      try {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'en-US';
-        utterance.rate = 0.85;
-        if (this.englishVoice) utterance.voice = this.englishVoice;
-        this.speechSynth.speak(utterance);
-      } catch (e) {}
-    });
+    const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(String(text).trim())}`;
+    try {
+      this.audioPlayer.src = gUrl;
+      const playPromise = this.audioPlayer.play();
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          if (this.speechToken === currentToken) {
+            this.handleAudioEnded();
+          }
+        });
+      }
+    } catch (e) {
+      if (this.speechToken === currentToken) {
+        this.handleAudioEnded();
+      }
+    }
   }
 }
 

@@ -88,6 +88,15 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
 
+    def do_HEAD(self):
+        parsed = urllib.parse.urlparse(self.path)
+        if parsed.path in ["/api/tts", "/api/voices", "/api/health", "/api/precache"]:
+            self.send_response(200)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.end_headers()
+            return
+        super().do_HEAD()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         
@@ -220,7 +229,7 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.send_header("Access-Control-Allow-Origin", "*")
             self.end_headers()
-            self.wfile.write(b'{"status":"ok","app":"Vuon Tuoi Tho - Lop 1","version":"2.1"}')
+            self.wfile.write(b'{"status":"ok","app":"Vuon Tuoi Tho - Lop 1","version":"3.0"}')
             return
         
         # Static files
@@ -228,7 +237,8 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
 
     def end_headers(self):
         # Prevent browser from serving stale JS/CSS during local development
-        if self.path.endswith('.html') or self.path.endswith('.js') or self.path.endswith('.css'):
+        path = getattr(self, "path", "")
+        if path.endswith('.html') or path.endswith('.js') or path.endswith('.css'):
             self.send_header("Cache-Control", "no-cache, must-revalidate")
         super().end_headers()
 

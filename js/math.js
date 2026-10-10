@@ -129,13 +129,13 @@ class MathApp {
 
     this.currentQuestion = {
       html: `
-        <div class="math-prompt-hint">Bé hãy đếm xem có bao nhiêu hình ở dưới đây nghen:</div>
+        <div class="math-prompt-hint">Bé hãy đếm xem có bao nhiêu hình ở dưới đây nhé:</div>
         <div class="math-visual-items">
           <div class="item-group" style="max-width: 480px;">${itemsHtml}</div>
         </div>
         <div class="math-question-text">Có tất cả mấy hình vậy bé?</div>
       `,
-      speechText: `Bé hãy đếm xem có bao nhiêu hình ở đây nghen!`,
+      speechText: `Bé hãy đếm xem có bao nhiêu hình ở đây nhé!`,
       choices: choices,
       correctAnswer: count,
       praise: `Chính xác rồi nè! Có tất cả ${count} hình nè bé ơi!`
@@ -170,14 +170,14 @@ class MathApp {
 
       this.currentQuestion = {
         html: `
-          <div class="math-prompt-hint">Bé hãy tìm số còn thiếu để điền vào dấu chấm hỏi [?] nghen:</div>
+          <div class="math-prompt-hint">Bé hãy tìm số còn thiếu để điền vào dấu chấm hỏi [?] nhé:</div>
           <div class="sequence-display">${seqBoxes}</div>
           <div class="math-question-text">Số còn thiếu là số mấy?</div>
         `,
-        speechText: `Bé hãy tìm số còn thiếu trong dãy số này nghen!`,
+        speechText: `Bé hãy tìm số còn thiếu trong dãy số này nhé!`,
         choices: choices,
         correctAnswer: answer,
-        praise: `Đúng rồi nè! Số còn thiếu là số ${answer} nghen!`
+        praise: `Đúng rồi nè! Số còn thiếu là số ${answer} nhé!`
       };
     } else if (subType === 2) {
       // Số liền trước của N là N - 1
@@ -220,10 +220,10 @@ class MathApp {
           <div class="single-number-badge">${n}</div>
           <div class="math-question-text">Số liền sau của số <strong>${n}</strong> là số mấy vậy bé?</div>
         `,
-        speechText: `Số liền sau của số ${n} là số mấy vậy bé cưng?`,
+        speechText: `Số liền sau của số ${n} là số mấy vậy bé?`,
         choices: choices,
         correctAnswer: answer,
-        praise: `Chính xác rồi nè! Số liền sau của số ${n} là số ${answer} nghen!`
+        praise: `Chính xác rồi nè! Số liền sau của số ${n} là số ${answer} nhé!`
       };
     }
   }
@@ -270,14 +270,14 @@ class MathApp {
 
     this.currentQuestion = {
       html: `
-        <div class="math-prompt-hint">Bé hãy chọn dấu thích hợp ( > , < , = ) để điền vô giữa nghen:</div>
+        <div class="math-prompt-hint">Bé hãy chọn dấu thích hợp ( > , < , = ) để điền vào giữa nhé:</div>
         ${visualGroup}
         <div class="math-question-text">${num1} [ ? ] ${num2}</div>
       `,
       speechText: `Số ${num1} với số ${num2}, số nào lớn hơn ta? Bé chọn dấu lớn hơn, nhỏ hơn hay bằng nhau nè?`,
       choices: ['>', '<', '='],
       correctAnswer: symbol,
-      praise: `Giỏi quá chừng nè! Số ${num1} ${speechComp} số ${num2} nghen!`
+      praise: `Giỏi quá nè! Số ${num1} ${speechComp} số ${num2} nhé!`
     };
   }
 
@@ -343,7 +343,7 @@ class MathApp {
         speechText: `Số ${total} gồm ${partA} và mấy vậy bé?`,
         choices: choices,
         correctAnswer: partB,
-        praise: `Chuẩn luôn nè bé! ${total} gồm ${partA} và ${partB} nghen!`
+        praise: `Chuẩn luôn nè bé! ${total} gồm ${partA} và ${partB} nhé!`
       };
     }
   }
@@ -381,7 +381,7 @@ class MathApp {
 
     this.currentQuestion = {
       html: `
-        <div class="math-prompt-hint">Bé tính kết quả của phép cộng này giùm cô nghen:</div>
+        <div class="math-prompt-hint">Bé tính kết quả của phép cộng này giúp cô nhé:</div>
         <div class="math-question-text" style="font-size: 3.5rem; color:#4361ee; margin: 20px 0;">
           ${a} + ${b} = ?
         </div>
@@ -421,15 +421,15 @@ class MathApp {
 
     this.currentQuestion = {
       html: `
-        <div class="math-prompt-hint">Bé hãy tính kết quả của phép trừ này nghen:</div>
+        <div class="math-prompt-hint">Bé hãy tính kết quả của phép trừ này nhé:</div>
         <div class="math-question-text" style="font-size: 3.5rem; color:#d90429; margin: 20px 0;">
           ${total} - ${sub} = ?
         </div>
       `,
-      speechText: `${total} trừ ${sub} bằng mấy vậy bé cưng?`,
+      speechText: `${total} trừ ${sub} bằng mấy vậy bé?`,
       choices: choices,
       correctAnswer: diff,
-      praise: `Đúng rồi nè! ${total} trừ ${sub} còn lại ${diff} nghen!`
+      praise: `Đúng rồi nè! ${total} trừ ${sub} còn lại ${diff} nhé!`
     };
   }
 
@@ -464,7 +464,7 @@ class MathApp {
         speechText: p.say,
         choices: choices,
         correctAnswer: p.ans,
-        praise: `Chính xác rồi nè! Đáp án đúng là ${p.ans} nghen!`
+        praise: `Chính xác rồi nè! Đáp án đúng là ${p.ans} nhé!`
       };
     } else {
       // Nhận diện hình
@@ -473,11 +473,11 @@ class MathApp {
 
       this.currentQuestion = {
         html: `
-          <div class="math-prompt-hint">Bé hãy quan sát hình dưới đây và cho cô biết tên hình nghen:</div>
+          <div class="math-prompt-hint">Bé hãy quan sát hình dưới đây và cho cô biết tên hình nhé:</div>
           <div style="font-size: 5rem; margin: 16px 0; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.15));">${target.icon}</div>
           <div class="math-question-text">Đây là hình gì vậy bé?</div>
         `,
-        speechText: `Hình này là hình gì vậy bé cưng? Bé chọn hình tròn, hình vuông, hình tam giác hay hình chữ nhật nè?`,
+        speechText: `Hình này là hình gì vậy bé? Bé chọn hình tròn, hình vuông, hình tam giác hay hình chữ nhật nè?`,
         choices: choices,
         correctAnswer: target.name,
         praise: `Giỏi quá! Đây đúng là ${target.name} rồi nè!`
@@ -532,7 +532,7 @@ class MathApp {
       speechText: `Đồng hồ đang chỉ mấy giờ vậy bé ơi? Kim ngắn màu đỏ chỉ số mấy nè?`,
       choices: choices,
       correctAnswer: `${hour} giờ`,
-      praise: `Chính xác rồi nè! Đồng hồ chỉ đúng ${hour} giờ nghen!`
+      praise: `Chính xác rồi nè! Đồng hồ chỉ đúng ${hour} giờ nhé!`
     };
   }
 
@@ -588,7 +588,7 @@ class MathApp {
 
     this.currentQuestion = {
       html: `
-        <div class="math-prompt-hint">Bé hãy lắng nghe cô đọc đề bài và suy nghĩ tính toán nghen:</div>
+        <div class="math-prompt-hint">Bé hãy lắng nghe cô đọc đề bài và suy nghĩ tính toán nhé:</div>
         <div class="word-problem-card">
           <p class="word-problem-text">📝 "${p.text}"</p>
         </div>
@@ -657,8 +657,8 @@ class MathApp {
       buttonEl.classList.add('wrong');
       window.soundSys.playWrong();
       this.feedback.className = 'feedback-box wrong';
-      this.feedback.textContent = `Chưa đúng rồi! Bé thử đếm và tính lại với cô nghen! 💡`;
-      window.soundSys.speak("Chưa đúng rồi bé ơi, bé thử tính lại với cô nghen!");
+      this.feedback.textContent = `Chưa đúng rồi! Bé thử đếm và tính lại với cô nhé! 💡`;
+      window.soundSys.speak("Chưa đúng rồi bé ơi, bé thử tính lại với cô nhé!");
 
       setTimeout(() => {
         allBtns.forEach(b => {

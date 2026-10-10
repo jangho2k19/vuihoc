@@ -1,7 +1,7 @@
 # 🌟 VƯỜN TUỔI THƠ 2.0 - BÉ HỌC VUI LỚP 1 🎈
 ### Bám Sát Toàn Diện Chương Trình Giáo Dục Phổ Thông 2018 (SGK Kết Nối Tri Thức, Chân Trời Sáng Tạo, Cánh Diều)
 
-Trang web học tập & vui chơi tương tác dành riêng cho học sinh lớp 1 (6 - 7 tuổi), kết hợp chuẩn kiến thức chương trình tiểu học hiện hành với phương pháp học tập trực quan sinh động, phát âm **Giọng Nữ Miền Nam (Hoài My Neural)** ngọt ngào, ấm áp cùng nhiều phân hệ học tập phong phú!
+Trang web học tập & vui chơi tương tác dành riêng cho học sinh lớp 1 (6 - 7 tuổi), kết hợp chuẩn kiến thức chương trình tiểu học hiện hành với phương pháp học tập trực quan sinh động, hỗ trợ đa dạng **Giọng AI Chuẩn Sư Phạm (Cô giáo Hoài My, Thầy giáo Nam Minh, Google Siêu Tốc và Giọng Miền Nam trên iOS/Mac)** cùng nhiều phân hệ học tập phong phú!
 
 ---
 

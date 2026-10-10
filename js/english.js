@@ -290,7 +290,7 @@ class EnglishApp {
 
       if (fbBox) {
         fbBox.className = 'feedback-box wrong';
-        fbBox.innerHTML = `💡 Chưa đúng rồi nè! Đáp án đúng là <strong>"${this.currentQuizQ.correct.word}"</strong> (${this.currentQuizQ.correct.vn}). Cùng thử lại nghen!`;
+        fbBox.innerHTML = `💡 Chưa đúng rồi nè! Đáp án đúng là <strong>"${this.currentQuizQ.correct.word}"</strong> (${this.currentQuizQ.correct.vn}). Cùng thử lại nhé!`;
       }
 
       setTimeout(() => {

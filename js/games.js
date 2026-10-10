@@ -101,7 +101,7 @@ class BalloonGame {
 
   speakTarget() {
     if (!this.target) return;
-    const txt = (this.mode === 'numbers') ? `Bé bấm vô bóng số ${this.target} nghen!` : `Bé hãy bấm vô bóng chữ ${this.target} nghen!`;
+    const txt = (this.mode === 'numbers') ? `Bé hãy bấm vào bóng số ${this.target} nhé!` : `Bé hãy bấm vào bóng chữ ${this.target} nhé!`;
     window.soundSys.speak(txt);
   }
 

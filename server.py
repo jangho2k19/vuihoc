@@ -36,17 +36,17 @@ _MEM_CACHE = {}
 AVAILABLE_VOICES = [
     {
         "id": "vi-VN-HoaiMyNeural",
-        "name": "Cô giáo Hoài My (Nữ miền Nam)",
-        "desc": "Giọng đọc truyền cảm, dịu dàng, ấm áp đặc trưng miền Nam",
+        "name": "Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng, chuẩn sư phạm)",
+        "desc": "Giọng cô giáo Hà Nội dịu dàng, phát âm chuẩn ngữ âm tiếng Việt phổ thông, rất dễ nghe cho bé lớp 1",
         "badge": "🌟 Chuẩn Neural AI",
         "type": "neural",
-        "preview": "Dạ cô chào bé cưng nghen! Chúc bé một ngày học tập thật vui và đạt nhiều điểm mười nhé!",
+        "preview": "Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!",
         "default": True
     },
     {
         "id": "vi-VN-NamMinhNeural",
-        "name": "Thầy giáo Nam Minh (Nam miền Bắc)",
-        "desc": "Giọng đọc rõ ràng, chuẩn ngữ âm, thân thiện đặc trưng miền Bắc",
+        "name": "Thầy giáo Nam Minh (Nam miền Bắc - Rõ ràng, trầm ấm)",
+        "desc": "Giọng thầy giáo Hà Nội trầm ấm, phát âm rành mạch từng phụ âm và nguyên âm, chuẩn mực ngữ âm",
         "badge": "🌟 Chuẩn Neural AI",
         "type": "neural",
         "preview": "Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!",
@@ -54,8 +54,8 @@ AVAILABLE_VOICES = [
     },
     {
         "id": "google-fast",
-        "name": "Google Tiếng Việt Siêu Tốc",
-        "desc": "Tốc độ phản hồi cực nhanh ~0.1s, mượt mà, không độ trễ",
+        "name": "Google Tiếng Việt Siêu Tốc (Nữ nhanh 0.1s)",
+        "desc": "Tốc độ phản hồi cực nhanh ~0.1s, mượt mà, không độ trễ, bấm chữ nào nghe ngay",
         "badge": "⚡ Siêu Tốc 0.1s",
         "type": "fast",
         "preview": "Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!",
@@ -63,9 +63,9 @@ AVAILABLE_VOICES = [
     },
     {
         "id": "browser",
-        "name": "Giọng Thiết Bị Trình Duyệt",
-        "desc": "Chạy bằng Web Speech API của điện thoại/máy tính, không cần internet",
-        "badge": "📱 Offline 0ms",
+        "name": "Giọng Thiết Bị (Hỗ trợ giọng miền Nam trên iOS/Mac)",
+        "desc": "Chạy bằng Web Speech API của máy. Đặc biệt trên iPhone, iPad và Mac sẽ phát giọng Nữ miền Nam (Cô Linh)",
+        "badge": "📱 Thiết Bị / iOS Nam",
         "type": "browser",
         "preview": "Chào bé! Đây là giọng đọc thiết bị trên trình duyệt của bé.",
         "default": False

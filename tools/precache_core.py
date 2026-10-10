@@ -36,20 +36,20 @@ ALPHABET = [
 ]
 
 PREVIEWS = {
-    "vi-VN-HoaiMyNeural": "Dạ cô chào bé cưng nghen! Chúc bé một ngày học tập thật vui và đạt nhiều điểm mười nhé!",
+    "vi-VN-HoaiMyNeural": "Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!",
     "vi-VN-NamMinhNeural": "Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!",
     "google-fast": "Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!"
 }
 
 PROMPTS = [
-    "Đúng rồi nè bé ơi!",
-    "Chưa đúng rồi bé ơi, bé thử lại nghen!",
-    "Hoan hô! Bé giỏi quá chừng luôn!",
-    "Cô đã điều chỉnh tốc độ nói rồi nè bé!"
+    "Đúng rồi bé ơi! Bé giỏi lắm!",
+    "Chưa đúng rồi bé ơi, bé thử lại nhé!",
+    "Hoan hô! Bé làm bài rất xuất sắc!",
+    "Cô đã điều chỉnh tốc độ nói rồi nhé bé!"
 ]
 
 for i in range(1, 11):
-    PROMPTS.append(f"Bé bấm vô bóng số {i} nghen!")
+    PROMPTS.append(f"Bé hãy bấm vào bóng số {i} nhé!")
 
 def get_hash(text, voice, rate="+0%"):
     key = f"{text}_{voice}_{rate}"

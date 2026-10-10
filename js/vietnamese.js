@@ -26,7 +26,7 @@ class VietnameseApp {
       { upper: 'O', lower: 'o', word: 'Con Ong', icon: '🐝', sentence: 'Chữ O trong Con Ong' },
       { upper: 'Ô', lower: 'ô', word: 'Cái Ô', icon: '☂️', sentence: 'Chữ Ô trong Cái Ô' },
       { upper: 'Ơ', lower: 'ơ', word: 'Lá Cờ', icon: '🚩', sentence: 'Chữ Ơ trong Lá Cờ' },
-      { upper: 'P', lower: 'p', word: 'Cây Bút', icon: '✏️', sentence: 'Chữ Pờ trong Bút Chì' },
+      { upper: 'P', lower: 'p', word: 'Tô Phở', icon: '✏️', sentence: 'Chữ Pờ trong Tô Phở' },
       { upper: 'Q', lower: 'q', word: 'Quả Quýt', icon: '🍊', sentence: 'Chữ Quy trong Quả Quýt' },
       { upper: 'R', lower: 'r', word: 'Con Rùa', icon: '🐢', sentence: 'Chữ Rờ trong Con Rùa' },
       { upper: 'S', lower: 's', word: 'Ngôi Sao', icon: '⭐', sentence: 'Chữ Sờ trong Ngôi Sao' },
@@ -269,14 +269,14 @@ class VietnameseApp {
           this.tonesScore += 1;
           this.tonesScoreEl.textContent = this.tonesScore;
           window.rewards.addStars(1, "Bé nhận diện dấu thanh chuẩn quá!");
-          window.soundSys.speak(`Đúng rồi nè bé ơi! ${q.say} nghen!`);
+          window.soundSys.speak(`Đúng rồi bé ơi! ${q.say} nhé!`);
           setTimeout(() => this.loadTonesQuestion(), 2200);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
           this.tonesFeedback.className = 'feedback-box wrong';
-          this.tonesFeedback.textContent = `Chưa đúng dấu rồi bé ơi! Bé nhìn kỹ lại dấu trên chữ nghen!`;
-          window.soundSys.speak("Chưa đúng dấu rồi bé ơi, bé nhìn kỹ lại nghen!");
+          this.tonesFeedback.textContent = `Chưa đúng dấu rồi bé ơi! Bé nhìn kỹ lại dấu trên chữ nhé!`;
+          window.soundSys.speak("Chưa đúng dấu rồi bé ơi, bé nhìn kỹ lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
           }, 1300);
@@ -286,7 +286,7 @@ class VietnameseApp {
     });
 
     setTimeout(() => {
-      window.soundSys.speak(`Tiếng ${q.word} mang dấu thanh nào vậy bé cưng?`);
+      window.soundSys.speak(`Tiếng ${q.word} mang dấu thanh nào vậy bé?`);
     }, 200);
   }
 
@@ -376,18 +376,18 @@ class VietnameseApp {
         if (isCorrect) {
           btn.classList.add('correct');
           this.spellingFeedback.className = 'feedback-box correct';
-          this.spellingFeedback.textContent = `🎉 Hoan hô! Điền đúng là: "${q.full}" nghen!`;
+          this.spellingFeedback.textContent = `🎉 Hoan hô! Điền đúng là: "${q.full}" nhé!`;
           this.spellingScore += 1;
           this.spellingScoreEl.textContent = this.spellingScore;
           window.rewards.addStars(1, "Bé thuộc quy tắc chính tả rất cừ!");
-          window.soundSys.speak(`Chính xác rồi nè! Điền chữ ${q.ans} tạo thành từ ${q.full} nghen!`);
+          window.soundSys.speak(`Chính xác rồi! Điền chữ ${q.ans} tạo thành từ ${q.full} nhé!`);
           setTimeout(() => this.loadSpellingQuestion(), 2400);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
           this.spellingFeedback.className = 'feedback-box wrong';
-          this.spellingFeedback.textContent = `Chưa đúng quy tắc rồi bé ơi! Nhớ quy tắc: k, gh, ngh đứng trước e, ê, i nghen!`;
-          window.soundSys.speak("Chưa đúng quy tắc rồi bé ơi, bé chọn lại nghen!");
+          this.spellingFeedback.textContent = `Chưa đúng quy tắc rồi bé ơi! Nhớ quy tắc: k, gh, ngh đứng trước e, ê, i nhé!`;
+          window.soundSys.speak("Chưa đúng quy tắc rồi bé ơi, bé chọn lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
           }, 1400);
@@ -422,7 +422,7 @@ class VietnameseApp {
     this.compoundsQArea.innerHTML = `
       <div style="font-size: 5rem; margin-bottom: 8px;">${q.icon}</div>
       <div class="math-question-text" style="font-size: 3rem; color: #7209b7;">${q.missing}</div>
-      <div class="math-prompt-hint">Hình ảnh: <strong>${q.full}</strong>. Bé hãy chọn âm ghép thích hợp điền vào nghen:</div>
+      <div class="math-prompt-hint">Hình ảnh: <strong>${q.full}</strong>. Bé hãy chọn âm ghép thích hợp điền vào nhé:</div>
     `;
 
     q.choices.sort(() => Math.random() - 0.5).forEach(c => {
@@ -443,14 +443,14 @@ class VietnameseApp {
           this.compoundsScore += 1;
           this.compoundsScoreEl.textContent = this.compoundsScore;
           window.rewards.addStars(1, "Bé nhớ âm ghép rất giỏi!");
-          window.soundSys.speak(`Đúng rồi nè! ${q.say} nghen!`);
+          window.soundSys.speak(`Đúng rồi bé ơi! ${q.say} nhé!`);
           setTimeout(() => this.loadCompoundsQuestion(), 2200);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
           this.compoundsFeedback.className = 'feedback-box wrong';
-          this.compoundsFeedback.textContent = `Chưa đúng âm ghép rồi bé ơi! Bé thử lại nghen!`;
-          window.soundSys.speak("Chưa đúng âm ghép rồi, bé chọn lại nghen!");
+          this.compoundsFeedback.textContent = `Chưa đúng âm ghép rồi bé ơi! Bé thử lại nhé!`;
+          window.soundSys.speak("Chưa đúng âm ghép rồi, bé chọn lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
           }, 1300);
@@ -485,7 +485,7 @@ class VietnameseApp {
       <div class="math-visual-items">
         <span style="font-size: 5rem;">${target.icon}</span>
       </div>
-      <div class="math-question-text">Bé hãy bấm vô chữ cái: <strong>"${target.upper}"</strong> nghen!</div>
+      <div class="math-question-text">Bé hãy bấm vào chữ cái: <strong>"${target.upper}"</strong> nhé!</div>
       <div class="math-prompt-hint">Từ mẫu: ${target.word}</div>
     `;
 
@@ -512,8 +512,8 @@ class VietnameseApp {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
           this.quizFeedback.className = 'feedback-box wrong';
-          this.quizFeedback.textContent = `Chưa đúng rồi! Bé thử nhìn lại hình và chọn nghen!`;
-          window.soundSys.speak("Bé chọn lại với cô nghen!");
+          this.quizFeedback.textContent = `Chưa đúng rồi! Bé thử nhìn lại hình và chọn nhé!`;
+          window.soundSys.speak("Bé chọn lại với cô nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
           }, 1200);
@@ -523,7 +523,7 @@ class VietnameseApp {
     });
 
     setTimeout(() => {
-      window.soundSys.speak(`Bé hãy tìm chữ ${target.upper} của từ ${target.word} nghen bé cưng!`);
+      window.soundSys.speak(`Bé hãy tìm chữ ${target.upper} của từ ${target.word} nhé!`);
     }, 200);
   }
 
@@ -550,7 +550,7 @@ class VietnameseApp {
         <span style="font-size: 5rem;">${q.icon}</span>
       </div>
       <div class="math-question-text" style="letter-spacing: 4px;">${q.missing}</div>
-      <div class="math-prompt-hint">Hình minh họa: <strong>${q.say}</strong>. Điền chữ còn thiếu vào dấu gạch [ _ ] nghen!</div>
+      <div class="math-prompt-hint">Hình minh họa: <strong>${q.say}</strong>. Điền chữ còn thiếu vào dấu gạch [ _ ] nhé:</div>
     `;
 
     q.choices.sort(() => Math.random() - 0.5).forEach(letter => {
@@ -576,8 +576,8 @@ class VietnameseApp {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
           this.rhymeFeedback.className = 'feedback-box wrong';
-          this.rhymeFeedback.textContent = `Chưa đúng chữ rồi bé ơi! Bé thử lại nghen!`;
-          window.soundSys.speak("Chưa đúng chữ rồi bé ơi, bé thử lại nghen!");
+          this.rhymeFeedback.textContent = `Chưa đúng chữ rồi bé ơi! Bé thử lại nhé!`;
+          window.soundSys.speak("Chưa đúng chữ rồi bé ơi, bé thử lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
           }, 1200);
@@ -632,7 +632,7 @@ class VietnameseApp {
 
     // Container for user built sentence
     this.sentenceQArea.innerHTML = `
-      <div class="math-prompt-hint">Bé hãy bấm vào từng từ theo thứ tự để ghép thành câu đúng ngữ pháp nghen:</div>
+      <div class="math-prompt-hint">Bé hãy bấm vào từng từ theo thứ tự để ghép thành câu đúng ngữ pháp nhé:</div>
       <div class="constructed-sentence-box" id="constructedSentenceBox">
         <span class="placeholder-text">👉 Bấm chọn các từ ở dưới để xếp vào đây nè...</span>
       </div>
@@ -681,7 +681,7 @@ class VietnameseApp {
             this.sentenceScoreEl.textContent = this.sentenceScore;
             window.rewards.addStars(2, "Bé ghép câu xuất sắc quá chừng!");
             window.soundSys.playCorrect();
-            window.soundSys.speak(`Hoan hô! Bé đã ghép thành công câu: ${q.say} nghen!`);
+            window.soundSys.speak(`Hoan hô! Bé đã ghép thành công câu: ${q.say} nhé!`);
 
             setTimeout(() => this.loadSentenceQuestion(), 2600);
           } else {
@@ -689,8 +689,8 @@ class VietnameseApp {
             box.style.backgroundColor = '#ffe3e3';
             window.soundSys.playWrong();
             this.sentenceFeedback.className = 'feedback-box wrong';
-            this.sentenceFeedback.textContent = `Thứ tự từ chưa đúng rồi bé ơi! Bé bấm nút "Xếp lại từ đầu" để làm lại nghen!`;
-            window.soundSys.speak("Thứ tự các từ chưa đúng rồi, bé xếp lại với cô nghen!");
+            this.sentenceFeedback.textContent = `Thứ tự từ chưa đúng rồi bé ơi! Bé bấm nút "Xếp lại từ đầu" để làm lại nhé!`;
+            window.soundSys.speak("Thứ tự các từ chưa đúng rồi, bé xếp lại với cô nhé!");
           }
         }
       });
@@ -699,7 +699,7 @@ class VietnameseApp {
     });
 
     setTimeout(() => {
-      window.soundSys.speak("Bé hãy xếp các từ thành câu hoàn chỉnh nghen!");
+      window.soundSys.speak("Bé hãy xếp các từ thành câu hoàn chỉnh nhé!");
     }, 200);
   }
 }

@@ -10,7 +10,7 @@ class RewardManager {
     this.state = this.loadState();
 
     this.mascots = {
-      bear: { id: 'bear', name: 'Gấu Nâu Thông Thái', emoji: '🐻', role: 'Dũng Cảm & Tốt Bụng', greet: 'Chào bé cưng! Gấu Nâu rất vui được đồng hành cùng bé nghen!' },
+      bear: { id: 'bear', name: 'Gấu Nâu Thông Thái', emoji: '🐻', role: 'Dũng Cảm & Tốt Bụng', greet: 'Chào bé yêu! Gấu Nâu rất vui được đồng hành cùng bé nhé!' },
       bunny: { id: 'bunny', name: 'Thỏ Hồng Đáng Yêu', emoji: '🐰', role: 'Nhanh Nhẹn & Chăm Chỉ', greet: 'Xin chào bé! Thỏ Hồng nhảy chân sáo chúc bé học thật giỏi nha!' },
       cat: { id: 'cat', name: 'Mèo Miu Tinh Nghịch', emoji: '🐱', role: 'Thông Minh & Đáng Yêu', greet: 'Meo meo! Mèo Miu cùng bé bắt thật nhiều ngôi sao may mắn nha!' },
       dog: { id: 'dog', name: 'Cún Vàng Vui Vẻ', emoji: '🐶', role: 'Trung Thành & Năng Động', greet: 'Gâu gâu! Cún Vàng vẫy đuôi khen bé học giỏi quá chừng nè!' },

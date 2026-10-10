@@ -64,19 +64,22 @@ class SoundSystem {
         v.name.toLowerCase().includes('vietnam')
       );
 
-      // Prioritize female voice (HoaiMy, Google Tiếng Việt, female keywords)
-      const femaleSouthernVoice = this.allViVoices.find(v => {
+      // Detect authentic Southern Vietnamese voice (e.g., Linh on iOS/macOS, or southern tags)
+      const southernVoice = this.allViVoices.find(v => {
         const n = v.name.toLowerCase();
-        return n.includes('hoaimy') || n.includes('hoai my') || n.includes('southern') || n.includes('south') || n.includes('miennam') || n.includes('nu');
-      }) || this.allViVoices.find(v => {
-        const n = v.name.toLowerCase();
-        return n.includes('google') && !n.includes('male');
-      }) || this.allViVoices.find(v => {
+        return n.includes('linh') || n.includes('south') || n.includes('saigon') || n.includes('hcm') || n.includes('mien nam');
+      });
+
+      this.hasSouthernDeviceVoice = !!southernVoice;
+      this.southernVoice = southernVoice || null;
+
+      // Default Vietnamese voice for device synthesis
+      const femaleVoice = southernVoice || this.allViVoices.find(v => {
         const n = v.name.toLowerCase();
         return !n.includes('nam') && !n.includes('male') && !n.includes('anh');
       }) || this.allViVoices[0] || null;
 
-      this.vietnameseVoice = femaleSouthernVoice;
+      this.vietnameseVoice = femaleVoice;
 
       // English voice for Grade 1 English module
       this.englishVoice = voices.find(v => 
@@ -103,7 +106,9 @@ class SoundSystem {
 
     // Match device voice if browser mode
     if (voiceId === 'browser') {
-      if (this.allViVoices && this.allViVoices.length > 0) {
+      if (this.hasSouthernDeviceVoice && this.southernVoice) {
+        this.vietnameseVoice = this.southernVoice;
+      } else if (this.allViVoices && this.allViVoices.length > 0) {
         this.vietnameseVoice = this.allViVoices[0];
       }
     }
@@ -121,12 +126,14 @@ class SoundSystem {
       case 'vi-VN-NamMinhNeural':
         return { name: 'Thầy giáo Nam Minh (Nam miền Bắc)', short: 'Thầy Nam Minh', icon: '👨‍🏫' };
       case 'google-fast':
-        return { name: 'Google Tiếng Việt Siêu Tốc', short: 'Google Siêu Tốc', icon: '⚡' };
+        return { name: 'Google Tiếng Việt Siêu Tốc (Nữ nhanh)', short: 'Google Siêu Tốc', icon: '⚡' };
       case 'browser':
-        return { name: 'Giọng Thiết Bị Trình Duyệt', short: 'Giọng Thiết Bị', icon: '📱' };
+        const devName = this.hasSouthernDeviceVoice ? 'Giọng Thiết Bị (Cô Linh miền Nam)' : 'Giọng Thiết Bị (Web Speech)';
+        const devShort = this.hasSouthernDeviceVoice ? 'Cô Linh (Nam)' : 'Giọng Thiết Bị';
+        return { name: devName, short: devShort, icon: '📱' };
       case 'vi-VN-HoaiMyNeural':
       default:
-        return { name: 'Cô giáo Hoài My (Nữ miền Nam)', short: 'Cô Hoài My', icon: '👩‍🏫' };
+        return { name: 'Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng)', short: 'Cô Hoài My', icon: '👩‍🏫' };
     }
   }
 
@@ -149,14 +156,16 @@ class SoundSystem {
     // Dropdown Sync
     const select = document.getElementById('voiceSelect');
     if (select) {
-      if (select.children.length === 0) {
-        select.innerHTML = `
-          <option value="vi-VN-HoaiMyNeural">👩‍🏫 Cô giáo Hoài My (Nữ miền Nam)</option>
-          <option value="vi-VN-NamMinhNeural">👨‍🏫 Thầy giáo Nam Minh (Nam miền Bắc)</option>
-          <option value="google-fast">⚡ Google Tiếng Việt Siêu Tốc</option>
-          <option value="browser">📱 Giọng Thiết Bị Trình Duyệt</option>
-        `;
-      }
+      const devLabel = this.hasSouthernDeviceVoice 
+        ? '📱 Giọng Thiết Bị (Cô Linh miền Nam)' 
+        : '📱 Giọng Thiết Bị (Hỗ trợ giọng miền Nam trên iOS/Mac)';
+
+      select.innerHTML = `
+        <option value="vi-VN-HoaiMyNeural">👩‍🏫 Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng)</option>
+        <option value="vi-VN-NamMinhNeural">👨‍🏫 Thầy giáo Nam Minh (Nam miền Bắc - Rõ ràng)</option>
+        <option value="google-fast">⚡ Google Tiếng Việt Siêu Tốc (Nữ nhanh)</option>
+        <option value="browser">${devLabel}</option>
+      `;
       select.value = this.selectedVoiceId;
     }
 
@@ -170,17 +179,27 @@ class SoundSystem {
         selectBtn.textContent = isSelected ? '✓ Đang Dùng' : 'Chọn Giọng Này';
         selectBtn.classList.toggle('active', isSelected);
       }
+
+      // If this is the browser card and Southern voice is found, enhance badge
+      if (cardVoiceId === 'browser' && this.hasSouthernDeviceVoice && this.southernVoice) {
+        const regionEl = card.querySelector('.voice-region');
+        if (regionEl) {
+          regionEl.innerHTML = `🌸 Đã nhận diện giọng miền Nam: <strong>${this.southernVoice.name}</strong>`;
+        }
+      }
     });
   }
 
   previewVoice(voiceId) {
     const sampleMap = {
-      'vi-VN-HoaiMyNeural': 'Dạ cô chào bé cưng nghen! Chúc bé một ngày học tập thật vui và đạt nhiều điểm mười nhé!',
+      'vi-VN-HoaiMyNeural': 'Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!',
       'vi-VN-NamMinhNeural': 'Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!',
       'google-fast': 'Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!',
-      'browser': 'Chào bé! Đây là giọng đọc thiết bị trên trình duyệt của bé, không cần mạng internet.'
+      'browser': (this.hasSouthernDeviceVoice) 
+        ? 'Dạ cô Linh chào bé! Chúc bé một ngày học tập thật vui vẻ và đạt nhiều điểm mười nghen!' 
+        : 'Chào bé! Đây là giọng đọc thiết bị trên máy của bé.'
     };
-    const sampleText = sampleMap[voiceId] || 'Dạ cô chào bé!';
+    const sampleText = sampleMap[voiceId] || 'Cô giáo chào bé nhé!';
     this.speakWithVoice(sampleText, voiceId);
   }
 

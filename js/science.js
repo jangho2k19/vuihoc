@@ -280,7 +280,7 @@ class ScienceApp {
         fbBox.innerHTML = `💡 Chưa đúng rồi nè! Đáp án đúng là: <strong>"${this.currentQuestion.ans}"</strong>. Cùng nghe giải thích nha: ${this.currentQuestion.exp}`;
       }
 
-      window.soundSys.speak(`Chưa đúng rồi nè! Đáp án đúng là ${this.currentQuestion.ans}. Bé thử lại nghen!`);
+      window.soundSys.speak(`Chưa đúng rồi nè! Đáp án đúng là ${this.currentQuestion.ans}. Bé thử lại nhé!`);
 
       setTimeout(() => {
         allBtns.forEach(b => b.disabled = false);

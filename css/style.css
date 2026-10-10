@@ -109,47 +109,47 @@ body {
   100% { transform: scale(1.25) rotate(15deg); opacity: 1; }
 }
 
-/* ================= HEADER ================= */
+/* ================= HEADER (COMPACT & SLEEK) ================= */
 .main-header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 4px 20px rgba(67, 97, 238, 0.08);
-  border-bottom: 3px solid rgba(255, 209, 102, 0.4);
+  box-shadow: 0 2px 10px rgba(67, 97, 238, 0.07);
+  border-bottom: 2px solid rgba(255, 209, 102, 0.45);
 }
 
 .header-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 12px 20px;
+  padding: 4px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px;
 }
 
 .logo-area {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
   cursor: pointer;
 }
 
 .mascot-avatar {
   position: relative;
-  width: 58px;
-  height: 58px;
+  width: 38px;
+  height: 38px;
   background: linear-gradient(135deg, #ffd166, #ff9e00);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 6px 12px rgba(255, 158, 0, 0.35);
-  border: 3px solid #ffffff;
+  box-shadow: 0 3px 8px rgba(255, 158, 0, 0.3);
+  border: 2px solid #ffffff;
   transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -158,68 +158,75 @@ body {
 }
 
 .avatar-emoji {
-  font-size: 2.2rem;
+  font-size: 1.45rem;
   line-height: 1;
 }
 
 .sparkle-badge {
   position: absolute;
-  top: -4px;
-  right: -4px;
-  font-size: 1rem;
+  top: -3px;
+  right: -3px;
+  font-size: 0.75rem;
   animation: pulseStar 1.5s infinite alternate;
 }
 
 .site-title-box .site-title {
   font-family: var(--font-heading);
-  font-size: 1.85rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--primary-dark);
   line-height: 1.1;
   background: linear-gradient(135deg, #4361ee 0%, #7209b7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  margin: 0;
 }
 
 .site-title-box .site-subtitle {
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #f77f00;
+  line-height: 1.1;
+  margin-top: 1px;
 }
 
 /* Header Right Buttons */
 .header-right {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 5px;
   flex-wrap: wrap;
 }
 
 .pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
+  gap: 4px;
+  padding: 4px 10px;
   border-radius: var(--radius-pill);
   border: 2px solid #e2e8f0;
   background: #ffffff;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--text-main);
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
 }
 
 .pill-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-1px);
   border-color: var(--primary-light);
-  box-shadow: 0 4px 8px rgba(67, 97, 238, 0.15);
+  box-shadow: 0 3px 6px rgba(67, 97, 238, 0.12);
 }
 
 .pill-btn:active {
   transform: translateY(1px);
+}
+
+.pill-btn .btn-icon {
+  font-size: 0.95rem;
 }
 
 .sound-btn.active, .music-btn.active {
@@ -228,10 +235,51 @@ body {
   color: #065f46;
 }
 
+.speed-control-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 6px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.speed-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #64748b;
+  margin-right: 2px;
+}
+
+.speed-pill-btn {
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.72rem;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.speed-pill-btn:hover {
+  background: #f1f5f9;
+  color: var(--primary);
+}
+
+.speed-pill-btn.active {
+  background: var(--primary);
+  color: #ffffff;
+}
+
 .voice-picker-box {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   position: relative;
 }
 
@@ -248,22 +296,22 @@ body {
 }
 
 @keyframes speakingGlow {
-  0% { transform: scale(1); box-shadow: 0 0 4px rgba(247, 37, 133, 0.4); }
-  100% { transform: scale(1.08); box-shadow: 0 0 16px rgba(247, 37, 133, 0.85); }
+  0% { transform: scale(1); box-shadow: 0 0 3px rgba(247, 37, 133, 0.4); }
+  100% { transform: scale(1.05); box-shadow: 0 0 12px rgba(247, 37, 133, 0.75); }
 }
 
 .voice-select {
-  padding: 6px 12px;
+  padding: 3px 6px;
   border-radius: var(--radius-pill);
   border: 2px solid #e2e8f0;
   background: #ffffff;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.82rem;
+  font-size: 0.75rem;
   color: var(--text-main);
   cursor: pointer;
   outline: none;
-  max-width: 170px;
+  max-width: 135px;
 }
 
 .voice-select:hover, .voice-select:focus {
@@ -274,30 +322,30 @@ body {
 .star-badge {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 16px;
+  gap: 4px;
+  padding: 3px 10px;
   border-radius: var(--radius-pill);
   background: linear-gradient(135deg, #fff3b0, #ffd166);
   border: 2px solid #ffb703;
-  box-shadow: 0 4px 10px rgba(255, 183, 3, 0.35);
+  box-shadow: 0 2px 6px rgba(255, 183, 3, 0.3);
   cursor: pointer;
   animation: badgeWiggle 4s ease-in-out infinite;
 }
 
 .star-badge .star-icon {
-  font-size: 1.3rem;
-  filter: drop-shadow(0 2px 4px rgba(247, 127, 0, 0.4));
+  font-size: 1.05rem;
+  filter: drop-shadow(0 1px 2px rgba(247, 127, 0, 0.4));
 }
 
 .star-badge .star-count {
   font-family: var(--font-heading);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #9d0208;
 }
 
 .star-badge .star-label {
-  font-size: 0.8rem;
+  font-size: 0.72rem;
   font-weight: 800;
   color: #7f1d1d;
   text-transform: uppercase;
@@ -309,14 +357,14 @@ body {
   95% { transform: rotate(5deg) scale(1.04); }
 }
 
-/* ================= NAVIGATION TABS ================= */
+/* ================= NAVIGATION TABS (COMPACT) ================= */
 .main-nav {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 6px 12px 10px;
+  padding: 2px 10px 5px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
   overflow-x: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
@@ -329,34 +377,34 @@ body {
 .nav-tab {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
+  gap: 5px;
+  padding: 4px 11px;
   border-radius: var(--radius-pill);
   border: none;
   background: #f1f5f9;
   font-family: var(--font-heading);
-  font-size: 1.05rem;
+  font-size: 0.9rem;
   font-weight: 700;
   color: #475569;
   cursor: pointer;
   white-space: nowrap;
-  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 2px 0 rgba(0,0,0,0.05);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
 }
 
 .nav-tab .nav-icon {
-  font-size: 1.25rem;
-  transition: transform 0.25s;
+  font-size: 1.05rem;
+  transition: transform 0.2s;
 }
 
 .nav-tab:hover {
   background: #e2e8f0;
   color: var(--primary);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
 }
 
 .nav-tab:hover .nav-icon {
-  transform: scale(1.25);
+  transform: scale(1.15);
 }
 
 .nav-tab.active {
@@ -404,7 +452,7 @@ body {
   z-index: 1;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 16px 60px;
+  padding: 12px 16px 45px;
 }
 
 .tab-pane {
@@ -3192,11 +3240,61 @@ body.night-mode .voice-btn {
     padding-right: max(8px, env(safe-area-inset-right));
   }
 
+  .main-header {
+    box-shadow: 0 1px 6px rgba(67, 97, 238, 0.06);
+  }
+  .header-container {
+    padding: 3px 8px;
+    gap: 4px;
+  }
+  .logo-area {
+    gap: 6px;
+  }
+  .mascot-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .avatar-emoji {
+    font-size: 1.25rem;
+  }
   .site-title-box .site-title {
-    font-size: 1.55rem;
+    font-size: 1.15rem;
   }
   .site-title-box .site-subtitle {
-    font-size: 0.8rem;
+    display: none;
+  }
+  .header-right {
+    gap: 3px;
+  }
+  .header-right .pill-btn {
+    padding: 3px 7px;
+    font-size: 0.75rem;
+  }
+  .header-right .btn-text {
+    display: none;
+  }
+  .speed-control-box {
+    display: none;
+  }
+  .voice-select {
+    max-width: 95px;
+    font-size: 0.7rem;
+    padding: 2px 4px;
+  }
+  .star-badge {
+    padding: 2px 7px;
+  }
+  .star-badge .star-label {
+    display: none;
+  }
+  .main-nav {
+    padding: 2px 6px 4px;
+    gap: 4px;
+  }
+  .nav-tab {
+    padding: 3px 9px;
+    font-size: 0.82rem;
+    min-height: 30px;
   }
 
   /* Horizontal swipeable sub-navigation for high-density screen economy */

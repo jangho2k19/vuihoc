@@ -48,6 +48,11 @@ class VietnameseApp {
     this.spellingScore = 0;
     this.compoundsScore = 0;
     this.sentenceScore = 0;
+    this.readingScore = 0;
+    this.currentStoryIndex = 0;
+    this.currentStoryQuestionIndex = 0;
+    this.isReadingFullStory = false;
+    this.readingTimer = null;
 
     this.initElements();
     this.attachEvents();
@@ -108,6 +113,21 @@ class VietnameseApp {
     this.sentenceFeedback = document.getElementById('vnSentenceFeedbackBox');
     this.sentenceScoreEl = document.getElementById('vnSentenceScore');
     this.btnSentenceNew = document.getElementById('btnVnSentenceNew');
+
+    // Reading & Story elements
+    this.storyChipsList = document.getElementById('storyChipsList');
+    this.storyTopicBadge = document.getElementById('storyTopicBadge');
+    this.storyTitle = document.getElementById('storyTitle');
+    this.storyContentBox = document.getElementById('storyContentBox');
+    this.btnPlayFullStory = document.getElementById('btnPlayFullStory');
+    this.btnStopFullStory = document.getElementById('btnStopFullStory');
+    this.storyQuestionText = document.getElementById('storyQuestionText');
+    this.storyOptionsGrid = document.getElementById('storyOptionsGrid');
+    this.storyFeedbackBox = document.getElementById('storyFeedbackBox');
+    this.readingScoreEl = document.getElementById('vnReadingScore');
+    this.btnPrevStory = document.getElementById('btnPrevStory');
+    this.btnNextStory = document.getElementById('btnNextStory');
+    this.storyCounterLabel = document.getElementById('storyCounterLabel');
   }
 
   attachEvents() {
@@ -144,6 +164,9 @@ class VietnameseApp {
           case 'vn-sentence':
             this.loadSentenceQuestion();
             break;
+          case 'vn-reading':
+            this.initReadingView();
+            break;
         }
       });
     });
@@ -177,6 +200,32 @@ class VietnameseApp {
     if (this.btnQuizNew) this.btnQuizNew.addEventListener('click', () => this.loadQuizQuestion());
     if (this.btnRhymeNew) this.btnRhymeNew.addEventListener('click', () => this.loadRhymeQuestion());
     if (this.btnSentenceNew) this.btnSentenceNew.addEventListener('click', () => this.loadSentenceQuestion());
+
+    // Reading Story events
+    if (this.btnPlayFullStory) {
+      this.btnPlayFullStory.addEventListener('click', () => this.playFullStory());
+    }
+    if (this.btnStopFullStory) {
+      this.btnStopFullStory.addEventListener('click', () => this.stopFullStory());
+    }
+    if (this.btnPrevStory) {
+      this.btnPrevStory.addEventListener('click', () => {
+        this.stopFullStory();
+        const total = this.getReadingStories().length;
+        this.currentStoryIndex = (this.currentStoryIndex - 1 + total) % total;
+        this.currentStoryQuestionIndex = 0;
+        this.renderStoryView();
+      });
+    }
+    if (this.btnNextStory) {
+      this.btnNextStory.addEventListener('click', () => {
+        this.stopFullStory();
+        const total = this.getReadingStories().length;
+        this.currentStoryIndex = (this.currentStoryIndex + 1) % total;
+        this.currentStoryQuestionIndex = 0;
+        this.renderStoryView();
+      });
+    }
   }
 
   renderAlphabetGrid() {
@@ -834,6 +883,428 @@ class VietnameseApp {
     setTimeout(() => {
       window.soundSys.speak("Bé hãy xếp các từ thành câu hoàn chỉnh nhé!");
     }, 200);
+  }
+
+  /* ========================================================
+     BÀI ĐỌC HIỂU & KỂ CHUYỆN LỚP 1 (GRADE 1 READING COMPREHENSION)
+     ======================================================== */
+  getReadingStories() {
+    return [
+      {
+        id: 'doi_ban_than',
+        title: '🐰 Đôi Bạn Thân (Thỏ Trắng & Sóc Nâu)',
+        topic: '🌟 Tình Bạn & Sẻ Chia',
+        icon: '🐰',
+        paragraphs: [
+          [
+            'Trong khu rừng xanh, Thỏ Trắng và Sóc Nâu là đôi bạn rất thân.',
+            'Một hôm trời đổ mưa to, Thỏ Trắng không tìm được thức ăn và bị đói.'
+          ],
+          [
+            'Sóc Nâu liền chạy sang, mang cho Thỏ một củ cà rốt to và vài hạt dẻ thơm ngon.',
+            'Thỏ Trắng cảm động nói: "Cảm ơn bạn Sóc Nâu nhiều lắm!"'
+          ],
+          [
+            'Khi trời hửng nắng, hai bạn lại cùng nhau vui vẻ nhảy múa dưới bóng cây xanh mát.'
+          ]
+        ],
+        questions: [
+          {
+            q: 'Ai là bạn thân của Thỏ Trắng trong khu rừng xanh?',
+            options: ['Bạn Sóc Nâu tốt bụng', 'Chó Sói hung dữ', 'Bác Gấu Đen'],
+            correct: 0,
+            explain: 'Đúng rồi bé ơi! Thỏ Trắng và Sóc Nâu là đôi bạn thân thiết luôn giúp đỡ nhau!'
+          },
+          {
+            q: 'Khi trời mưa to, Sóc Nâu đã mang thức ăn gì sang cho Thỏ Trắng?',
+            options: ['Một củ cà rốt to và hạt dẻ', 'Chiếc bánh kẹo ngọt', 'Một chùm quả dại'],
+            correct: 0,
+            explain: 'Chính xác! Sóc Nâu mang củ cà rốt và hạt dẻ sang chia sẻ với bạn Thỏ!'
+          },
+          {
+            q: 'Câu chuyện khuyên các bé điều gì?',
+            options: ['Biết yêu thương và chia sẻ với bạn bè khi gặp khó khăn', 'Thích trời mưa to để ở nhà', 'Chỉ chơi một mình trong rừng'],
+            correct: 0,
+            explain: 'Bé thật thông minh! Bạn bè phải biết quan tâm, sẻ chia và giúp đỡ lẫn nhau!'
+          }
+        ]
+      },
+      {
+        id: 'bong_hoa_niem_vui',
+        title: '🌸 Bông Hoa Niềm Vui (Bé Mai & Bà)',
+        topic: '❤️ Lòng Hiếu Thảo & Yêu Thương',
+        icon: '🌸',
+        paragraphs: [
+          [
+            'Sáng sớm thức dậy, bé Mai thấy bà ngoại bị mệt và nằm nghỉ trên giường.',
+            'Mai nhẹ nhàng chạy ra vườn hoa trước hiên nhà.'
+          ],
+          [
+            'Bé chọn một bông hoa cúc vàng rực rỡ nhất mang vào cắm ở đầu giường tặng bà.',
+            'Bà ôm Mai vào lòng và mỉm cười: "Nhìn thấy hoa đẹp và cháu ngoan, bà thấy khoẻ hơn rồi!"'
+          ],
+          [
+            'Mai vui sướng nở nụ cười tươi như những bông hoa mùa xuân.'
+          ]
+        ],
+        questions: [
+          {
+            q: 'Khi thấy bà ngoại bị mệt, bạn Mai đã làm gì?',
+            options: ['Hái bông hoa cúc vàng rực rỡ tặng bà', 'Bật ti vi xem hoạt hình', 'Ngồi khóc nhè một mình'],
+            correct: 0,
+            explain: 'Tuyệt vời! Mai rất hiếu thảo, hái hoa cúc thơm ngát để làm bà vui!'
+          },
+          {
+            q: 'Khi nhận được hoa của Mai, bà ngoại cảm thấy thế nào?',
+            options: ['Bà mỉm cười và thấy khoẻ hơn nhiều', 'Bà cảm thấy mệt hơn', 'Bà bảo Mai đi ra ngoài'],
+            correct: 0,
+            explain: 'Bé giỏi lắm! Tình yêu thương của Mai đã giúp bà cảm thấy khoẻ khoắn hơn!'
+          },
+          {
+            q: 'Qua câu chuyện, bé học tập được đức tính gì ở bạn Mai?',
+            options: ['Lòng hiếu thảo, biết chăm sóc và yêu thương ông bà', 'Thích hái hoa trong vườn', 'Dậy thật sớm để chơi đùa'],
+            correct: 0,
+            explain: 'Chính xác! Bé ngoan luôn biết quan tâm, chăm sóc ông bà và cha mẹ!'
+          }
+        ]
+      },
+      {
+        id: 'rua_va_tho',
+        title: '🐢 Rùa Và Thỏ Chạy Thi',
+        topic: '🏆 Tính Kiên Trì & Không Kiêu Ngạo',
+        icon: '🐢',
+        paragraphs: [
+          [
+            'Thỏ tự hào mình chạy nhanh, liền rủ Rùa chạy thi lên đỉnh đồi.',
+            'Khi bắt đầu, Thỏ cậy tài chạy vụt lên phía trước rồi nằm ngủ say dưới bóng cây mát.'
+          ],
+          [
+            'Rùa biết mình chậm chạp nên chăm chỉ bước từng bước, không hề nghỉ ngơi.',
+            'Đến khi Thỏ giật mình tỉnh giấc thì Rùa đã kiên trì chạm vạch đích từ lúc nào.'
+          ],
+          [
+            'Tất cả muông thú trong rừng đều reo hò chúc mừng chú Rùa chăm chỉ và khiêm tốn.'
+          ]
+        ],
+        questions: [
+          {
+            q: 'Vì sao bạn Thỏ lại bị thua trong cuộc thi chạy?',
+            options: ['Vì Thỏ chủ quan, kiêu ngạo và nằm ngủ quên', 'Vì Thỏ bị đau chân', 'Vì đường chạy quá xa'],
+            correct: 0,
+            explain: 'Đúng rồi! Thỏ cậy chạy nhanh nên chủ quan, ngủ quên dưới gốc cây!'
+          },
+          {
+            q: 'Chú Rùa đã làm gì để giành chiến thắng cuộc đua?',
+            options: ['Kiên trì bước từng bước, chăm chỉ không bỏ cuộc', 'Nhờ chim bồ câu cõng bay đi', 'Rùa chạy tắt qua đường mòn'],
+            correct: 0,
+            explain: 'Xuất sắc! Sự chăm chỉ và bền bỉ đã giúp bạn Rùa về đích đầu tiên!'
+          },
+          {
+            q: 'Bài học ý nghĩa nhất từ câu chuyện là gì?',
+            options: ['Kiên trì nhẫn nại sẽ thành công, không được kiêu căng', 'Chạy nhanh là giỏi nhất', 'Nên ngủ dưới gốc cây'],
+            correct: 0,
+            explain: 'Hoan hô bé! Dù làm việc gì, kiên trì và khiêm tốn luôn đem lại kết quả tốt đẹp!'
+          }
+        ]
+      },
+      {
+        id: 'ngoi_truong_moi',
+        title: '🏫 Ngôi Trường Mới Của Bé',
+        topic: '🎒 Tình Yêu Mái Trường & Thầy Cô',
+        icon: '🏫',
+        paragraphs: [
+          [
+            'Năm nay bé vào lớp một ở một ngôi trường tiểu học khang trang và xinh đẹp.',
+            'Sân trường rợp bóng cây bàng xanh mát và những bồn hoa mười giờ đỏ thắm.'
+          ],
+          [
+            'Cô giáo đón bé ở cửa lớp với nụ cười dịu hiền và ánh mắt trìu mến.',
+            'Bé được học chữ cái, học làm toán, vẽ tranh và có thêm nhiều người bạn mới.'
+          ],
+          [
+            'Mỗi ngày cắp sách đến trường với bé là một ngày tràn ngập niềm vui và tiếng cười.'
+          ]
+        ],
+        questions: [
+          {
+            q: 'Sân trường của bé có những loài cây và hoa gì đẹp mắt?',
+            options: ['Cây bàng rợp bóng mát và hoa mười giờ đỏ thắm', 'Cây dừa và hoa sen', 'Cây chuối và hoa mai'],
+            correct: 0,
+            explain: 'Đúng rồi bé ơi! Sân trường rợp bóng cây bàng và rực rỡ hoa mười giờ!'
+          },
+          {
+            q: 'Cô giáo đón các em học sinh với nét mặt như thế nào?',
+            options: ['Với nụ cười dịu hiền và ánh mắt trìu mến', 'Nghiêm nghị không cười', 'Đang vội vã đi chấm bài'],
+            correct: 0,
+            explain: 'Chính xác! Cô giáo lớp một hiền như người mẹ thứ hai của bé vậy!'
+          },
+          {
+            q: 'Mỗi ngày đến trường mang lại cảm xúc gì cho bé?',
+            options: ['Tràn ngập niềm vui, tình bạn và nhiều kiến thức bổ ích', 'Bé cảm thấy buồn ngủ', 'Bé muốn về nhà ngay'],
+            correct: 0,
+            explain: 'Tuyệt vời! Mỗi ngày đến trường là một ngày vui của các bé lớp một!'
+          }
+        ]
+      },
+      {
+        id: 'dan_ga_con',
+        title: '🐥 Đàn Gà Con Của Bà',
+        topic: '🌾 Yêu Lao Động & Thế Giới Loài Vật',
+        icon: '🐥',
+        paragraphs: [
+          [
+            'Mẹ gà mái ấp ủ mười quả trứng tròn trong ổ rơm rạ ấm áp suốt mấy tuần qua.',
+            'Hôm nay, những quả trứng tí hon đồng loạt khẽ kêu lách tách rồi nứt vỏ.'
+          ],
+          [
+            'Mười chú gà con chui ra, bộ lông vàng óng ả mềm mại như những cục bông tròn xoe.',
+            'Bé vui vẻ giúp bà mang đĩa gạo tấm ra cho đàn gà con ăn bữa đầu tiên.'
+          ],
+          [
+            'Đàn gà con líu ríu chạy quanh chân bé, trông thật ngộ nghĩnh và đáng yêu.'
+          ]
+        ],
+        questions: [
+          {
+            q: 'Những chú gà con mới nở trông giống như vật gì?',
+            options: ['Như những cục bông tròn xoe vàng óng ả', 'Như những chiếc lá khô', 'Như những viên bi lăn'],
+            correct: 0,
+            explain: 'Đúng rồi bé ơi! Lông gà con vàng óng như những cục bông nhỏ xíu!'
+          },
+          {
+            q: 'Bé đã giúp bà ngoại làm công việc gì?',
+            options: ['Mang đĩa gạo tấm cho đàn gà con ăn', 'Đi đào giun đất', 'Làm chuồng gà mới'],
+            correct: 0,
+            explain: 'Bé ngoan lắm! Bé biết giúp bà cho đàn gà ăn những hạt gạo tấm thơm lành!'
+          },
+          {
+            q: 'Tiếng kêu líu ríu của đàn gà con thể hiện điều gì?',
+            options: ['Đàn gà vui vẻ, quấn quýt bên chân bé', 'Đàn gà đang giận dữ', 'Đàn gà sợ hãi'],
+            correct: 0,
+            explain: 'Hoan hô bé! Đàn gà con rất vui và cảm ơn bé đã cho chúng ăn no!'
+          }
+        ]
+      }
+    ];
+  }
+
+  initReadingView() {
+    this.renderStoryChips();
+    this.renderStoryView();
+    setTimeout(() => {
+      window.soundSys.speak("Chào bé yêu! Bé hãy cùng cô đọc truyện và trả lời các câu hỏi đọc hiểu nhé!");
+    }, 250);
+  }
+
+  renderStoryChips() {
+    if (!this.storyChipsList) return;
+    this.storyChipsList.innerHTML = '';
+    const stories = this.getReadingStories();
+
+    stories.forEach((story, idx) => {
+      const chip = document.createElement('button');
+      chip.className = 'story-chip' + (idx === this.currentStoryIndex ? ' active' : '');
+      chip.innerHTML = `<span>${story.icon}</span> <span>${story.title.split('(')[0].trim()}</span>`;
+      chip.addEventListener('click', () => {
+        this.selectStory(idx);
+      });
+      this.storyChipsList.appendChild(chip);
+    });
+  }
+
+  selectStory(index) {
+    this.stopFullStory();
+    this.currentStoryIndex = index;
+    this.currentStoryQuestionIndex = 0;
+    this.renderStoryChips();
+    this.renderStoryView();
+  }
+
+  renderStoryView() {
+    const stories = this.getReadingStories();
+    const story = stories[this.currentStoryIndex];
+    if (!story) return;
+
+    if (this.storyTopicBadge) this.storyTopicBadge.textContent = story.topic;
+    if (this.storyTitle) this.storyTitle.textContent = story.title;
+    if (this.storyCounterLabel) {
+      this.storyCounterLabel.textContent = `Truyện ${this.currentStoryIndex + 1} / ${stories.length}`;
+    }
+
+    // Render paragraphs and clickable sentences
+    if (this.storyContentBox) {
+      this.storyContentBox.innerHTML = '';
+      story.paragraphs.forEach(paragraph => {
+        const pEl = document.createElement('p');
+        pEl.className = 'story-paragraph';
+
+        paragraph.forEach((sentenceText, sIdx) => {
+          const span = document.createElement('span');
+          span.className = 'story-sentence';
+          span.textContent = sentenceText + ' ';
+          span.title = 'Chạm vào để nghe đọc câu này nha!';
+          span.addEventListener('click', () => {
+            this.speakSentence(sentenceText, span);
+          });
+          pEl.appendChild(span);
+        });
+
+        this.storyContentBox.appendChild(pEl);
+      });
+    }
+
+    // Reset controls
+    if (this.btnPlayFullStory) this.btnPlayFullStory.style.display = 'inline-flex';
+    if (this.btnStopFullStory) this.btnStopFullStory.style.display = 'none';
+
+    // Render current question
+    this.renderStoryQuestion();
+  }
+
+  speakSentence(text, el) {
+    this.stopFullStory();
+    document.querySelectorAll('.story-sentence').forEach(s => s.classList.remove('active-speaking'));
+    if (el) el.classList.add('active-speaking');
+
+    window.soundSys.speak(text, () => {
+      if (el) el.classList.remove('active-speaking');
+    });
+  }
+
+  playFullStory() {
+    const stories = this.getReadingStories();
+    const story = stories[this.currentStoryIndex];
+    if (!story) return;
+
+    this.isReadingFullStory = true;
+    if (this.btnPlayFullStory) this.btnPlayFullStory.style.display = 'none';
+    if (this.btnStopFullStory) this.btnStopFullStory.style.display = 'inline-flex';
+
+    // Collect all sentence spans
+    const sentenceSpans = Array.from(this.storyContentBox.querySelectorAll('.story-sentence'));
+    let currentIdx = 0;
+
+    const readNext = () => {
+      if (!this.isReadingFullStory || currentIdx >= sentenceSpans.length) {
+        this.stopFullStory();
+        return;
+      }
+
+      sentenceSpans.forEach(s => s.classList.remove('active-speaking'));
+      const span = sentenceSpans[currentIdx];
+      span.classList.add('active-speaking');
+
+      const text = span.textContent.trim();
+      currentIdx++;
+
+      window.soundSys.speak(text, () => {
+        span.classList.remove('active-speaking');
+        if (this.isReadingFullStory) {
+          this.readingTimer = setTimeout(readNext, 450);
+        }
+      });
+    };
+
+    readNext();
+  }
+
+  stopFullStory() {
+    this.isReadingFullStory = false;
+    if (this.readingTimer) {
+      clearTimeout(this.readingTimer);
+      this.readingTimer = null;
+    }
+    if (window.soundSys) window.soundSys.stop();
+
+    if (this.btnPlayFullStory) this.btnPlayFullStory.style.display = 'inline-flex';
+    if (this.btnStopFullStory) this.btnStopFullStory.style.display = 'none';
+
+    if (this.storyContentBox) {
+      this.storyContentBox.querySelectorAll('.story-sentence').forEach(s => s.classList.remove('active-speaking'));
+    }
+  }
+
+  renderStoryQuestion() {
+    const stories = this.getReadingStories();
+    const story = stories[this.currentStoryIndex];
+    if (!story || !story.questions) return;
+
+    const q = story.questions[this.currentStoryQuestionIndex];
+    if (!q) return;
+
+    if (this.storyQuestionText) {
+      this.storyQuestionText.textContent = `Câu ${this.currentStoryQuestionIndex + 1}: ${q.q}`;
+    }
+
+    if (this.storyFeedbackBox) {
+      this.storyFeedbackBox.style.display = 'none';
+      this.storyFeedbackBox.className = 'story-feedback-box';
+      this.storyFeedbackBox.textContent = '';
+    }
+
+    if (this.storyOptionsGrid) {
+      this.storyOptionsGrid.innerHTML = '';
+      const letters = ['A', 'B', 'C'];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'story-option-btn';
+        btn.innerHTML = `
+          <span class="opt-badge">${letters[optIdx]}</span>
+          <span class="opt-text">${optText}</span>
+        `;
+        btn.addEventListener('click', () => {
+          this.handleStoryAnswer(optIdx, btn, q, story);
+        });
+        this.storyOptionsGrid.appendChild(btn);
+      });
+    }
+  }
+
+  handleStoryAnswer(selectedIdx, btn, q, story) {
+    const allBtns = this.storyOptionsGrid.querySelectorAll('.story-option-btn');
+    allBtns.forEach(b => b.style.pointerEvents = 'none');
+
+    if (selectedIdx === q.correct) {
+      btn.classList.add('correct');
+      window.soundSys.playCorrect();
+      this.storyFeedbackBox.className = 'story-feedback-box correct';
+      this.storyFeedbackBox.textContent = `🎉 Tuyệt vời! ${q.explain}`;
+      this.storyFeedbackBox.style.display = 'block';
+
+      this.readingScore += 1;
+      if (this.readingScoreEl) this.readingScoreEl.textContent = this.readingScore;
+
+      window.rewards.addStars(1, "Bé trả lời đúng câu hỏi đọc hiểu!");
+      window.soundSys.speak(`Đúng rồi bé ơi! ${q.explain}`);
+
+      // Move to next question or notify story completed
+      setTimeout(() => {
+        if (this.currentStoryQuestionIndex + 1 < story.questions.length) {
+          this.currentStoryQuestionIndex++;
+          this.renderStoryQuestion();
+        } else {
+          // Completed all questions for this story
+          window.soundSys.playCelebration();
+          window.rewards.addStars(2, "Bé đã hoàn thành xuất sắc câu chuyện!");
+          this.storyFeedbackBox.textContent = `🌟 Hoan hô! Bé đã tìm hiểu xong câu chuyện "${story.title}"! Bé hãy chọn truyện tiếp theo để đọc nhé!`;
+          window.soundSys.speak(`Hoan hô! Bé đã tìm hiểu xong toàn bộ câu chuyện rồi, bé giỏi lắm!`);
+        }
+      }, 3500);
+
+    } else {
+      btn.classList.add('wrong');
+      window.soundSys.playWrong();
+      this.storyFeedbackBox.className = 'story-feedback-box wrong';
+      this.storyFeedbackBox.textContent = `Chưa chính xác rồi bé ơi! Bé cùng nghe lại câu chuyện và chọn lại nhé!`;
+      this.storyFeedbackBox.style.display = 'block';
+      window.soundSys.speak("Chưa đúng rồi bé ơi, bé suy nghĩ và chọn lại nhé!");
+
+      setTimeout(() => {
+        btn.classList.remove('wrong');
+        allBtns.forEach(b => b.style.pointerEvents = 'auto');
+      }, 2000);
+    }
   }
 }
 

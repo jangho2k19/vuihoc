@@ -179,7 +179,7 @@
           <div class="card-badge">Giọng Nữ Nam</div>
           <div class="card-icon-big">🔤</div>
           <h3>Tiếng Việt Kỳ Thú</h3>
-          <p>Bảng 29 chữ cái, 5 dấu thanh, mẹo chính tả c/k, g/gh, ng/ngh và xếp từ thành câu!</p>
+          <p>Bảng 29 chữ cái, 5 dấu thanh, mẹo chính tả, xếp từ thành câu và Đọc hiểu kể chuyện sinh động!</p>
           <span class="card-cta">Khám phá ➜</span>
         </div>
 
@@ -313,6 +313,7 @@
           <button class="sub-btn" data-sub="vn-quiz">❓ Bé Chọn Chữ Đúng</button>
           <button class="sub-btn" data-sub="vn-rhyme">🧩 Bé Ghép Vần</button>
           <button class="sub-btn" data-sub="vn-sentence">📝 Xếp Câu Hoàn Chỉnh</button>
+          <button class="sub-btn" data-sub="vn-reading">📖 Đọc Hiểu & Kể Chuyện</button>
         </div>
       </div>
 
@@ -435,6 +436,74 @@
           <div class="question-display-area" id="vnSentenceQuestionArea"></div>
           <div class="answers-area" id="vnSentenceAnswersArea"></div>
           <div class="feedback-box" id="vnSentenceFeedbackBox"></div>
+        </div>
+      </div>
+
+      <!-- VN Reading & Story Comprehension Sub-view -->
+      <div id="sub-vn-reading" class="vn-sub-view">
+        <div class="reading-view-wrapper">
+          <!-- Story Selector Chips -->
+          <div class="story-selector-bar">
+            <div class="selector-title">
+              <span class="selector-icon">📚</span>
+              <strong>Chọn Truyện Kể Lớp 1:</strong>
+            </div>
+            <div class="story-chips-list" id="storyChipsList">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Main Story Reader Card -->
+          <div class="reading-reader-card">
+            <div class="story-card-header">
+              <div class="story-meta">
+                <span class="story-topic-badge" id="storyTopicBadge">🌟 Tình Bạn & Sẻ Chia</span>
+                <h3 class="story-title" id="storyTitle">🐰 Đôi Bạn Thân (Thỏ Trắng & Sóc Nâu)</h3>
+                <p class="story-hint">💡 <em>Mẹo cho bé: Bấm vào từng câu để nghe cô đọc câu đó, hoặc bấm nút dưới để nghe toàn bài nhé!</em></p>
+              </div>
+              <div class="story-header-actions">
+                <button class="btn-read-audio" id="btnPlayFullStory">
+                  <span class="action-emoji">🔊</span>
+                  <span>Nghe Cô Đọc Cả Bài</span>
+                </button>
+                <button class="btn-read-audio btn-stop-audio" id="btnStopFullStory" style="display:none;">
+                  <span class="action-emoji">⏹️</span>
+                  <span>Dừng Đọc</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Story Text Box with Interactive Sentences -->
+            <div class="story-content-box" id="storyContentBox">
+              <!-- Injected dynamically -->
+            </div>
+
+            <!-- Reading Comprehension Quiz -->
+            <div class="story-quiz-container">
+              <div class="quiz-banner-header">
+                <div class="quiz-banner-title">
+                  <span class="quiz-emoji">❓</span>
+                  <h4>Bé Tìm Hiểu Bài (Câu hỏi đọc hiểu)</h4>
+                </div>
+                <div class="quiz-score-badge">
+                  <span>Điểm đọc hiểu: </span>
+                  <strong id="vnReadingScore">0</strong>
+                </div>
+              </div>
+
+              <div class="story-question-card">
+                <div class="story-question-text" id="storyQuestionText">Đang tải câu hỏi...</div>
+                <div class="story-options-grid" id="storyOptionsGrid"></div>
+                <div class="story-feedback-box" id="storyFeedbackBox"></div>
+              </div>
+
+              <div class="story-nav-footer">
+                <button class="small-pill-btn" id="btnPrevStory">⬅️ Truyện trước</button>
+                <span class="story-counter-label" id="storyCounterLabel">Truyện 1 / 5</span>
+                <button class="small-pill-btn" id="btnNextStory">Truyện tiếp theo ➡️</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

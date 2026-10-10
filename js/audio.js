@@ -98,52 +98,34 @@ class SoundSystem {
   }
 
   setVoice(voiceId) {
-    this.selectedVoiceId = voiceId;
-    this.serverVoice = voiceId;
+    this.selectedVoiceId = 'vi-VN-HoaiMyNeural';
+    this.serverVoice = 'vi-VN-HoaiMyNeural';
     try {
-      localStorage.setItem('vuon_tuoi_tho_voice', voiceId);
+      localStorage.setItem('vuon_tuoi_tho_voice', 'vi-VN-HoaiMyNeural');
     } catch (e) {}
-
-    // Match device voice if browser mode
-    if (voiceId === 'browser') {
-      if (this.hasSouthernDeviceVoice && this.southernVoice) {
-        this.vietnameseVoice = this.southernVoice;
-      } else if (this.allViVoices && this.allViVoices.length > 0) {
-        this.vietnameseVoice = this.allViVoices[0];
-      }
-    }
 
     this.updateVoiceUI();
   }
 
   setServerVoice(voiceId) {
-    this.setVoice(voiceId);
+    this.setVoice('vi-VN-HoaiMyNeural');
   }
 
   getVoiceTitle(voiceId) {
-    const id = voiceId || this.selectedVoiceId;
-    switch(id) {
-      case 'vi-VN-NamMinhNeural':
-        return { name: 'Thầy giáo Nam Minh (Nam miền Bắc)', short: 'Thầy Nam Minh', icon: '👨‍🏫' };
-      case 'google-fast':
-        return { name: 'Google Tiếng Việt Siêu Tốc (Nữ nhanh)', short: 'Google Siêu Tốc', icon: '⚡' };
-      case 'browser':
-        const devName = this.hasSouthernDeviceVoice ? 'Giọng Thiết Bị (Cô Linh miền Nam)' : 'Giọng Thiết Bị (Web Speech)';
-        const devShort = this.hasSouthernDeviceVoice ? 'Cô Linh (Nam)' : 'Giọng Thiết Bị';
-        return { name: devName, short: devShort, icon: '📱' };
-      case 'vi-VN-HoaiMyNeural':
-      default:
-        return { name: 'Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng)', short: 'Cô Hoài My', icon: '👩‍🏫' };
-    }
+    return { 
+      name: 'Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng, chuẩn sư phạm Lớp 1)', 
+      short: 'Cô Hoài My', 
+      icon: '👩‍🏫' 
+    };
   }
 
   updateVoiceUI() {
-    const info = this.getVoiceTitle(this.selectedVoiceId);
+    const info = this.getVoiceTitle();
     
     // Header Status Badge
     const statusText = document.getElementById('voiceStatusText');
     if (statusText) {
-      statusText.textContent = `Giọng: ${info.short}`;
+      statusText.textContent = info.short;
     }
 
     // Header voice button icon
@@ -151,56 +133,34 @@ class SoundSystem {
     if (voiceBtn) {
       const iconSpan = voiceBtn.querySelector('.btn-icon');
       if (iconSpan) iconSpan.textContent = info.icon;
+      voiceBtn.title = 'Giọng đọc chuẩn: Cô giáo Hoài My (Bấm để nghe cô chào)';
     }
 
     // Dropdown Sync
     const select = document.getElementById('voiceSelect');
     if (select) {
-      const devLabel = this.hasSouthernDeviceVoice 
-        ? '📱 Giọng Thiết Bị (Cô Linh miền Nam)' 
-        : '📱 Giọng Thiết Bị (Hỗ trợ giọng miền Nam trên iOS/Mac)';
-
       select.innerHTML = `
-        <option value="vi-VN-HoaiMyNeural">👩‍🏫 Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng)</option>
-        <option value="vi-VN-NamMinhNeural">👨‍🏫 Thầy giáo Nam Minh (Nam miền Bắc - Rõ ràng)</option>
-        <option value="google-fast">⚡ Google Tiếng Việt Siêu Tốc (Nữ nhanh)</option>
-        <option value="browser">${devLabel}</option>
+        <option value="vi-VN-HoaiMyNeural">👩‍🏫 Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng, chuẩn sư phạm Lớp 1)</option>
       `;
-      select.value = this.selectedVoiceId;
+      select.value = 'vi-VN-HoaiMyNeural';
     }
 
     // Voice Modal Cards Highlight
     document.querySelectorAll('.voice-studio-card').forEach(card => {
       const cardVoiceId = card.dataset.voiceId;
-      const isSelected = (cardVoiceId === this.selectedVoiceId);
+      const isSelected = (cardVoiceId === 'vi-VN-HoaiMyNeural');
       card.classList.toggle('selected', isSelected);
       const selectBtn = card.querySelector('.btn-select-voice');
       if (selectBtn) {
         selectBtn.textContent = isSelected ? '✓ Đang Dùng' : 'Chọn Giọng Này';
         selectBtn.classList.toggle('active', isSelected);
       }
-
-      // If this is the browser card and Southern voice is found, enhance badge
-      if (cardVoiceId === 'browser' && this.hasSouthernDeviceVoice && this.southernVoice) {
-        const regionEl = card.querySelector('.voice-region');
-        if (regionEl) {
-          regionEl.innerHTML = `🌸 Đã nhận diện giọng miền Nam: <strong>${this.southernVoice.name}</strong>`;
-        }
-      }
     });
   }
 
   previewVoice(voiceId) {
-    const sampleMap = {
-      'vi-VN-HoaiMyNeural': 'Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!',
-      'vi-VN-NamMinhNeural': 'Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!',
-      'google-fast': 'Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!',
-      'browser': (this.hasSouthernDeviceVoice) 
-        ? 'Dạ cô Linh chào bé! Chúc bé một ngày học tập thật vui vẻ và đạt nhiều điểm mười nghen!' 
-        : 'Chào bé! Đây là giọng đọc thiết bị trên máy của bé.'
-    };
-    const sampleText = sampleMap[voiceId] || 'Cô giáo chào bé nhé!';
-    this.speakWithVoice(sampleText, voiceId);
+    const sampleText = 'Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!';
+    this.speakWithVoice(sampleText, 'vi-VN-HoaiMyNeural');
   }
 
   setSpeechRate(preset, save = true) {
@@ -401,7 +361,8 @@ class SoundSystem {
   speakWithVoice(text, voiceId) {
     if (!this.soundEnabled || !text) return;
 
-    const activeVoiceId = voiceId || this.selectedVoiceId || 'vi-VN-HoaiMyNeural';
+    // Exclusively use Cô giáo Hoài My Neural Voice
+    const activeVoiceId = 'vi-VN-HoaiMyNeural';
 
     // Visual speaking indicator on the teacher badge
     const voiceBtn = document.getElementById('btnVoiceTest');
@@ -424,23 +385,6 @@ class SoundSystem {
     }
 
     setSpeaking(true);
-
-    // Mode: Browser Device Voice (Web Speech API - 0ms offline)
-    if (activeVoiceId === 'browser') {
-      try {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.lang = 'vi-VN';
-        utterance.rate = this.voiceRate || 0.86;
-        utterance.pitch = this.voicePitch || 1.25;
-        if (this.vietnameseVoice) utterance.voice = this.vietnameseVoice;
-        utterance.onend = () => setSpeaking(false);
-        utterance.onerror = () => setSpeaking(false);
-        this.speechSynth.speak(utterance);
-      } catch (e) {
-        setSpeaking(false);
-      }
-      return;
-    }
 
     // Map rate preset to Edge-TTS rate string
     let rateParam = '+0%';

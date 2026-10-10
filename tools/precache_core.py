@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE_DIR = os.path.join(BASE_DIR, "audio_cache")
 os.makedirs(CACHE_DIR, exist_ok=True)
 
-VOICES = ["vi-VN-HoaiMyNeural", "vi-VN-NamMinhNeural"]
+VOICES = ["vi-VN-HoaiMyNeural"]
 
 ALPHABET = [
     ('A', 'Con Gà'), ('Ă', 'Mặt Trăng'), ('Â', 'Cây Nấm'),
@@ -36,9 +36,7 @@ ALPHABET = [
 ]
 
 PREVIEWS = {
-    "vi-VN-HoaiMyNeural": "Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!",
-    "vi-VN-NamMinhNeural": "Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!",
-    "google-fast": "Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!"
+    "vi-VN-HoaiMyNeural": "Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!"
 }
 
 PROMPTS = [

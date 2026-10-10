@@ -64,14 +64,11 @@
           <button class="speed-pill-btn" data-speed="fast" title="Đọc nhanh">Nhanh</button>
         </div>
 
-        <!-- Voice Selector & Test Button -->
-        <div class="voice-picker-box">
-          <button id="btnVoiceTest" class="pill-btn voice-btn active" title="Bấm để chọn giọng đọc và nghe thử">
-            <span class="btn-icon">👩‍🏫</span>
-            <span class="btn-text" id="voiceStatusText">Giọng: Cô Hoài My</span>
-          </button>
-          <select id="voiceSelect" class="voice-select" title="Đổi nhanh giọng đọc"></select>
-        </div>
+        <!-- Teacher Voice Greeting Button -->
+        <button id="btnVoiceTest" class="pill-btn voice-btn active" title="Giọng đọc: Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng, chuẩn sư phạm Lớp 1)">
+          <span class="btn-icon">👩‍🏫</span>
+          <span class="btn-text" id="voiceStatusText">Cô Hoài My</span>
+        </button>
 
         <!-- Lucky Wheel Header Button -->
         <button id="btnOpenLuckyWheel" class="pill-btn lucky-wheel-btn" title="Quay Vòng May Mắn nhận sao">
@@ -966,84 +963,33 @@
   <div class="app-modal" id="voiceStudioModal" role="dialog" aria-modal="true" aria-labelledby="voiceStudioModalTitle">
     <div class="modal-card voice-modal-card">
       <div class="modal-header">
-        <h3 id="voiceStudioModalTitle">🎙️ Phòng Chọn Giọng Đọc & Âm Thanh</h3>
+        <h3 id="voiceStudioModalTitle">👩‍🏫 Giọng Đọc Chuẩn Lớp 1: Cô Giáo Hoài My</h3>
         <button class="modal-close-btn" id="btnCloseVoiceModal" aria-label="Đóng">✕</button>
       </div>
       <div class="modal-body voice-modal-body">
-        <p class="modal-subtitle">Bé và phụ huynh có thể chọn giọng nói truyền cảm yêu thích nhất, phát âm chuẩn rõ ràng và không độ trễ:</p>
+        <p class="modal-subtitle">Toàn bộ bài học và trò chơi được phát âm chuẩn mực bằng giọng của Cô giáo Hoài My (Nữ miền Bắc – Dịu dàng, chuẩn sư phạm Lớp 1):</p>
 
-        <div class="voice-studio-grid">
-          <!-- Voice 1: Hoài My -->
-          <div class="voice-studio-card selected" data-voice-id="vi-VN-HoaiMyNeural" onclick="window.soundSys.setVoice('vi-VN-HoaiMyNeural')">
+        <div class="voice-studio-grid" style="grid-template-columns: 1fr; max-width: 480px; margin: 0 auto;">
+          <!-- Voice: Hoài My -->
+          <div class="voice-studio-card selected" data-voice-id="vi-VN-HoaiMyNeural">
             <div class="voice-card-top">
               <div class="voice-avatar">👩‍🏫</div>
               <div class="voice-info">
                 <h4>Cô giáo Hoài My</h4>
-                <div class="voice-region">🌸 Nữ miền Bắc • Dịu dàng, chuẩn sư phạm</div>
+                <div class="voice-region">🌸 Nữ miền Bắc • Dịu dàng, chuẩn sư phạm Lớp 1</div>
               </div>
-              <span class="voice-badge-tag neural">🌟 Neural AI</span>
+              <span class="voice-badge-tag neural">🌟 Giọng Chuẩn Duy Nhất</span>
             </div>
-            <p class="voice-desc">Giọng cô giáo Hà Nội dịu dàng, phát âm chuẩn phổ thông, ngữ âm sư phạm rõ ràng, dễ nghe cho bé lớp 1.</p>
+            <p class="voice-desc">Giọng cô giáo Hà Nội dịu dàng, phát âm chuẩn phổ thông, ngữ âm sư phạm rành mạch, rất dễ nghe và truyền cảm hứng cho bé lớp 1.</p>
             <div class="voice-actions">
-              <button class="btn-voice-preview" data-voice-id="vi-VN-HoaiMyNeural" onclick="event.stopPropagation(); window.soundSys.previewVoice('vi-VN-HoaiMyNeural');">▶️ Nghe Thử</button>
-              <button class="btn-select-voice active" data-voice-id="vi-VN-HoaiMyNeural" onclick="event.stopPropagation(); window.soundSys.setVoice('vi-VN-HoaiMyNeural'); window.soundSys.previewVoice('vi-VN-HoaiMyNeural');">✓ Đang Dùng</button>
-            </div>
-          </div>
-
-          <!-- Voice 2: Nam Minh -->
-          <div class="voice-studio-card" data-voice-id="vi-VN-NamMinhNeural" onclick="window.soundSys.setVoice('vi-VN-NamMinhNeural')">
-            <div class="voice-card-top">
-              <div class="voice-avatar">👨‍🏫</div>
-              <div class="voice-info">
-                <h4>Thầy giáo Nam Minh</h4>
-                <div class="voice-region">🌟 Nam miền Bắc • Chuẩn phổ thông, rành mạch</div>
-              </div>
-              <span class="voice-badge-tag neural">🌟 Neural AI</span>
-            </div>
-            <p class="voice-desc">Giọng thầy giáo Hà Nội trầm ấm, phát âm rành mạch từng phụ âm và nguyên âm, rất phù hợp khi luyện bảng chữ cái.</p>
-            <div class="voice-actions">
-              <button class="btn-voice-preview" data-voice-id="vi-VN-NamMinhNeural" onclick="event.stopPropagation(); window.soundSys.previewVoice('vi-VN-NamMinhNeural');">▶️ Nghe Thử</button>
-              <button class="btn-select-voice" data-voice-id="vi-VN-NamMinhNeural" onclick="event.stopPropagation(); window.soundSys.setVoice('vi-VN-NamMinhNeural'); window.soundSys.previewVoice('vi-VN-NamMinhNeural');">Chọn Giọng Này</button>
-            </div>
-          </div>
-
-          <!-- Voice 3: Google Fast -->
-          <div class="voice-studio-card" data-voice-id="google-fast" onclick="window.soundSys.setVoice('google-fast')">
-            <div class="voice-card-top">
-              <div class="voice-avatar">⚡</div>
-              <div class="voice-info">
-                <h4>Google Tiếng Việt Siêu Tốc</h4>
-                <div class="voice-region">🚀 Nữ nhanh (Google AI) • Không độ trễ</div>
-              </div>
-              <span class="voice-badge-tag fast">⚡ Siêu Tốc</span>
-            </div>
-            <p class="voice-desc">Tốc độ cực nhanh ~0.1s, bấm chữ nào nghe ngay lập tức không cần chờ tải, học tập mượt mà nhất.</p>
-            <div class="voice-actions">
-              <button class="btn-voice-preview" data-voice-id="google-fast" onclick="event.stopPropagation(); window.soundSys.previewVoice('google-fast');">▶️ Nghe Thử</button>
-              <button class="btn-select-voice" data-voice-id="google-fast" onclick="event.stopPropagation(); window.soundSys.setVoice('google-fast'); window.soundSys.previewVoice('google-fast');">Chọn Giọng Này</button>
-            </div>
-          </div>
-
-          <!-- Voice 4: Browser Device -->
-          <div class="voice-studio-card" data-voice-id="browser" onclick="window.soundSys.setVoice('browser')">
-            <div class="voice-card-top">
-              <div class="voice-avatar">📱</div>
-              <div class="voice-info">
-                <h4>Giọng Thiết Bị (Web Speech)</h4>
-                <div class="voice-region">🔋 Hỗ trợ giọng miền Nam trên iPhone/iPad/Mac</div>
-              </div>
-              <span class="voice-badge-tag offline">📱 Thiết Bị</span>
-            </div>
-            <p class="voice-desc">Chạy bằng bộ đọc phần cứng của máy. Đặc biệt trên iPhone, iPad hoặc máy tính Mac sẽ tự động phát giọng Nữ miền Nam (Cô Linh) ngọt ngào!</p>
-            <div class="voice-actions">
-              <button class="btn-voice-preview" data-voice-id="browser" onclick="event.stopPropagation(); window.soundSys.previewVoice('browser');">▶️ Nghe Thử</button>
-              <button class="btn-select-voice" data-voice-id="browser" onclick="event.stopPropagation(); window.soundSys.setVoice('browser'); window.soundSys.previewVoice('browser');">Chọn Giọng Này</button>
+              <button class="btn-voice-preview" data-voice-id="vi-VN-HoaiMyNeural" onclick="window.soundSys.previewVoice('vi-VN-HoaiMyNeural');">▶️ Nghe Cô Chào</button>
+              <button class="btn-select-voice active" data-voice-id="vi-VN-HoaiMyNeural">✓ Đang Dùng</button>
             </div>
           </div>
         </div>
 
-        <div class="voice-studio-footer-note">
-          <span>💡 <strong>Lưu ý về giọng miền Nam:</strong> Để nghe giọng miền Nam, bé hãy dùng iPhone, iPad hoặc máy Mac và chọn <em>"Giọng Thiết Bị (Cô Linh miền Nam)"</em>. Giọng Cô Hoài My và Thầy Nam Minh là giọng AI chuẩn Hà Nội (miền Bắc).</span>
+        <div class="voice-studio-footer-note" style="text-align: center;">
+          <span>🌟 <strong>Chuẩn mực âm thanh:</strong> Giọng đọc được phát âm với công nghệ Neural AI cao cấp, chuẩn ngữ âm tiếng Việt và phản hồi tức thì 0ms.</span>
         </div>
       </div>
     </div>

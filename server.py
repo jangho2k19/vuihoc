@@ -36,39 +36,12 @@ _MEM_CACHE = {}
 AVAILABLE_VOICES = [
     {
         "id": "vi-VN-HoaiMyNeural",
-        "name": "Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng, chuẩn sư phạm)",
+        "name": "Cô giáo Hoài My (Nữ miền Bắc - Dịu dàng, chuẩn sư phạm Lớp 1)",
         "desc": "Giọng cô giáo Hà Nội dịu dàng, phát âm chuẩn ngữ âm tiếng Việt phổ thông, rất dễ nghe cho bé lớp 1",
-        "badge": "🌟 Chuẩn Neural AI",
+        "badge": "🌟 Chuẩn Neural AI Lớp 1",
         "type": "neural",
         "preview": "Cô giáo chào các em học sinh yêu quý! Chúc các em một ngày học tập thật vui và đạt nhiều điểm mười nhé!",
         "default": True
-    },
-    {
-        "id": "vi-VN-NamMinhNeural",
-        "name": "Thầy giáo Nam Minh (Nam miền Bắc - Rõ ràng, trầm ấm)",
-        "desc": "Giọng thầy giáo Hà Nội trầm ấm, phát âm rành mạch từng phụ âm và nguyên âm, chuẩn mực ngữ âm",
-        "badge": "🌟 Chuẩn Neural AI",
-        "type": "neural",
-        "preview": "Thầy giáo chào các em học sinh lớp một thân mến! Hôm nay thầy trò mình cùng học thật vui nhé!",
-        "default": False
-    },
-    {
-        "id": "google-fast",
-        "name": "Google Tiếng Việt Siêu Tốc (Nữ nhanh 0.1s)",
-        "desc": "Tốc độ phản hồi cực nhanh ~0.1s, mượt mà, không độ trễ, bấm chữ nào nghe ngay",
-        "badge": "⚡ Siêu Tốc 0.1s",
-        "type": "fast",
-        "preview": "Chào bé yêu! Giọng siêu tốc phát âm cực nhanh, giúp bé bấm chữ nào nghe ngay chữ đó nhé!",
-        "default": False
-    },
-    {
-        "id": "browser",
-        "name": "Giọng Thiết Bị (Hỗ trợ giọng miền Nam trên iOS/Mac)",
-        "desc": "Chạy bằng Web Speech API của máy. Đặc biệt trên iPhone, iPad và Mac sẽ phát giọng Nữ miền Nam (Cô Linh)",
-        "badge": "📱 Thiết Bị / iOS Nam",
-        "type": "browser",
-        "preview": "Chào bé! Đây là giọng đọc thiết bị trên trình duyệt của bé.",
-        "default": False
     }
 ]
 
@@ -104,7 +77,8 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
         if parsed.path == "/api/tts":
             query = urllib.parse.parse_qs(parsed.query)
             text = query.get("text", [""])[0].strip()
-            voice = query.get("voice", [DEFAULT_VOICE])[0].strip() or DEFAULT_VOICE
+            # Exclusively use Cô giáo Hoài My
+            voice = DEFAULT_VOICE
             rate = query.get("rate", ["+0%"])[0].strip() or "+0%"
             
             if not text:
@@ -151,37 +125,27 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
             # Generate on cache miss
             content = None
 
-            # Mode A: Google Ultra-Fast TTS requested
-            if voice in ("google-fast", "google", "fast"):
+            # Exclusively generate with Cô giáo Hoài My Neural Edge TTS
+            edge_voice = DEFAULT_VOICE
+            try:
+                import edge_tts
+                async def fetch_edge():
+                    comm = edge_tts.Communicate(text, edge_voice, rate=rate)
+                    await comm.save(cache_file)
+                
+                asyncio.run(asyncio.wait_for(fetch_edge(), timeout=1.2))
+                if os.path.exists(cache_file) and os.path.getsize(cache_file) > 0:
+                    with open(cache_file, "rb") as f:
+                        content = f.read()
+            except Exception as e:
+                pass
+
+            # Fallback to Google if Edge TTS is momentarily unreachable
+            if not content:
                 try:
                     content = fetch_google_tts(text)
                 except Exception as e:
-                    print(f"[Google TTS Error] {e}", file=sys.stderr)
-
-            # Mode B: Neural Edge TTS requested (HoaiMy or NamMinh)
-            if not content:
-                edge_voice = voice if voice in ("vi-VN-NamMinhNeural", "vi-VN-HoaiMyNeural") else DEFAULT_VOICE
-                try:
-                    import edge_tts
-                    async def fetch_edge():
-                        comm = edge_tts.Communicate(text, edge_voice, rate=rate)
-                        await comm.save(cache_file)
-                    
-                    # 1.0s timeout: if Edge TTS is fast, use it. Otherwise fallback to Google immediately
-                    asyncio.run(asyncio.wait_for(fetch_edge(), timeout=1.0))
-                    if os.path.exists(cache_file) and os.path.getsize(cache_file) > 0:
-                        with open(cache_file, "rb") as f:
-                            content = f.read()
-                except Exception as e:
-                    # Edge TTS timed out or failed, fallback to Google Fast immediately
                     pass
-
-            # Mode C: Fallback to Google Fast if Edge TTS timed out or failed
-            if not content:
-                try:
-                    content = fetch_google_tts(text)
-                except Exception as e:
-                    print(f"[Google Fallback Error] {e}", file=sys.stderr)
 
             if not content:
                 self.send_error(500, "Unable to synthesize Vietnamese audio")

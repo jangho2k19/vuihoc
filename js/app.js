@@ -233,6 +233,15 @@ class MainApp {
         wheelModal.classList.remove('active');
       });
     }
+
+    // Touch-friendly: Dismiss modals when tapping backdrop
+    document.querySelectorAll('.app-modal').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.classList.remove('active');
+        }
+      });
+    });
   }
 
   // --- Mascot Companion Selector Modal ---

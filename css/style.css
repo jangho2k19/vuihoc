@@ -2766,56 +2766,505 @@ body.night-mode .constructed-sentence-box {
   }
 }
 
-/* ================= RESPONSIVE DESIGN ================= */
-@media (max-width: 768px) {
+/* ========================================================
+   COMPREHENSIVE RESPONSIVE DESIGN SYSTEM
+   Laptops (1280px+), Tablets/iPads (768px-1024px),
+   Phablets (481px-767px), Mobile Phones (<= 480px)
+   ======================================================== */
+
+/* --- 1. Small Laptops & Tablets Landscape (max-width: 1200px) --- */
+@media (max-width: 1200px) {
+  .header-container {
+    padding: 10px 16px;
+  }
+  .feature-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .xylophone-container {
+    max-width: 95%;
+  }
+}
+
+/* --- 2. iPads & Medium Tablets (max-width: 1024px) --- */
+@media (max-width: 1024px) {
+  .welcome-banner {
+    padding: 24px;
+    gap: 20px;
+  }
+  .welcome-speech .speech-bubble {
+    padding: 20px 24px;
+  }
+  .speech-bubble h2 {
+    font-size: 1.6rem;
+  }
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+  .science-lessons-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .english-cards-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  .alphabet-grid {
+    grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+  }
+  .xylophone-board {
+    height: 320px;
+    gap: 8px;
+  }
+  .xylo-bar {
+    max-width: 65px;
+  }
+  .memory-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+}
+
+/* --- 3. iPads Portrait & Small Tablets (max-width: 900px) --- */
+@media (max-width: 900px) {
+  .header-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+  }
+  .logo-area {
+    justify-content: center;
+  }
+  .header-right {
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .main-nav {
+    justify-content: flex-start;
+    padding: 8px 12px 10px;
+    gap: 8px;
+  }
+  .nav-tab {
+    flex-shrink: 0;
+    min-height: 44px;
+    padding: 8px 14px;
+    font-size: 0.95rem;
+  }
   .welcome-banner {
     grid-template-columns: 1fr;
     text-align: center;
-    padding: 24px;
   }
   .speech-actions {
     justify-content: center;
+    flex-wrap: wrap;
+  }
+  .welcome-character {
+    order: -1;
   }
   .big-mascot .mascot-body {
-    font-size: 5rem;
+    font-size: 4.8rem;
   }
-  .memory-grid {
-    grid-template-columns: repeat(3, 1fr);
+  .music-guide-box {
+    flex-direction: column;
+    text-align: center;
   }
+  .music-guide-actions {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+/* --- 4. Mobile Phones & Phablets (max-width: 768px) --- */
+@media (max-width: 768px) {
+  /* Safe touch areas */
+  body {
+    padding-left: max(8px, env(safe-area-inset-left));
+    padding-right: max(8px, env(safe-area-inset-right));
+  }
+
   .site-title-box .site-title {
-    font-size: 1.45rem;
+    font-size: 1.55rem;
   }
+  .site-title-box .site-subtitle {
+    font-size: 0.8rem;
+  }
+
+  /* Horizontal swipeable sub-navigation for high-density screen economy */
+  .sub-nav {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    justify-content: flex-start !important;
+    gap: 8px !important;
+    padding: 6px 6px 12px !important;
+    margin: 12px -8px 0 !important;
+  }
+  .sub-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .sub-btn {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    white-space: nowrap;
+    min-height: 42px;
+    padding: 8px 14px;
+    font-size: 0.88rem;
+  }
+
+  .section-hero {
+    padding: 20px 14px;
+    border-radius: var(--radius-md);
+  }
+  .hero-text h2 {
+    font-size: 1.55rem;
+  }
+  .hero-text p {
+    font-size: 0.95rem;
+  }
+
+  /* Game Board Card */
+  .game-board-card {
+    padding: 16px 12px;
+    border-radius: var(--radius-md);
+  }
+  .game-header-bar {
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+  }
+  .game-controls-right {
+    justify-content: space-between;
+  }
+
+  /* Answers area 2x2 grid */
+  .answers-area {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .answer-choice-btn, .btn-choice {
+    min-height: 52px;
+    font-size: 1.25rem;
+    padding: 10px 8px;
+    width: 100%;
+  }
+
+  /* Alphabet Grid */
   .alphabet-grid {
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
+    gap: 8px;
+  }
+  .letter-card {
+    padding: 8px 4px;
   }
   .letter-main {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
   }
   .letter-detail-card {
     flex-direction: column;
     text-align: center;
-  }
-  .xylophone-board {
-    height: 300px;
-    gap: 6px;
-  }
-  .xylo-solfege {
-    font-size: 1.2rem;
-  }
-  .xylo-bar {
-    max-width: 48px;
-    padding: 12px 2px;
-  }
-  .speed-control-box {
-    display: none;
-  }
-  .header-container {
-    flex-direction: column;
+    padding: 16px;
     gap: 12px;
   }
-  .header-right {
+
+  /* English Flashcards */
+  .english-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 0 4px;
+  }
+  .english-flashcard {
+    padding: 14px 8px;
+  }
+  .card-icon-bubble {
+    font-size: 2.6rem;
+  }
+  .card-english-word {
+    font-size: 1.35rem;
+  }
+
+  /* Science Lessons */
+  .science-lessons-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding: 0 4px;
+  }
+  .science-lesson-card {
+    padding: 18px 14px;
+  }
+
+  /* Xylophone Instrument */
+  .xylophone-container {
+    padding: 12px 6px;
+    margin: 16px auto;
+    border-width: 3px;
+  }
+  .xylophone-stand {
+    padding: 18px 4px;
+  }
+  .xylo-beam {
+    left: 8px;
+    right: 8px;
+    height: 12px;
+  }
+  .beam-top { top: 32px; }
+  .beam-bottom { bottom: 32px; }
+  .xylophone-board {
+    height: 270px;
+    gap: 4px;
+  }
+  .xylo-bar {
+    max-width: 46px;
+    min-width: 34px;
+    padding: 10px 2px;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.5), 0 6px 0 rgba(0, 0, 0, 0.18), 0 8px 12px rgba(0, 0, 0, 0.12);
+    touch-action: manipulation;
+  }
+  .xylo-solfege {
+    font-size: 1.05rem;
+  }
+  .xylo-note {
+    font-size: 0.8rem;
+  }
+  .xylo-pin {
+    width: 9px;
+    height: 9px;
+  }
+
+  /* Memory Match Game */
+  .memory-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .memory-card-item {
+    height: 95px;
+  }
+  .card-front-icon, .card-back-icon {
+    font-size: 2.4rem;
+  }
+  .card-back-name {
+    font-size: 0.8rem;
+  }
+
+  /* Drawing App */
+  .drawing-app-card {
+    padding: 14px 10px;
+  }
+  .draw-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .tool-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .template-select {
+    width: 100%;
+  }
+  .color-palette {
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .sticker-selector {
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .action-tools {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+  .btn-action {
+    text-align: center;
+    justify-content: center;
+    min-height: 42px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Modals */
+  .modal-card {
+    padding: 14px 12px;
+    border-radius: var(--radius-md);
+    max-height: 92vh;
+  }
+  .modal-header {
+    padding: 12px 14px;
+  }
+  .modal-header h3 {
+    font-size: 1.25rem;
+  }
+  .modal-body {
+    padding: 14px 10px;
+  }
+  .mascot-picks-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .mascot-pick-card {
+    padding: 12px 6px;
+  }
+  .pick-emoji {
+    font-size: 2.8rem;
+  }
+
+  /* Certificate Paper */
+  .certificate-paper {
+    padding: 12px 8px;
+    border-width: 6px;
+  }
+  .cert-gold-border {
+    padding: 14px 10px;
+  }
+  .cert-title {
+    font-size: 1.45rem;
+  }
+  .cert-student-name {
+    font-size: 1.85rem;
+  }
+  .cert-rank {
+    font-size: 1.05rem;
+  }
+  .cert-footer {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0 0;
+  }
+  .cert-input-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .cert-input-bar input {
+    font-size: 16px; /* Prevents auto-zoom on iOS Safari */
+  }
+  .cert-actions {
+    flex-direction: column;
+  }
+
+  /* Lucky Wheel */
+  #luckyWheelCanvas {
+    max-width: min(290px, 80vw);
+    height: auto;
+  }
+}
+
+/* --- 5. Small Mobile Phones (max-width: 480px) --- */
+@media (max-width: 480px) {
+  .site-title-box .site-title {
+    font-size: 1.35rem;
+  }
+  .mascot-avatar {
+    width: 46px;
+    height: 46px;
+  }
+  .avatar-emoji {
+    font-size: 1.8rem;
+  }
+  .pill-btn {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+  .voice-select {
+    max-width: 125px;
+    font-size: 0.78rem;
+    padding: 4px 8px;
+  }
+
+  /* Streamlined speed selector on small mobile */
+  .speed-control-box {
+    display: inline-flex;
+    padding: 2px 6px;
+    font-size: 0.75rem;
+  }
+  .speed-pill-btn {
+    padding: 2px 6px;
+    font-size: 0.75rem;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .feature-card {
+    padding: 18px 16px;
+  }
+
+  /* Sequence numbers on Math */
+  .sequence-display {
+    gap: 4px;
     flex-wrap: wrap;
     justify-content: center;
   }
+  .seq-box {
+    width: 42px;
+    height: 42px;
+    font-size: 1.25rem;
+  }
+  .seq-arrow {
+    font-size: 0.9rem;
+    margin: 0 1px;
+  }
+
+  /* Xylophone Compact Key Width */
+  .xylophone-board {
+    height: 240px;
+    gap: 3px;
+  }
+  .xylo-bar {
+    max-width: 40px;
+    min-width: 28px;
+    padding: 8px 1px;
+    border-radius: 10px;
+  }
+  .xylo-solfege {
+    font-size: 0.92rem;
+  }
+  .xylo-note {
+    font-size: 0.72rem;
+  }
+
+  /* Memory Cards */
+  .memory-card-item {
+    height: 82px;
+  }
+
+  /* Balloon Game Container */
+  .balloon-sky {
+    height: 380px;
+  }
 }
+
+/* --- 6. Landscape orientation for mobile phones --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .header-container {
+    padding: 6px 14px;
+  }
+  .main-nav {
+    padding: 4px 10px;
+  }
+  .xylophone-board {
+    height: 220px;
+    gap: 8px;
+  }
+  .xylo-bar {
+    max-width: 75px;
+  }
+  .balloon-sky {
+    height: 280px;
+  }
+}
+
 

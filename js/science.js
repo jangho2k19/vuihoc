@@ -254,7 +254,7 @@ class ScienceApp {
       const shuffledChoices = [...qItem.choices].sort(() => Math.random() - 0.5);
       shuffledChoices.forEach(choiceText => {
         const btn = document.createElement('button');
-        btn.className = 'btn-choice sci-choice-btn';
+        btn.className = 'answer-choice-btn btn-choice sci-choice-btn';
         btn.innerHTML = `<span>${choiceText}</span>`;
         btn.addEventListener('click', () => this.handleAnswer(choiceText, btn));
         aArea.appendChild(btn);

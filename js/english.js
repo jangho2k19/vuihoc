@@ -269,7 +269,7 @@ class EnglishApp {
       aArea.innerHTML = '';
       choices.forEach(c => {
         const btn = document.createElement('button');
-        btn.className = 'btn-choice eng-choice-btn';
+        btn.className = 'answer-choice-btn btn-choice eng-choice-btn';
         btn.innerHTML = `<strong>${c.word}</strong> <span class="choice-sub">(${c.ipa})</span>`;
         btn.addEventListener('click', () => this.handleAnswer(c, btn));
         aArea.appendChild(btn);

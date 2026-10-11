@@ -44,6 +44,10 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+button, input, select, textarea {
+  font-family: inherit;
+}
+
 body {
   font-family: var(--font-body);
   background: var(--bg-gradient);
@@ -3717,6 +3721,8 @@ body.night-mode .voice-btn {
   .balloon-sky {
     height: 280px;
   }
+}
+
 /* ================= READING & STORY COMPREHENSION (TIẾNG VIỆT LỚP 1) ================= */
 .reading-view-wrapper {
   display: flex;
@@ -3761,12 +3767,12 @@ body.night-mode .voice-btn {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 16px;
+  padding: 10px 18px;
   background: #f8fafc;
   border: 2px solid #cbd5e1;
   border-radius: var(--radius-pill);
   font-family: var(--font-heading);
-  font-size: 0.98rem;
+  font-size: 1.15rem;
   font-weight: 700;
   color: #334155;
   cursor: pointer;

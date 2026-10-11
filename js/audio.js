@@ -40,12 +40,7 @@ class SoundSystem {
   }
 
   initAudioPlayer() {
-    this.audioPlayer.addEventListener('ended', () => {
-      this.handleAudioEnded();
-    });
-    this.audioPlayer.addEventListener('error', () => {
-      this.handleAudioEnded();
-    });
+    // Managed dynamically by playAudioUrl for precise per-token fallbacks
   }
 
   handleAudioEnded() {
@@ -59,20 +54,26 @@ class SoundSystem {
     }
   }
 
+  finishSpeech(token) {
+    if (this.speechToken !== token) return;
+    this.handleAudioEnded();
+  }
+
   initAudioContext() {
-    // Lazy initialize upon first user interaction
-    const init = () => {
+    // Initialize upon interaction and keep context active
+    const resume = () => {
       if (!this.audioCtx) {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-          this.audioCtx = new AudioContext();
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          this.audioCtx = new AudioCtx();
         }
       } else if (this.audioCtx.state === 'suspended') {
         this.audioCtx.resume();
       }
     };
-    window.addEventListener('click', init, { once: true });
-    window.addEventListener('touchstart', init, { once: true });
+    window.addEventListener('click', resume, { passive: true });
+    window.addEventListener('touchstart', resume, { passive: true });
+    window.addEventListener('keydown', resume, { passive: true });
   }
 
   loadVoices() {
@@ -219,6 +220,9 @@ class SoundSystem {
   playTone(freq, type = 'sine', duration = 0.15, gainVal = 0.1) {
     if (!this.soundEnabled || !this.audioCtx) return;
     try {
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
       const osc = this.audioCtx.createOscillator();
       const gain = this.audioCtx.createGain();
 
@@ -241,6 +245,9 @@ class SoundSystem {
   playPop() {
     if (!this.soundEnabled || !this.audioCtx) return;
     try {
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
       const osc = this.audioCtx.createOscillator();
       const gain = this.audioCtx.createGain();
       const t = this.audioCtx.currentTime;
@@ -318,6 +325,9 @@ class SoundSystem {
   playXylophoneKey(freq, duration = 0.8) {
     if (!this.soundEnabled || !this.audioCtx) return;
     try {
+      if (this.audioCtx.state === 'suspended') {
+        this.audioCtx.resume();
+      }
       const now = this.audioCtx.currentTime;
 
       // Fundamental oscillator (sine)
@@ -394,8 +404,9 @@ class SoundSystem {
     if (this.audioPlayer) {
       try {
         this.audioPlayer.pause();
+        this.audioPlayer.onended = null;
+        this.audioPlayer.onerror = null;
         this.audioPlayer.removeAttribute('src');
-        this.audioPlayer.load();
       } catch (e) {}
     }
 
@@ -413,7 +424,54 @@ class SoundSystem {
     }
   }
 
-  // --- Vietnamese Speech Synthesis (Exclusively Cô giáo Hoài My) ---
+  // --- Resilient Audio Stream Player with Token Lifecycle ---
+  playAudioUrl(url, token, onErrorFallback) {
+    if (this.speechToken !== token) return;
+
+    let resolved = false;
+    const cleanup = () => {
+      this.audioPlayer.onended = null;
+      this.audioPlayer.onerror = null;
+    };
+
+    this.audioPlayer.onended = () => {
+      if (resolved) return;
+      resolved = true;
+      cleanup();
+      if (this.speechToken === token) {
+        this.finishSpeech(token);
+      }
+    };
+
+    const handleFail = () => {
+      if (resolved) return;
+      resolved = true;
+      cleanup();
+      if (this.speechToken === token) {
+        if (typeof onErrorFallback === 'function') {
+          onErrorFallback();
+        } else {
+          this.finishSpeech(token);
+        }
+      }
+    };
+
+    this.audioPlayer.onerror = handleFail;
+
+    try {
+      this.audioPlayer.src = url;
+      const playPromise = this.audioPlayer.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          handleFail();
+        });
+      }
+    } catch (e) {
+      handleFail();
+    }
+  }
+
+  // --- Vietnamese Speech Synthesis (Triple-Tier Fallback: Server Neural -> Google TTS -> WebSpeech API) ---
   speak(text, onEnd) {
     this.speakWithVoice(text, 'vi-VN-HoaiMyNeural', onEnd);
   }
@@ -442,23 +500,64 @@ class SoundSystem {
 
     const targetVoice = 'vi-VN-HoaiMyNeural';
     const cleanText = String(text).trim();
-    const ttsUrl = `/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(targetVoice)}&rate=${encodeURIComponent(rateParam)}`;
 
-    try {
-      this.audioPlayer.src = ttsUrl;
-      const playPromise = this.audioPlayer.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
+    // Tier 3: Browser Web Speech API fallback (100% offline, zero server required)
+    const tryWebSpeech = () => {
+      if (this.speechToken !== currentToken) return;
+      if (!this.speechSynth) {
+        this.finishSpeech(currentToken);
+        return;
+      }
+      try {
+        this.speechSynth.cancel();
+        const utter = new SpeechSynthesisUtterance(cleanText);
+        utter.lang = 'vi-VN';
+        if (this.vietnameseVoice) {
+          utter.voice = this.vietnameseVoice;
+        }
+        utter.rate = this.voiceRate || 0.88;
+        utter.pitch = this.voicePitch || 1.15;
+        utter.onend = () => {
           if (this.speechToken === currentToken) {
-            this.handleAudioEnded();
+            this.finishSpeech(currentToken);
           }
-        });
+        };
+        utter.onerror = () => {
+          if (this.speechToken === currentToken) {
+            this.finishSpeech(currentToken);
+          }
+        };
+        this.speechSynth.speak(utter);
+      } catch (e) {
+        this.finishSpeech(currentToken);
       }
-    } catch (e) {
-      if (this.speechToken === currentToken) {
-        this.handleAudioEnded();
+    };
+
+    // Tier 2: Google Translate Vietnamese TTS (works natively in browser audio, fast & zero local server setup needed)
+    const tryGoogleTts = () => {
+      if (this.speechToken !== currentToken) return;
+      if (cleanText.length > 200) {
+        tryWebSpeech();
+        return;
       }
+      const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(cleanText)}`;
+      this.playAudioUrl(gUrl, currentToken, () => {
+        tryWebSpeech();
+      });
+    };
+
+    // Tier 1: Local High-Fidelity Server Neural TTS (Cô giáo Hoài My Edge TTS)
+    let serverBase = '';
+    if (window.location.protocol === 'file:') {
+      serverBase = 'http://localhost:8000';
+    } else if (window.location.port !== '8000') {
+      serverBase = `${window.location.protocol}//${window.location.hostname || 'localhost'}:8000`;
     }
+    const serverUrl = `${serverBase}/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(targetVoice)}&rate=${encodeURIComponent(rateParam)}`;
+
+    this.playAudioUrl(serverUrl, currentToken, () => {
+      tryGoogleTts();
+    });
   }
 
   // --- English Speech Synthesis for Grade 1 English module ---
@@ -472,22 +571,44 @@ class SoundSystem {
     const currentToken = this.speechToken;
     this.activeCallback = onEnd;
 
-    const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(String(text).trim())}`;
-    try {
-      this.audioPlayer.src = gUrl;
-      const playPromise = this.audioPlayer.play();
-      if (playPromise !== undefined) {
-        playPromise.catch(() => {
+    const voiceBtn = document.getElementById('btnVoiceTest');
+    if (voiceBtn) voiceBtn.classList.add('speaking');
+
+    const cleanText = String(text).trim();
+
+    const tryWebSpeechEn = () => {
+      if (this.speechToken !== currentToken) return;
+      if (!this.speechSynth) {
+        this.finishSpeech(currentToken);
+        return;
+      }
+      try {
+        this.speechSynth.cancel();
+        const utter = new SpeechSynthesisUtterance(cleanText);
+        utter.lang = 'en-US';
+        if (this.englishVoice) utter.voice = this.englishVoice;
+        utter.rate = 0.9;
+        utter.pitch = 1.1;
+        utter.onend = () => {
           if (this.speechToken === currentToken) {
-            this.handleAudioEnded();
+            this.finishSpeech(currentToken);
           }
-        });
+        };
+        utter.onerror = () => {
+          if (this.speechToken === currentToken) {
+            this.finishSpeech(currentToken);
+          }
+        };
+        this.speechSynth.speak(utter);
+      } catch (e) {
+        this.finishSpeech(currentToken);
       }
-    } catch (e) {
-      if (this.speechToken === currentToken) {
-        this.handleAudioEnded();
-      }
-    }
+    };
+
+    const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(cleanText)}`;
+    this.playAudioUrl(gUrl, currentToken, () => {
+      tryWebSpeechEn();
+    });
   }
 }
 

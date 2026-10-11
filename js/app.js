@@ -193,12 +193,11 @@ class MainApp {
     if (btnVoice) {
       btnVoice.addEventListener('click', () => {
         window.soundSys.playPop();
+        window.soundSys.previewVoice();
         const modal = document.getElementById('voiceStudioModal');
         if (modal) {
           modal.classList.add('active');
           window.soundSys.updateVoiceUI();
-        } else {
-          window.soundSys.previewVoice(window.soundSys.selectedVoiceId);
         }
       });
     }

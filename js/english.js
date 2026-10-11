@@ -310,9 +310,10 @@ class EnglishApp {
         fbBox.innerHTML = `🎉 <strong>Tuyệt vời!</strong> "${selected.word}" nghĩa là <em>${selected.vn}</em>! Bé học Tiếng Anh siêu đỉnh!`;
       }
 
-      setTimeout(() => {
+      const praiseMsg = `Tuyệt vời! ${selected.word} nghĩa là ${selected.vn} nhé bé!`;
+      window.soundSys.speakThen(praiseMsg, () => {
         this.loadQuizQuestion();
-      }, 1600);
+      }, 700);
     } else {
       btnEl.classList.add('wrong');
       this.quizStreak = 0;
@@ -323,10 +324,12 @@ class EnglishApp {
         fbBox.innerHTML = `💡 Chưa đúng rồi nè! Đáp án đúng là <strong>"${this.currentQuizQ.correct.word}"</strong> (${this.currentQuizQ.correct.vn}). Cùng thử lại nhé!`;
       }
 
+      window.soundSys.speak(`Chưa đúng rồi bé ơi! Đáp án đúng là ${this.currentQuizQ.correct.word}. Bé thử lại nhé!`);
+
       setTimeout(() => {
         allBtns.forEach(b => b.disabled = false);
         btnEl.classList.remove('wrong');
-      }, 1400);
+      }, 2000);
     }
   }
 }

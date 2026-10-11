@@ -190,6 +190,7 @@ class SoundSystem {
   }
 
   handleAudioEnded() {
+    this.isSpeakingNow = false;
     const voiceBtn = document.getElementById('btnVoiceTest');
     if (voiceBtn) voiceBtn.classList.remove('speaking');
 
@@ -539,6 +540,7 @@ class SoundSystem {
     // 1. Invalidate any ongoing asynchronous speech token
     this.speechToken = (this.speechToken || 0) + 1;
     this.activeCallback = null;
+    this.isSpeakingNow = false;
 
     // 2. Clear any pending timers
     if (this.speechTimer) {
@@ -623,6 +625,73 @@ class SoundSystem {
     this.speakWithVoice(text, 'vi-VN-HoaiMyNeural', onEnd);
   }
 
+  // Speak completely, then execute callback after speech finishes + comfortable breathing pause
+  speakThen(text, onComplete, breathingPauseMs = 600) {
+    if (typeof onComplete !== 'function') onComplete = () => {};
+
+    if (!this.soundEnabled || !text || !String(text).trim()) {
+      setTimeout(onComplete, Math.min(breathingPauseMs, 400));
+      return;
+    }
+
+    let isDone = false;
+    let fallbackTimer = null;
+
+    const doFinish = () => {
+      if (isDone) return;
+      isDone = true;
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+        fallbackTimer = null;
+      }
+      setTimeout(onComplete, breathingPauseMs);
+    };
+
+    // Calculate dynamic safety fallback: ~90ms per character + 3000ms buffer (min 4.5s, max 15s)
+    const charCount = String(text).trim().length;
+    const maxWaitMs = Math.max(4500, Math.min(15000, charCount * 90 + 3000));
+    fallbackTimer = setTimeout(doFinish, maxWaitMs);
+
+    this.speak(text, () => {
+      doFinish();
+    });
+  }
+
+  // Speak English completely, then execute callback after speech finishes
+  speakEnglishThen(text, onComplete, breathingPauseMs = 600) {
+    if (typeof onComplete !== 'function') onComplete = () => {};
+
+    if (!this.soundEnabled || !text || !String(text).trim()) {
+      setTimeout(onComplete, Math.min(breathingPauseMs, 400));
+      return;
+    }
+
+    let isDone = false;
+    let fallbackTimer = null;
+
+    const doFinish = () => {
+      if (isDone) return;
+      isDone = true;
+      if (fallbackTimer) {
+        clearTimeout(fallbackTimer);
+        fallbackTimer = null;
+      }
+      setTimeout(onComplete, breathingPauseMs);
+    };
+
+    const charCount = String(text).trim().length;
+    const maxWaitMs = Math.max(4000, Math.min(12000, charCount * 90 + 2500));
+    fallbackTimer = setTimeout(doFinish, maxWaitMs);
+
+    this.speakEnglish(text, () => {
+      doFinish();
+    });
+  }
+
+  isSpeaking() {
+    return !!this.isSpeakingNow;
+  }
+
   speakWithVoice(text, voiceId, onEnd) {
     if (!this.soundEnabled || !text || !String(text).trim()) {
       if (typeof onEnd === 'function') onEnd();
@@ -635,6 +704,7 @@ class SoundSystem {
     // 2. Generation token for strict single-voice concurrency control
     const currentToken = this.speechToken;
     this.activeCallback = onEnd;
+    this.isSpeakingNow = true;
 
     // Visual speaking indicator on the teacher button
     const voiceBtn = document.getElementById('btnVoiceTest');
@@ -735,6 +805,7 @@ class SoundSystem {
     this.stop();
     const currentToken = this.speechToken;
     this.activeCallback = onEnd;
+    this.isSpeakingNow = true;
 
     const voiceBtn = document.getElementById('btnVoiceTest');
     if (voiceBtn) voiceBtn.classList.add('speaking');

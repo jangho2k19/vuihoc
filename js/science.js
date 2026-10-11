@@ -295,11 +295,10 @@ class ScienceApp {
         fbBox.innerHTML = `🎉 <strong>Tuyệt vời!</strong> ${this.currentQuestion.exp}`;
       }
 
-      window.soundSys.speak(`Chính xác rồi bé ơi! ${this.currentQuestion.exp}`);
-
-      setTimeout(() => {
+      const praiseMsg = `Chính xác rồi bé ơi! ${this.currentQuestion.exp}`;
+      window.soundSys.speakThen(praiseMsg, () => {
         this.loadQuizQuestion();
-      }, 2200);
+      }, 700);
     } else {
       btnEl.classList.add('wrong');
       this.streak = 0;
@@ -315,7 +314,7 @@ class ScienceApp {
       setTimeout(() => {
         allBtns.forEach(b => b.disabled = false);
         btnEl.classList.remove('wrong');
-      }, 1600);
+      }, 2000);
     }
   }
 }

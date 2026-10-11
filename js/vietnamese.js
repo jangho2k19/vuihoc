@@ -311,8 +311,9 @@ class VietnameseApp {
     allToneChoices.forEach(t => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
-      btn.style.fontSize = '1.25rem';
-      btn.style.minWidth = '140px';
+      btn.style.fontSize = '1.85rem';
+      btn.style.minWidth = '160px';
+      btn.style.padding = '14px 24px';
       btn.textContent = t;
       btn.addEventListener('click', () => {
         const isCorrect = (t === q.tone);
@@ -326,8 +327,8 @@ class VietnameseApp {
           this.tonesScore += 1;
           this.tonesScoreEl.textContent = this.tonesScore;
           window.rewards.addStars(1, "Bé nhận diện dấu thanh chuẩn quá!");
-          window.soundSys.speak(`Đúng rồi bé ơi! ${q.say} nhé!`);
-          setTimeout(() => this.loadTonesQuestion(), 2200);
+          const praiseMsg = `Đúng rồi bé ơi! ${q.say} nhé!`;
+          window.soundSys.speakThen(praiseMsg, () => this.loadTonesQuestion(), 700);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
@@ -336,7 +337,7 @@ class VietnameseApp {
           window.soundSys.speak("Chưa đúng dấu rồi bé ơi, bé nhìn kỹ lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
-          }, 1300);
+          }, 1800);
         }
       });
       this.tonesAArea.appendChild(btn);
@@ -485,8 +486,8 @@ class VietnameseApp {
     q.options.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
-      btn.style.fontSize = '2.2rem';
-      btn.style.minWidth = '120px';
+      btn.style.fontSize = '2.6rem';
+      btn.style.minWidth = '130px';
       btn.textContent = opt;
       btn.addEventListener('click', () => {
         const isCorrect = (opt === q.ans);
@@ -500,8 +501,8 @@ class VietnameseApp {
           this.spellingScore += 1;
           this.spellingScoreEl.textContent = this.spellingScore;
           window.rewards.addStars(1, "Bé thuộc quy tắc chính tả rất cừ!");
-          window.soundSys.speak(`Chính xác rồi! Điền chữ ${q.ans} tạo thành từ ${q.full} nhé!`);
-          setTimeout(() => this.loadSpellingQuestion(), 2400);
+          const praiseMsg = `Chính xác rồi! Điền chữ ${q.ans} tạo thành từ ${q.full} nhé!`;
+          window.soundSys.speakThen(praiseMsg, () => this.loadSpellingQuestion(), 700);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
@@ -510,7 +511,7 @@ class VietnameseApp {
           window.soundSys.speak("Chưa đúng quy tắc rồi bé ơi, bé chọn lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
-          }, 1400);
+          }, 1800);
         }
       });
       this.spellingAArea.appendChild(btn);
@@ -555,8 +556,8 @@ class VietnameseApp {
     q.choices.sort(() => Math.random() - 0.5).forEach(c => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
-      btn.style.fontSize = '2rem';
-      btn.style.minWidth = '95px';
+      btn.style.fontSize = '2.5rem';
+      btn.style.minWidth = '110px';
       btn.textContent = c;
       btn.addEventListener('click', () => {
         const isCorrect = (c === q.ans);
@@ -570,8 +571,8 @@ class VietnameseApp {
           this.compoundsScore += 1;
           this.compoundsScoreEl.textContent = this.compoundsScore;
           window.rewards.addStars(1, "Bé nhớ âm ghép rất giỏi!");
-          window.soundSys.speak(`Đúng rồi bé ơi! ${q.say} nhé!`);
-          setTimeout(() => this.loadCompoundsQuestion(), 2200);
+          const praiseMsg = `Đúng rồi bé ơi! ${q.say} nhé!`;
+          window.soundSys.speakThen(praiseMsg, () => this.loadCompoundsQuestion(), 700);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
@@ -580,7 +581,7 @@ class VietnameseApp {
           window.soundSys.speak("Chưa đúng âm ghép rồi, bé chọn lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
-          }, 1300);
+          }, 1800);
         }
       });
       this.compoundsAArea.appendChild(btn);
@@ -619,6 +620,7 @@ class VietnameseApp {
     choices.forEach(item => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
+      btn.style.fontSize = '2.6rem';
       btn.textContent = `${item.upper} ${item.lower}`;
       btn.addEventListener('click', () => {
         const isCorrect = (item === this.currentQuiz.target);
@@ -633,8 +635,8 @@ class VietnameseApp {
           this.quizScoreEl.textContent = this.quizScore;
           window.rewards.addStars(1, "Bé nhận biết chữ cái rất chuẩn nè!");
           window.rewards.recordActivity('vnScore', 1);
-          window.soundSys.speak(`Chính xác rồi nè! Chữ ${item.upper} giỏi quá!`);
-          setTimeout(() => this.loadQuizQuestion(), 2000);
+          const praiseMsg = `Chính xác rồi nè! Chữ ${item.upper} giỏi quá!`;
+          window.soundSys.speakThen(praiseMsg, () => this.loadQuizQuestion(), 700);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
@@ -643,7 +645,7 @@ class VietnameseApp {
           window.soundSys.speak("Bé chọn lại với cô nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
-          }, 1200);
+          }, 1600);
         }
       });
       this.quizAArea.appendChild(btn);
@@ -691,6 +693,7 @@ class VietnameseApp {
     q.choices.sort(() => Math.random() - 0.5).forEach(letter => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
+      btn.style.fontSize = '2.6rem';
       btn.textContent = letter;
       btn.addEventListener('click', () => {
         const isCorrect = (letter === q.answer);
@@ -705,8 +708,8 @@ class VietnameseApp {
           this.rhymeScoreEl.textContent = this.rhymeScore;
           window.rewards.addStars(1, "Bé ghép vần thông minh quá chừng!");
           window.rewards.recordActivity('vnScore', 1);
-          window.soundSys.speak(`Đúng rồi nè! Bé ghép được từ ${q.say} giỏi quá!`);
-          setTimeout(() => this.loadRhymeQuestion(), 2000);
+          const praiseMsg = `Đúng rồi nè! Bé ghép được từ ${q.say} giỏi quá!`;
+          window.soundSys.speakThen(praiseMsg, () => this.loadRhymeQuestion(), 700);
         } else {
           btn.classList.add('wrong');
           window.soundSys.playWrong();
@@ -715,7 +718,7 @@ class VietnameseApp {
           window.soundSys.speak("Chưa đúng chữ rồi bé ơi, bé thử lại nhé!");
           setTimeout(() => {
             allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
-          }, 1200);
+          }, 1600);
         }
       });
       this.rhymeAArea.appendChild(btn);
@@ -840,8 +843,9 @@ class VietnameseApp {
     q.shuffled.forEach(word => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
-      btn.style.fontSize = '1.35rem';
-      btn.style.padding = '8px 20px';
+      btn.style.fontSize = '1.75rem';
+      btn.style.padding = '12px 24px';
+      btn.style.minHeight = '64px';
       btn.textContent = word;
 
       btn.addEventListener('click', () => {
@@ -866,9 +870,8 @@ class VietnameseApp {
             this.sentenceScoreEl.textContent = this.sentenceScore;
             window.rewards.addStars(2, "Bé ghép câu xuất sắc quá chừng!");
             window.soundSys.playCorrect();
-            window.soundSys.speak(`Hoan hô! Bé đã ghép thành công câu: ${q.say} nhé!`);
-
-            setTimeout(() => this.loadSentenceQuestion(), 2600);
+            const praiseMsg = `Hoan hô! Bé đã ghép thành công câu: ${q.say} nhé!`;
+            window.soundSys.speakThen(praiseMsg, () => this.loadSentenceQuestion(), 700);
           } else {
             box.style.borderColor = '#e63946';
             box.style.backgroundColor = '#ffe3e3';
@@ -1279,10 +1282,8 @@ class VietnameseApp {
       if (this.readingScoreEl) this.readingScoreEl.textContent = this.readingScore;
 
       window.rewards.addStars(1, "Bé trả lời đúng câu hỏi đọc hiểu!");
-      window.soundSys.speak(`Đúng rồi bé ơi! ${q.explain}`);
-
-      // Move to next question or notify story completed
-      setTimeout(() => {
+      const praiseMsg = `Đúng rồi bé ơi! ${q.explain}`;
+      window.soundSys.speakThen(praiseMsg, () => {
         if (this.currentStoryQuestionIndex + 1 < story.questions.length) {
           this.currentStoryQuestionIndex++;
           this.renderStoryQuestion();
@@ -1293,7 +1294,7 @@ class VietnameseApp {
           this.storyFeedbackBox.textContent = `🌟 Hoan hô! Bé đã tìm hiểu xong câu chuyện "${story.title}"! Bé hãy chọn truyện tiếp theo để đọc nhé!`;
           window.soundSys.speak(`Hoan hô! Bé đã tìm hiểu xong toàn bộ câu chuyện rồi, bé giỏi lắm!`);
         }
-      }, 3500);
+      }, 700);
 
     } else {
       btn.classList.add('wrong');

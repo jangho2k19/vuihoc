@@ -798,12 +798,11 @@ class MathApp {
 
       window.rewards.addStars(1, `Bé giải toán xuất sắc quá chừng!${comboText}`);
       window.rewards.recordActivity('mathScore', 1);
-      window.soundSys.speak(this.currentQuestion.praise);
 
-      // Auto advance to next question after 2.4s
-      setTimeout(() => {
+      // Let the teacher speak the praise sentence completely before moving to next question
+      window.soundSys.speakThen(this.currentQuestion.praise, () => {
         this.loadQuestion();
-      }, 2400);
+      }, 700);
     } else {
       this.streak = 0;
       buttonEl.classList.add('wrong');

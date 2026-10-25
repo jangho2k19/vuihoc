@@ -621,6 +621,34 @@ body {
   border-color: var(--primary);
 }
 
+.btn-accent {
+  padding: 12px 26px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #06d6a0, #05b586);
+  color: #ffffff;
+  border: none;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(6, 214, 160, 0.35), 0 4px 0 #047857;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-accent:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(6, 214, 160, 0.45), 0 5px 0 #047857;
+}
+
+.btn-accent:active {
+  transform: translateY(2px);
+  box-shadow: 0 2px 4px rgba(6, 214, 160, 0.2), 0 1px 0 #047857;
+}
+
 .welcome-character {
   text-align: center;
 }
@@ -3655,16 +3683,32 @@ body.night-mode .voice-btn {
   .header-right {
     gap: 4px;
     flex-wrap: wrap;
+    align-items: center;
   }
   .header-right .pill-btn {
-    padding: 4px 8px;
-    font-size: 0.76rem;
+    padding: 4px 7px;
+    font-size: 0.74rem;
+    min-height: 28px;
   }
   .header-right .btn-text {
     display: none;
   }
   .speed-control-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 4px;
+    background: #e2e8f0;
+    border-radius: var(--radius-pill);
+  }
+  .speed-control-box .speed-label {
     display: none;
+  }
+  .speed-control-box .speed-pill-btn {
+    padding: 2px 6px;
+    font-size: 0.7rem;
+    min-height: 24px;
+    border-radius: var(--radius-pill);
   }
   .voice-select {
     max-width: 105px;
@@ -3681,117 +3725,150 @@ body.night-mode .voice-btn {
     font-size: 1rem;
   }
   .main-nav {
-    padding: 3px 8px 6px;
-    gap: 5px;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    padding: 4px 6px 8px !important;
+    gap: 5px !important;
+    max-width: 100% !important;
+    overflow-x: visible !important;
   }
   .nav-tab {
-    padding: 4px 10px;
-    font-size: 0.85rem;
-    min-height: 34px;
+    flex: 0 1 auto !important;
+    padding: 4px 9px !important;
+    font-size: 0.82rem !important;
+    min-height: 32px !important;
+    border-radius: var(--radius-pill) !important;
+  }
+  .nav-tab .nav-icon {
+    font-size: 0.95rem !important;
   }
 
-  /* Horizontal swipeable sub-navigation for high-density screen economy */
+  /* Wrap sub-navigation into clean, friendly touch pills so 100% of topic buttons are visible */
   .sub-nav {
     display: flex !important;
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    scroll-snap-type: x proximity;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    justify-content: flex-start !important;
-    gap: 8px !important;
-    padding: 4px 4px 10px !important;
-    margin: 8px -4px 0 !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 6px 2px !important;
+    margin: 6px 0 0 !important;
+    overflow-x: visible !important;
   }
   .sub-nav::-webkit-scrollbar {
     display: none;
   }
   .sub-btn {
-    scroll-snap-align: start;
-    flex-shrink: 0;
-    white-space: nowrap;
-    min-height: 40px;
-    padding: 6px 14px;
-    font-size: 0.88rem;
+    flex: 0 1 auto !important;
+    white-space: normal !important;
+    text-align: center !important;
+    min-height: 38px !important;
+    padding: 6px 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
+    border-radius: var(--radius-pill) !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06) !important;
   }
 
   .app-main {
-    padding: 10px 10px 40px;
+    padding: 8px 8px 36px;
   }
 
   .section-hero {
-    padding: 18px 14px;
-    border-radius: var(--radius-md);
-    margin-bottom: 16px;
+    padding: 10px 12px 12px !important;
+    border-radius: var(--radius-md) !important;
+    margin-bottom: 12px !important;
+    text-align: center !important;
   }
   .hero-text h2 {
-    font-size: 1.55rem;
+    font-size: 1.25rem !important;
+    margin-bottom: 2px !important;
   }
   .hero-text p {
-    font-size: 0.95rem;
+    display: none !important; /* Hide long generic descriptions on mobile to keep quiz answers visible above the fold */
   }
 
   /* ================= VIETNAMESE PHONICS MOBILE RESPONSIVE ================= */
   .phonics-hero-bar {
-    padding: 12px 14px;
+    padding: 10px 12px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 12px;
   }
   .phonics-badge-tag {
-    font-size: 0.84rem;
-    padding: 4px 10px;
+    font-size: 0.8rem;
+    padding: 3px 8px;
   }
   .phonics-instruction {
-    font-size: 0.95rem;
-    line-height: 1.4;
+    font-size: 0.9rem;
+    line-height: 1.35;
   }
 
   .alphabet-controls-wrapper {
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 8px;
+    margin-bottom: 14px;
   }
   .alphabet-filter-chips {
-    gap: 6px;
-    padding: 4px 2px 6px;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 5px !important;
+    padding: 2px !important;
   }
   .filter-chip {
-    padding: 6px 13px;
-    font-size: 0.88rem;
-    min-height: 38px;
+    padding: 5px 10px !important;
+    font-size: 0.82rem !important;
+    min-height: 34px !important;
+    flex: 0 1 auto !important;
   }
 
   .alphabet-toggles-row {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-    padding: 10px 12px;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 8px !important;
+    padding: 8px 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
   .toggle-group-box {
-    justify-content: space-between;
-    width: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 4px !important;
+    width: 100% !important;
   }
   .toggle-label {
-    font-size: 0.86rem;
+    font-size: 0.84rem !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
   }
   .toggle-pill-switch {
-    display: flex;
-    flex: 1;
-    max-width: 220px;
+    display: flex !important;
+    width: 100% !important;
+    max-width: none !important;
+    background: #e2e8f0 !important;
+    padding: 3px !important;
+    border-radius: var(--radius-pill) !important;
+    gap: 4px !important;
   }
   .toggle-pill-switch .toggle-btn {
-    flex: 1;
-    text-align: center;
-    padding: 6px 10px;
-    font-size: 0.82rem;
+    flex: 1 1 50% !important;
+    white-space: nowrap !important;
+    padding: 6px 6px !important;
+    font-size: 0.8rem !important;
+    text-align: center !important;
+    border-radius: var(--radius-pill) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  /* 5 columns on phablets / large phones */
+  /* 4 clean columns on mobile / phablets */
   .alphabet-grid {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    margin-bottom: 16px !important;
   }
   .letter-card {
     min-height: 84px;
@@ -4022,22 +4099,59 @@ body.night-mode .voice-btn {
     padding: 12px 8px;
   }
   .draw-toolbar {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 8px;
   }
   .tool-group {
     width: 100%;
     justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
   }
   .template-select {
     width: 100%;
+    padding: 8px 10px;
+    font-size: 0.95rem;
+  }
+  .action-tools {
+    order: -1 !important; /* Promotes Hoàn tác, Làm lại, Xóa hết, Lưu tranh to the TOP of the toolbar on mobile! */
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    margin-bottom: 4px !important;
+  }
+  .action-tools .btn-action {
+    min-height: 38px !important;
+    padding: 6px 2px !important;
+    font-size: 0.78rem !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
   }
   .color-palette {
-    overflow-x: auto;
-    padding-bottom: 4px;
-    -webkit-overflow-scrolling: touch;
-    width: 100%;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    align-items: center !important;
+    width: auto !important;
+  }
+  .color-dot {
+    width: 30px !important;
+    height: 30px !important;
+    flex-shrink: 0 !important;
+  }
+  #customColorPicker {
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    cursor: pointer !important;
   }
   .sticker-selector {
     overflow-x: auto;
@@ -4045,18 +4159,19 @@ body.night-mode .voice-btn {
     -webkit-overflow-scrolling: touch;
     width: 100%;
   }
-  .action-tools {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    width: 100%;
+  .canvas-container {
+    width: 100% !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
-  .btn-action {
-    text-align: center;
-    justify-content: center;
-    min-height: 42px;
-    display: flex;
-    align-items: center;
+  #paintCanvas {
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 920 / 520 !important;
+    border-radius: var(--radius-md) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
   }
 
   /* Modals */
@@ -4150,7 +4265,15 @@ body.night-mode .voice-btn {
   }
 
   .speed-control-box {
-    display: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 1px;
+    padding: 2px 3px;
+  }
+  .speed-control-box .speed-pill-btn {
+    padding: 2px 4px;
+    font-size: 0.65rem;
+    min-height: 22px;
   }
 
   .feature-grid {

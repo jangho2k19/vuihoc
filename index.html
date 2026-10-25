@@ -315,28 +315,104 @@
         </div>
       </div>
 
-      <!-- Alphabet Grid Sub-view -->
+      <!-- Alphabet Grid Sub-view (Chuẩn Âm Vị Học Bộ Giáo Dục & KidsUP) -->
       <div id="sub-vn-alphabet" class="vn-sub-view active">
-        <div class="letter-instruction-bar">
-          <span>👆 <strong>Bé chạm vào từng chữ cái</strong> để nghe tiếng đọc và xem từ ngữ mẫu nha!</span>
-          <div class="case-toggle">
-            <button class="toggle-btn active" id="btnLetterUpper">Chữ IN HOA (A)</button>
-            <button class="toggle-btn" id="btnLetterLower">Chữ in thường (a)</button>
+        <!-- Phonics Header Banner -->
+        <div class="phonics-hero-bar">
+          <div class="phonics-badge-tag">
+            <span class="badge-icon">🌟</span>
+            <span>Chuẩn Âm Vị Học Bộ GD&ĐT (SGK Lớp 1 - KidsUP)</span>
+          </div>
+          <div class="phonics-instruction">
+            👆 <strong>Bé chạm vào từng chữ cái</strong> để nghe phát âm âm vị chuẩn và xem từ ngữ mẫu nha!
           </div>
         </div>
 
+        <!-- Filter Chips & Control Bar -->
+        <div class="alphabet-controls-wrapper">
+          <!-- Category Filter Bar (Tất cả / Nguyên âm / Phụ âm / Âm ghép / Vần đôi) -->
+          <div class="alphabet-filter-chips" id="alphabetFilterChips">
+            <button class="filter-chip active" data-cat="all">🌟 Tất Cả (29 Chữ)</button>
+            <button class="filter-chip" data-cat="vowel">🔴 11 Nguyên Âm Đơn</button>
+            <button class="filter-chip" data-cat="consonant">🔵 17 Phụ Âm Đầu</button>
+            <button class="filter-chip" data-cat="compound">🔤 11 Phụ Âm Ghép</button>
+            <button class="filter-chip" data-cat="diphthong">🌈 3 Nguyên Âm Đôi</button>
+          </div>
+
+          <!-- Toggles: Case (Upper/Lower) & Pronounce Mode -->
+          <div class="alphabet-toggles-row">
+            <div class="toggle-group-box">
+              <span class="toggle-label">Cách đọc:</span>
+              <div class="toggle-pill-switch">
+                <button class="toggle-btn active" id="btnPronouncePhonic" title="Chuẩn Bộ GD&ĐT: Bờ, Cờ, Dờ... dùng để ghép vần">
+                  🗣️ Âm vị học (Bờ, Cờ...)
+                </button>
+                <button class="toggle-btn" id="btnPronounceName" title="Tên chữ cái: Bê, Xê, Dê...">
+                  🔤 Tên chữ (Bê, Xê...)
+                </button>
+              </div>
+            </div>
+
+            <div class="toggle-group-box">
+              <span class="toggle-label">Kiểu chữ:</span>
+              <div class="toggle-pill-switch">
+                <button class="toggle-btn active" id="btnLetterUpper">IN HOA (A)</button>
+                <button class="toggle-btn" id="btnLetterLower">in thường (a)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alphabet Grid -->
         <div class="alphabet-grid" id="alphabetGrid"></div>
 
-        <!-- Selected Letter Detail -->
+        <!-- Selected Letter Detail (Flashcard cao cấp chuẩn Bộ GD&ĐT) -->
         <div class="letter-detail-card" id="letterDetailCard">
-          <div class="detail-letter-box" id="detailLetterBox">A a</div>
-          <div class="detail-illustration" id="detailIllustration">🍎</div>
-          <div class="detail-info">
-            <h3 id="detailWord">Quả Bưởi</h3>
-            <p id="detailSentence">Chữ <strong>A</strong> trong tiếng "An"</p>
-            <button class="btn-sound-big" id="btnPlayLetterSound">
-              🔊 Nghe phát âm chữ này
-            </button>
+          <div class="detail-card-left">
+            <div class="detail-letter-box-wrapper">
+              <div class="detail-letter-box" id="detailLetterBox">A a</div>
+              <div class="detail-badges-row">
+                <span class="detail-cat-badge" id="detailCategoryBadge">Nguyên âm đơn</span>
+                <span class="detail-ipa-badge" id="detailIpaBadge">IPA: /a/</span>
+              </div>
+            </div>
+            <div class="detail-illustration-box">
+              <span class="detail-illustration" id="detailIllustration">🐔</span>
+            </div>
+          </div>
+
+          <div class="detail-card-right">
+            <div class="detail-header-info">
+              <div class="detail-word-row">
+                <h3 class="detail-word-title" id="detailWord">Con Gà</h3>
+                <span class="detail-sound-preview" id="detailSoundPreview">Phát âm: "A"</span>
+              </div>
+              <div class="detail-names-row">
+                <span class="detail-phonic-badge" id="detailPhonicBadge">Phát âm chuẩn: <strong>A</strong></span>
+                <span class="detail-lettername-badge" id="detailLetterNameBadge">Tên chữ cái: <strong>A</strong></span>
+              </div>
+            </div>
+
+            <div class="detail-reading-guide">
+              <div class="detail-spelling-box" id="detailSpellingBox">
+                <span class="guide-tag">Đánh vần:</span>
+                <span class="spelling-text" id="detailSpellingText">A - Con Gà</span>
+              </div>
+              <p class="detail-sentence-text" id="detailSentence">Chữ <strong>A</strong> trong từ Con Gà</p>
+            </div>
+
+            <div class="detail-actions-row">
+              <button class="btn-sound-action btn-sound-phonic" id="btnPlayPhonicSound">
+                <span class="btn-icon">🔊</span>
+                <span class="btn-label" id="btnPlayPhonicLabel">Nghe Phát Âm "A"</span>
+              </button>
+              <button class="btn-sound-action btn-sound-example" id="btnPlayExampleSound">
+                <span class="btn-icon">🗣️</span>
+                <span class="btn-label">Nghe Đánh Vần & Ví Dụ</span>
+              </button>
+              <!-- Hidden alias for backward compatibility -->
+              <button id="btnPlayLetterSound" style="display:none;" aria-hidden="true"></button>
+            </div>
           </div>
         </div>
       </div>
@@ -1006,6 +1082,7 @@
   </div>
 
   <!-- Scripts with cache busting -->
+  <script src="js/audio_manifest.js?v=2.6"></script>
   <script src="js/audio.js?v=2.6"></script>
   <script src="js/rewards.js?v=2.6"></script>
   <script src="js/math.js?v=2.6"></script>

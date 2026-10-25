@@ -276,6 +276,9 @@ class EnglishApp {
       });
     }
 
+    // Preload praise audio silently in background
+    window.soundSys.preloadAudio(`Tuyệt vời! ${correctItem.word} nghĩa là ${correctItem.vn} nhé bé!`);
+
     // Auto speak the target word politely
     setTimeout(() => {
       window.soundSys.speakEnglish(correctItem.word);

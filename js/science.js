@@ -261,6 +261,9 @@ class ScienceApp {
       });
     }
 
+    // Preload praise audio silently in background
+    window.soundSys.preloadAudio(`Chính xác rồi bé ơi! ${qItem.exp}`);
+
     // Auto read the question
     setTimeout(() => {
       window.soundSys.speak(qItem.q);

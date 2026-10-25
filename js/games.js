@@ -97,11 +97,35 @@ class BalloonGame {
       this.target = letters[Math.floor(Math.random() * letters.length)];
     }
     this.targetSymbolEl.textContent = this.target;
+
+    // Preload target prompt audio for 0ms instant playback
+    const txt = (this.mode === 'numbers') 
+      ? `Bé hãy bấm vào bóng số ${this.target} nhé!` 
+      : `Bé hãy bấm vào bóng chữ ${this.getPhonicName(this.target)} nhé!`;
+    if (window.soundSys && typeof window.soundSys.preloadAudio === 'function') {
+      window.soundSys.preloadAudio(txt);
+    }
+  }
+
+  getPhonicName(char) {
+    const map = {
+      'A': 'A', 'Ă': 'Á', 'Â': 'Ớ',
+      'B': 'Bờ', 'C': 'Cờ', 'D': 'Dờ', 'Đ': 'Đờ',
+      'E': 'E', 'Ê': 'Ê', 'G': 'Gờ', 'H': 'Hờ',
+      'I': 'I', 'K': 'Cờ', 'L': 'Lờ', 'M': 'Mờ',
+      'N': 'Nờ', 'O': 'O', 'Ô': 'Ô', 'Ơ': 'Ơ',
+      'P': 'Pờ', 'Q': 'Quờ', 'R': 'Rờ', 'S': 'Sờ',
+      'T': 'Tờ', 'U': 'U', 'Ư': 'Ư', 'V': 'Vờ',
+      'X': 'Xờ', 'Y': 'I'
+    };
+    return map[char] || char;
   }
 
   speakTarget() {
     if (!this.target) return;
-    const txt = (this.mode === 'numbers') ? `Bé hãy bấm vào bóng số ${this.target} nhé!` : `Bé hãy bấm vào bóng chữ ${this.target} nhé!`;
+    const txt = (this.mode === 'numbers') 
+      ? `Bé hãy bấm vào bóng số ${this.target} nhé!` 
+      : `Bé hãy bấm vào bóng chữ ${this.getPhonicName(this.target)} nhé!`;
     window.soundSys.speak(txt);
   }
 
@@ -293,6 +317,15 @@ class MemoryGame {
         this.resetGame();
       });
     }
+
+    // Preload match praises for instant 0ms playback
+    if (window.soundSys && typeof window.soundSys.preloadAudio === 'function') {
+      this.animals.forEach(a => {
+        window.soundSys.preloadAudio(`Tìm thấy một cặp ${a.name} rồi nè bé ơi!`);
+      });
+      window.soundSys.preloadAudio(`Hoan hô! Bé đã tìm đủ hết tất cả các cặp con vật rồi nè! Bé giỏi quá chừng luôn!`);
+    }
+
     this.resetGame();
   }
 

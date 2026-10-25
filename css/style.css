@@ -1056,36 +1056,162 @@ body {
   color: #334155;
 }
 
-.case-toggle {
+/* ================= VIETNAMESE ALPHABET & PHONICS SYSTEM (BỘ GD&ĐT & KIDSUP) ================= */
+.phonics-hero-bar {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+  border: 2px solid #bfdbfe;
+  border-radius: var(--radius-md);
+  padding: 14px 20px;
   display: flex;
-  gap: 6px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(67, 97, 238, 0.06);
 }
 
-.toggle-btn {
+.phonics-badge-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, #fef08a, #fde047);
+  color: #854d0e;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.92rem;
+  box-shadow: 0 2px 5px rgba(234, 179, 8, 0.25);
+}
+
+.phonics-instruction {
+  font-size: 1.05rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.alphabet-controls-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.alphabet-filter-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.alphabet-filter-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-chip {
+  flex-shrink: 0;
+  padding: 8px 16px;
   border-radius: var(--radius-pill);
   border: 2px solid #cbd5e1;
   background: #ffffff;
+  color: #334155;
+  font-family: var(--font-heading);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.toggle-btn.active {
-  background: var(--primary);
+.filter-chip:hover {
+  border-color: var(--primary-light);
+  background: #f0f9ff;
+  color: var(--primary);
+  transform: translateY(-2px);
+}
+
+.filter-chip.active {
+  background: linear-gradient(135deg, #4361ee, #4cc9f0);
+  border-color: #4361ee;
   color: #ffffff;
-  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(67, 97, 238, 0.35);
+  transform: translateY(-2px) scale(1.02);
 }
 
+.alphabet-toggles-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  background: #ffffff;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  border: 2px solid #e2e8f0;
+  box-shadow: var(--shadow-sm);
+}
+
+.toggle-group-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toggle-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: #475569;
+}
+
+.toggle-pill-switch {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: var(--radius-pill);
+  border: 1px solid #cbd5e1;
+  gap: 2px;
+}
+
+.toggle-pill-switch .toggle-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  border: none;
+  background: transparent;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.toggle-pill-switch .toggle-btn:hover {
+  color: var(--primary);
+}
+
+.toggle-pill-switch .toggle-btn.active {
+  background: #ffffff;
+  color: var(--primary-dark);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+}
+
+/* Alphabet Grid System */
 .alphabet-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
   gap: 14px;
   margin-bottom: 28px;
 }
 
 .letter-card {
-  aspect-ratio: 1;
+  min-height: 102px;
   background: #ffffff;
   border-radius: var(--radius-md);
   border: 3px solid #e2e8f0;
@@ -1095,110 +1221,309 @@ body {
   justify-content: center;
   cursor: pointer;
   box-shadow: 0 5px 0 #cbd5e1;
-  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   position: relative;
   user-select: none;
+  padding: 8px 6px;
+  touch-action: manipulation;
+}
+
+.letter-phonic-badge {
+  position: absolute;
+  top: 4px;
+  right: 5px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  line-height: 1.2;
+}
+
+.letter-main {
+  font-family: var(--font-heading);
+  font-size: 2.3rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--primary-dark);
+  margin-top: 4px;
+}
+
+.letter-sub-word {
+  font-size: 1.2rem;
+  line-height: 1;
+  margin-top: 3px;
 }
 
 .letter-card:hover {
-  transform: translateY(-6px) scale(1.08);
+  transform: translateY(-5px) scale(1.06);
   border-color: var(--primary-light);
-  box-shadow: 0 10px 0 #94a3b8;
+  box-shadow: 0 9px 0 #94a3b8;
   z-index: 2;
 }
 
 .letter-card.active-selected {
   border-color: #ff70a6;
-  background: #fff0f5;
-  box-shadow: 0 6px 0 #ff70a6;
-  transform: translateY(-3px);
+  background: linear-gradient(135deg, #fff0f5 0%, #ffffff 100%);
+  box-shadow: 0 6px 0 #ff70a6, 0 8px 16px rgba(255, 112, 166, 0.25);
+  transform: translateY(-3px) scale(1.03);
 }
 
-.letter-main {
-  font-family: var(--font-heading);
-  font-size: 2.4rem;
-  font-weight: 800;
-  line-height: 1;
-  color: var(--primary-dark);
+.letter-card.active-selected .letter-phonic-badge {
+  background: #ff70a6;
+  color: #ffffff;
 }
 
-.letter-sub-word {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: #64748b;
-  margin-top: 4px;
-}
-
-/* Detail Card for Selected Letter */
+/* Selected Letter Detail Card (Flashcard chuẩn sư phạm) */
 .letter-detail-card {
   background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
   border-radius: var(--radius-lg);
-  padding: 30px;
+  padding: 26px 30px;
   box-shadow: var(--shadow-lg);
   border: 3px solid #86efac;
   display: flex;
   align-items: center;
-  gap: 32px;
-  flex-wrap: wrap;
-  margin-top: 16px;
+  gap: 28px;
+  margin-top: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.letter-detail-card::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(circle, rgba(134, 239, 172, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.detail-card-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+.detail-letter-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .detail-letter-box {
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
   background: linear-gradient(135deg, #06d6a0, #118ab2);
-  border-radius: var(--radius-lg);
+  border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-heading);
-  font-size: 3.8rem;
+  font-size: 3.4rem;
   font-weight: 800;
   color: #ffffff;
-  box-shadow: 0 8px 16px rgba(6, 214, 160, 0.35);
+  box-shadow: 0 8px 18px rgba(6, 214, 160, 0.35);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.detail-badges-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.detail-cat-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: #dbeafe;
+  color: #1d4ed8;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+}
+
+.detail-ipa-badge {
+  font-size: 0.78rem;
+  font-weight: 800;
+  background: #fef08a;
+  color: #854d0e;
+  padding: 3px 9px;
+  border-radius: var(--radius-pill);
+}
+
+.detail-illustration-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .detail-illustration {
-  font-size: 6rem;
+  font-size: 5.5rem;
   line-height: 1;
   animation: bounceGentle 2.5s infinite;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
-.detail-info {
-  flex-grow: 1;
+.detail-card-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 260px;
 }
 
-.detail-info h3 {
+.detail-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-word-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.detail-word-title {
   font-family: var(--font-heading);
   font-size: 2.2rem;
   font-weight: 800;
   color: #1e293b;
-  margin-bottom: 6px;
+  line-height: 1.2;
 }
 
-.detail-info p {
-  font-size: 1.25rem;
-  color: #475569;
-  margin-bottom: 16px;
-}
-
-.btn-sound-big {
-  padding: 10px 22px;
+.detail-sound-preview {
+  font-family: var(--font-heading);
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #059669;
+  background: #d1fae5;
+  padding: 4px 14px;
   border-radius: var(--radius-pill);
-  background: #ffb703;
-  color: #78350f;
+  border: 1px solid #a7f3d0;
+}
+
+.detail-names-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-phonic-badge {
+  font-size: 0.95rem;
+  color: #15803d;
+  background: #f0fdf4;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #bbf7d0;
+}
+
+.detail-phonic-badge strong {
+  color: #166534;
+  font-size: 1.05rem;
+}
+
+.detail-lettername-badge {
+  font-size: 0.95rem;
+  color: #475569;
+  background: #f8fafc;
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.detail-reading-guide {
+  background: #ffffff;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  border: 2px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-spelling-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.05rem;
+}
+
+.guide-tag {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  color: #0284c7;
+  font-size: 0.9rem;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.spelling-text {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #0369a1;
+}
+
+.detail-sentence-text {
+  font-size: 1.15rem;
+  color: #334155;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.detail-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-sound-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: var(--radius-pill);
   border: none;
   font-family: var(--font-heading);
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 800;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(255, 183, 3, 0.4);
-  transition: all 0.2s ease;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: var(--shadow-sm);
+  touch-action: manipulation;
 }
 
-.btn-sound-big:hover {
-  background: #ffa200;
-  transform: translateY(-2px);
+.btn-sound-phonic {
+  background: linear-gradient(135deg, #7209b7, #4361ee);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(114, 9, 183, 0.35);
+}
+
+.btn-sound-phonic:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(114, 9, 183, 0.45);
+}
+
+.btn-sound-example {
+  background: linear-gradient(135deg, #06d6a0, #05b586);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(6, 214, 160, 0.35);
+}
+
+.btn-sound-example:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 16px rgba(6, 214, 160, 0.45);
 }
 
 /* ================= TAB 4: BALLOON GAME ================= */
@@ -3209,33 +3534,35 @@ body.night-mode .voice-btn {
 /* --- 3. iPads Portrait & Small Tablets (max-width: 900px) --- */
 @media (max-width: 900px) {
   .header-container {
-    flex-direction: column;
+    padding: 6px 14px;
+    gap: 8px;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    padding: 10px 14px;
   }
   .logo-area {
-    justify-content: center;
+    gap: 8px;
   }
   .header-right {
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
+    gap: 6px;
+    justify-content: flex-end;
   }
   .main-nav {
     justify-content: flex-start;
-    padding: 8px 12px 10px;
-    gap: 8px;
+    padding: 6px 10px 8px;
+    gap: 6px;
   }
   .nav-tab {
     flex-shrink: 0;
-    min-height: 44px;
-    padding: 8px 14px;
-    font-size: 0.95rem;
+    min-height: 40px;
+    padding: 6px 13px;
+    font-size: 0.92rem;
   }
   .welcome-banner {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 24px 20px;
+    gap: 16px;
   }
   .speech-actions {
     justify-content: center;
@@ -3245,7 +3572,7 @@ body.night-mode .voice-btn {
     order: -1;
   }
   .big-mascot .mascot-body {
-    font-size: 4.8rem;
+    font-size: 4.4rem;
   }
   .music-guide-box {
     flex-direction: column;
@@ -3255,32 +3582,69 @@ body.night-mode .voice-btn {
     justify-content: center;
     flex-wrap: wrap;
   }
+  
+  /* Vietnamese Phonics Tablet Optimizations */
+  .phonics-hero-bar {
+    padding: 12px 16px;
+    gap: 10px;
+  }
+  .alphabet-grid {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .letter-card {
+    min-height: 94px;
+    padding: 7px 5px;
+  }
+  .letter-main {
+    font-size: 2.1rem;
+  }
+  .letter-detail-card {
+    padding: 20px;
+    gap: 20px;
+  }
+  .detail-letter-box {
+    width: 96px;
+    height: 96px;
+    font-size: 3rem;
+  }
+  .detail-illustration {
+    font-size: 4.6rem;
+  }
+  .btn-sound-action {
+    padding: 10px 18px;
+    font-size: 1rem;
+  }
 }
 
 /* --- 4. Mobile Phones & Phablets (max-width: 768px) --- */
 @media (max-width: 768px) {
   /* Safe touch areas */
   body {
-    padding-left: max(8px, env(safe-area-inset-left));
-    padding-right: max(8px, env(safe-area-inset-right));
+    padding-left: max(6px, env(safe-area-inset-left));
+    padding-right: max(6px, env(safe-area-inset-right));
   }
 
   .main-header {
-    box-shadow: 0 1px 6px rgba(67, 97, 238, 0.06);
+    box-shadow: 0 1px 6px rgba(67, 97, 238, 0.08);
   }
   .header-container {
-    padding: 3px 8px;
-    gap: 4px;
+    padding: 4px 10px;
+    gap: 6px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
   }
   .logo-area {
     gap: 6px;
   }
   .mascot-avatar {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
   }
   .avatar-emoji {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
   }
   .site-title-box .site-title {
     font-size: 1.15rem;
@@ -3289,11 +3653,12 @@ body.night-mode .voice-btn {
     display: none;
   }
   .header-right {
-    gap: 3px;
+    gap: 4px;
+    flex-wrap: wrap;
   }
   .header-right .pill-btn {
-    padding: 3px 7px;
-    font-size: 0.75rem;
+    padding: 4px 8px;
+    font-size: 0.76rem;
   }
   .header-right .btn-text {
     display: none;
@@ -3302,24 +3667,27 @@ body.night-mode .voice-btn {
     display: none;
   }
   .voice-select {
-    max-width: 95px;
-    font-size: 0.7rem;
-    padding: 2px 4px;
+    max-width: 105px;
+    font-size: 0.72rem;
+    padding: 3px 6px;
   }
   .star-badge {
-    padding: 2px 7px;
+    padding: 3px 8px;
   }
   .star-badge .star-label {
     display: none;
   }
+  .star-badge .star-count {
+    font-size: 1rem;
+  }
   .main-nav {
-    padding: 2px 6px 4px;
-    gap: 4px;
+    padding: 3px 8px 6px;
+    gap: 5px;
   }
   .nav-tab {
-    padding: 3px 9px;
-    font-size: 0.82rem;
-    min-height: 30px;
+    padding: 4px 10px;
+    font-size: 0.85rem;
+    min-height: 34px;
   }
 
   /* Horizontal swipeable sub-navigation for high-density screen economy */
@@ -3332,8 +3700,8 @@ body.night-mode .voice-btn {
     scrollbar-width: none;
     justify-content: flex-start !important;
     gap: 8px !important;
-    padding: 6px 6px 12px !important;
-    margin: 12px -8px 0 !important;
+    padding: 4px 4px 10px !important;
+    margin: 8px -4px 0 !important;
   }
   .sub-nav::-webkit-scrollbar {
     display: none;
@@ -3342,20 +3710,180 @@ body.night-mode .voice-btn {
     scroll-snap-align: start;
     flex-shrink: 0;
     white-space: nowrap;
-    min-height: 42px;
-    padding: 8px 14px;
+    min-height: 40px;
+    padding: 6px 14px;
     font-size: 0.88rem;
   }
 
+  .app-main {
+    padding: 10px 10px 40px;
+  }
+
   .section-hero {
-    padding: 20px 14px;
+    padding: 18px 14px;
     border-radius: var(--radius-md);
+    margin-bottom: 16px;
   }
   .hero-text h2 {
     font-size: 1.55rem;
   }
   .hero-text p {
     font-size: 0.95rem;
+  }
+
+  /* ================= VIETNAMESE PHONICS MOBILE RESPONSIVE ================= */
+  .phonics-hero-bar {
+    padding: 12px 14px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .phonics-badge-tag {
+    font-size: 0.84rem;
+    padding: 4px 10px;
+  }
+  .phonics-instruction {
+    font-size: 0.95rem;
+    line-height: 1.4;
+  }
+
+  .alphabet-controls-wrapper {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .alphabet-filter-chips {
+    gap: 6px;
+    padding: 4px 2px 6px;
+  }
+  .filter-chip {
+    padding: 6px 13px;
+    font-size: 0.88rem;
+    min-height: 38px;
+  }
+
+  .alphabet-toggles-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .toggle-group-box {
+    justify-content: space-between;
+    width: 100%;
+  }
+  .toggle-label {
+    font-size: 0.86rem;
+  }
+  .toggle-pill-switch {
+    display: flex;
+    flex: 1;
+    max-width: 220px;
+  }
+  .toggle-pill-switch .toggle-btn {
+    flex: 1;
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 0.82rem;
+  }
+
+  /* 5 columns on phablets / large phones */
+  .alphabet-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .letter-card {
+    min-height: 84px;
+    padding: 6px 4px;
+    border-radius: 14px;
+    box-shadow: 0 4px 0 #cbd5e1;
+  }
+  .letter-phonic-badge {
+    top: 3px;
+    right: 4px;
+    font-size: 0.68rem;
+    padding: 1px 5px;
+  }
+  .letter-main {
+    font-size: 1.85rem;
+    margin-top: 2px;
+  }
+  .letter-sub-word {
+    font-size: 1.1rem;
+    margin-top: 2px;
+  }
+
+  /* Flashcard Letter Detail Card */
+  .letter-detail-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 18px 14px;
+    gap: 14px;
+    border-radius: var(--radius-md);
+  }
+  .detail-card-left {
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
+  .detail-letter-box {
+    width: 86px;
+    height: 86px;
+    font-size: 2.7rem;
+    border-radius: 16px;
+  }
+  .detail-illustration {
+    font-size: 4rem;
+  }
+  .detail-card-right {
+    width: 100%;
+    min-width: 0;
+    gap: 12px;
+  }
+  .detail-word-row {
+    justify-content: center;
+    gap: 8px;
+  }
+  .detail-word-title {
+    font-size: 1.85rem;
+  }
+  .detail-sound-preview {
+    font-size: 1.15rem;
+    padding: 3px 12px;
+  }
+  .detail-names-row {
+    justify-content: center;
+    gap: 8px;
+  }
+  .detail-phonic-badge strong {
+    font-size: 1rem;
+  }
+  .detail-reading-guide {
+    text-align: left;
+    padding: 10px 14px;
+    gap: 5px;
+  }
+  .guide-tag {
+    font-size: 0.82rem;
+  }
+  .spelling-text {
+    font-size: 1.05rem;
+  }
+  .detail-sentence-text {
+    font-size: 1.05rem;
+  }
+  .detail-actions-row {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  .btn-sound-action {
+    width: 100%;
+    justify-content: center;
+    min-height: 48px;
+    font-size: 1.02rem;
+    padding: 12px 16px;
   }
 
   /* Game Board Card */
@@ -3389,107 +3917,89 @@ body.night-mode .voice-btn {
   .answers-area {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
   }
   .answer-choice-btn, .btn-choice {
-    min-height: 64px;
-    font-size: 1.95rem;
-    padding: 12px 14px;
+    min-height: 60px;
+    font-size: 1.85rem;
+    padding: 10px 12px;
     width: 100%;
   }
   .sci-choice-btn {
-    font-size: 1.38rem;
-    min-height: 62px;
-    padding: 12px 14px;
+    font-size: 1.3rem;
+    min-height: 58px;
+    padding: 10px 12px;
   }
   .eng-choice-btn {
-    font-size: 1.7rem;
+    font-size: 1.6rem;
   }
   .eng-choice-btn .choice-sub {
-    font-size: 1.15rem;
-  }
-
-  /* Alphabet Grid */
-  .alphabet-grid {
-    grid-template-columns: repeat(auto-fill, minmax(62px, 1fr));
-    gap: 8px;
-  }
-  .letter-card {
-    padding: 8px 4px;
-  }
-  .letter-main {
-    font-size: 1.7rem;
-  }
-  .letter-detail-card {
-    flex-direction: column;
-    text-align: center;
-    padding: 16px;
-    gap: 12px;
+    font-size: 1.1rem;
   }
 
   /* English Flashcards */
   .english-cards-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    gap: 10px;
     padding: 0 4px;
   }
   .english-flashcard {
-    padding: 14px 8px;
+    padding: 12px 6px;
   }
   .card-icon-bubble {
-    font-size: 2.6rem;
+    font-size: 2.4rem;
   }
   .card-english-word {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
   }
 
   /* Science Lessons */
   .science-lessons-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 12px;
     padding: 0 4px;
   }
   .science-lesson-card {
-    padding: 18px 14px;
+    padding: 16px 12px;
   }
 
   /* Xylophone Instrument */
   .xylophone-container {
-    padding: 12px 6px;
-    margin: 16px auto;
+    padding: 12px 4px;
+    margin: 14px auto;
     border-width: 3px;
   }
   .xylophone-stand {
-    padding: 18px 4px;
+    padding: 16px 4px;
   }
   .xylo-beam {
-    left: 8px;
-    right: 8px;
-    height: 12px;
+    left: 6px;
+    right: 6px;
+    height: 10px;
   }
-  .beam-top { top: 32px; }
-  .beam-bottom { bottom: 32px; }
+  .beam-top { top: 28px; }
+  .beam-bottom { bottom: 28px; }
   .xylophone-board {
-    height: 270px;
-    gap: 4px;
+    height: 260px;
+    gap: 3px;
   }
   .xylo-bar {
-    max-width: 46px;
-    min-width: 34px;
-    padding: 10px 2px;
+    max-width: 44px;
+    min-width: 32px;
+    padding: 8px 1px;
     border-radius: 12px;
-    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.5), 0 6px 0 rgba(0, 0, 0, 0.18), 0 8px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.5), 0 5px 0 rgba(0, 0, 0, 0.18), 0 6px 10px rgba(0, 0, 0, 0.12);
     touch-action: manipulation;
   }
   .xylo-solfege {
-    font-size: 1.05rem;
+    font-size: 1rem;
   }
   .xylo-note {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
   .xylo-pin {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
   }
 
   /* Memory Match Game */
@@ -3498,23 +4008,23 @@ body.night-mode .voice-btn {
     gap: 8px;
   }
   .memory-card-item {
-    height: 95px;
+    height: 90px;
   }
   .card-front-icon, .card-back-icon {
-    font-size: 2.4rem;
+    font-size: 2.2rem;
   }
   .card-back-name {
-    font-size: 0.8rem;
+    font-size: 0.78rem;
   }
 
   /* Drawing App */
   .drawing-app-card {
-    padding: 14px 10px;
+    padding: 12px 8px;
   }
   .draw-toolbar {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 10px;
   }
   .tool-group {
     width: 100%;
@@ -3620,34 +4130,27 @@ body.night-mode .voice-btn {
 /* --- 5. Small Mobile Phones (max-width: 480px) --- */
 @media (max-width: 480px) {
   .site-title-box .site-title {
-    font-size: 1.35rem;
+    font-size: 1.05rem;
   }
   .mascot-avatar {
-    width: 46px;
-    height: 46px;
+    width: 32px;
+    height: 32px;
   }
   .avatar-emoji {
-    font-size: 1.8rem;
+    font-size: 1.25rem;
   }
   .pill-btn {
-    padding: 6px 10px;
-    font-size: 0.8rem;
+    padding: 4px 7px;
+    font-size: 0.74rem;
   }
   .voice-select {
-    max-width: 125px;
-    font-size: 0.78rem;
-    padding: 4px 8px;
+    max-width: 90px;
+    font-size: 0.68rem;
+    padding: 2px 4px;
   }
 
-  /* Streamlined speed selector on small mobile */
   .speed-control-box {
-    display: inline-flex;
-    padding: 2px 6px;
-    font-size: 0.75rem;
-  }
-  .speed-pill-btn {
-    padding: 2px 6px;
-    font-size: 0.75rem;
+    display: none;
   }
 
   .feature-grid {
@@ -3655,7 +4158,60 @@ body.night-mode .voice-btn {
     gap: 12px;
   }
   .feature-card {
-    padding: 18px 16px;
+    padding: 16px 14px;
+  }
+
+  /* Alphabet 4 Clean Columns on Mobile */
+  .alphabet-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 7px !important;
+  }
+  .letter-card {
+    min-height: 76px !important;
+    padding: 4px 2px !important;
+    border-width: 2px !important;
+    box-shadow: 0 3px 0 #cbd5e1 !important;
+  }
+  .letter-phonic-badge {
+    font-size: 0.62rem !important;
+    padding: 0 4px !important;
+    top: 2px !important;
+    right: 2px !important;
+  }
+  .letter-main {
+    font-size: 1.65rem !important;
+  }
+  .letter-sub-word {
+    font-size: 0.98rem !important;
+  }
+
+  /* Detail Card Small Screen */
+  .letter-detail-card {
+    padding: 14px 10px !important;
+    gap: 12px !important;
+  }
+  .detail-letter-box {
+    width: 76px !important;
+    height: 76px !important;
+    font-size: 2.3rem !important;
+    border-radius: 14px !important;
+  }
+  .detail-illustration {
+    font-size: 3.4rem !important;
+  }
+  .detail-word-title {
+    font-size: 1.65rem !important;
+  }
+  .detail-sound-preview {
+    font-size: 1.05rem !important;
+  }
+  .detail-actions-row {
+    gap: 8px !important;
+  }
+  .btn-sound-action {
+    min-height: 46px !important;
+    font-size: 0.96rem !important;
+    padding: 10px 14px !important;
   }
 
   /* Sequence numbers on Math */
@@ -3665,61 +4221,107 @@ body.night-mode .voice-btn {
     justify-content: center;
   }
   .seq-box {
-    width: 42px;
-    height: 42px;
-    font-size: 1.25rem;
+    width: 38px;
+    height: 38px;
+    font-size: 1.15rem;
   }
   .seq-arrow {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     margin: 0 1px;
   }
 
   /* Xylophone Compact Key Width */
   .xylophone-board {
-    height: 240px;
-    gap: 3px;
+    height: 230px;
+    gap: 2px;
   }
   .xylo-bar {
-    max-width: 40px;
-    min-width: 28px;
-    padding: 8px 1px;
+    max-width: 38px;
+    min-width: 26px;
+    padding: 6px 1px;
     border-radius: 10px;
   }
   .xylo-solfege {
-    font-size: 0.92rem;
+    font-size: 0.88rem;
   }
   .xylo-note {
-    font-size: 0.72rem;
+    font-size: 0.68rem;
   }
 
   /* Memory Cards */
   .memory-card-item {
-    height: 82px;
+    height: 78px;
   }
 
   /* Balloon Game Container */
   .balloon-sky {
-    height: 380px;
+    height: 350px;
+  }
+  .balloon-target-banner {
+    padding: 10px 14px;
+    font-size: 1.15rem;
+    gap: 8px;
+  }
+  .target-symbol {
+    font-size: 1.8rem;
+    padding: 1px 12px;
   }
 }
 
-/* --- 6. Landscape orientation for mobile phones --- */
+/* --- 6. Extra Small Phones (max-width: 360px) --- */
+@media (max-width: 360px) {
+  .site-title-box .site-title {
+    font-size: 0.98rem;
+  }
+  .header-right .pill-btn {
+    padding: 3px 5px;
+    font-size: 0.7rem;
+  }
+  .voice-select {
+    max-width: 80px;
+    font-size: 0.65rem;
+  }
+  .alphabet-grid {
+    gap: 5px !important;
+  }
+  .letter-card {
+    min-height: 70px !important;
+  }
+  .letter-main {
+    font-size: 1.5rem !important;
+  }
+  .letter-sub-word {
+    font-size: 0.88rem !important;
+  }
+}
+
+/* --- 7. Landscape orientation for mobile phones --- */
 @media (max-height: 500px) and (orientation: landscape) {
   .header-container {
-    padding: 6px 14px;
+    padding: 4px 12px;
   }
   .main-nav {
-    padding: 4px 10px;
+    padding: 3px 8px;
   }
   .xylophone-board {
-    height: 220px;
-    gap: 8px;
+    height: 200px;
+    gap: 6px;
   }
   .xylo-bar {
-    max-width: 75px;
+    max-width: 65px;
   }
   .balloon-sky {
-    height: 280px;
+    height: 260px;
+  }
+  .letter-detail-card {
+    flex-direction: row !important;
+    text-align: left !important;
+  }
+  .detail-actions-row {
+    flex-direction: row !important;
+  }
+  .btn-sound-action {
+    width: auto !important;
   }
 }
 

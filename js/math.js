@@ -764,6 +764,11 @@ class MathApp {
       this.aArea.appendChild(btn);
     });
 
+    // Preload praise audio silently in background for instant 0ms playback when answered
+    if (this.currentQuestion && this.currentQuestion.praise) {
+      window.soundSys.preloadAudio(this.currentQuestion.praise);
+    }
+
     // Automatically speak question prompt when question loads
     setTimeout(() => {
       if (this.currentQuestion && this.currentQuestion.speechText) {

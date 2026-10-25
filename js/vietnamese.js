@@ -6,39 +6,60 @@
 
 class VietnameseApp {
   constructor() {
+    // 1. 29 CHỮ CÁI TIẾNG VIỆT CHÍNH THỨC (Chuẩn âm vị học BGD&ĐT - KHÔNG CÓ TỪ 'ÂM', Ă đọc là Á, Â đọc là Ớ)
     this.alphabetData = [
-      { upper: 'A', lower: 'a', word: 'Con Gà', icon: '🐔', sentence: 'Chữ A trong từ Con Gà' },
-      { upper: 'Ă', lower: 'ă', word: 'Mặt Trăng', icon: '🌙', sentence: 'Chữ Ă trong Mặt Trăng' },
-      { upper: 'Â', lower: 'â', word: 'Cây Nấm', icon: '🍄', sentence: 'Chữ Â trong Cây Nấm' },
-      { upper: 'B', lower: 'b', word: 'Quả Bóng', icon: '⚽', sentence: 'Chữ Bờ trong Quả Bóng' },
-      { upper: 'C', lower: 'c', word: 'Con Cá', icon: '🐟', sentence: 'Chữ Cờ trong Con Cá' },
-      { upper: 'D', lower: 'd', word: 'Dưa Hấu', icon: '🍉', sentence: 'Chữ Dờ trong Dưa Hấu' },
-      { upper: 'Đ', lower: 'đ', word: 'Đồng Hồ', icon: '⏰', sentence: 'Chữ Đờ trong Đồng Hồ' },
-      { upper: 'E', lower: 'e', word: 'Em Bé', icon: '👶', sentence: 'Chữ E trong Em Bé' },
-      { upper: 'Ê', lower: 'ê', word: 'Con Ếch', icon: '🐸', sentence: 'Chữ Ê trong Con Ếch' },
-      { upper: 'G', lower: 'g', word: 'Ghế Gỗ', icon: '🪑', sentence: 'Chữ Gờ trong Ghế Gỗ' },
-      { upper: 'H', lower: 'h', word: 'Bông Hoa', icon: '🌸', sentence: 'Chữ Hát trong Bông Hoa' },
-      { upper: 'I', lower: 'i', word: 'Viên Bi', icon: '🔮', sentence: 'Chữ I trong Viên Bi' },
-      { upper: 'K', lower: 'k', word: 'Cây Kem', icon: '🍦', sentence: 'Chữ Ca trong Cây Kem' },
-      { upper: 'L', lower: 'l', word: 'Chiếc Lá', icon: '🍃', sentence: 'Chữ Lờ trong Chiếc Lá' },
-      { upper: 'M', lower: 'm', word: 'Con Mèo', icon: '🐱', sentence: 'Chữ Mờ trong Con Mèo' },
-      { upper: 'N', lower: 'n', word: 'Nụ Hoa', icon: '🌷', sentence: 'Chữ Nờ trong Nụ Hoa' },
-      { upper: 'O', lower: 'o', word: 'Con Ong', icon: '🐝', sentence: 'Chữ O trong Con Ong' },
-      { upper: 'Ô', lower: 'ô', word: 'Cái Ô', icon: '☂️', sentence: 'Chữ Ô trong Cái Ô' },
-      { upper: 'Ơ', lower: 'ơ', word: 'Lá Cờ', icon: '🚩', sentence: 'Chữ Ơ trong Lá Cờ' },
-      { upper: 'P', lower: 'p', word: 'Đèn Pin', icon: '🔦', sentence: 'Chữ Pờ trong Đèn Pin' },
-      { upper: 'Q', lower: 'q', word: 'Quả Quýt', icon: '🍊', sentence: 'Chữ Quy trong Quả Quýt' },
-      { upper: 'R', lower: 'r', word: 'Con Rùa', icon: '🐢', sentence: 'Chữ Rờ trong Con Rùa' },
-      { upper: 'S', lower: 's', word: 'Ngôi Sao', icon: '⭐', sentence: 'Chữ Sờ trong Ngôi Sao' },
-      { upper: 'T', lower: 't', word: 'Con Tôm', icon: '🦐', sentence: 'Chữ Tờ trong Con Tôm' },
-      { upper: 'U', lower: 'u', word: 'Búp Bê', icon: '🪆', sentence: 'Chữ U trong Búp Bê' },
-      { upper: 'Ư', lower: 'ư', word: 'Con Hươu', icon: '🦌', sentence: 'Chữ Ư trong Con Hươu' },
-      { upper: 'V', lower: 'v', word: 'Con Vịt', icon: '🦆', sentence: 'Chữ Vờ trong Con Vịt' },
-      { upper: 'X', lower: 'x', word: 'Xe Đạp', icon: '🚲', sentence: 'Chữ Xờ trong Xe Đạp' },
-      { upper: 'Y', lower: 'y', word: 'Chim Yến', icon: '🐦', sentence: 'Chữ Y Dài trong Chim Yến' }
+      { upper: 'A', lower: 'a', sound: 'A', letterName: 'A', ipa: '/a/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Con Gà', icon: '🐔', spelling: 'A - Con Gà', sentence: 'Chữ A trong từ Con Gà', sayPhonic: 'A', sayExample: 'A. Con Gà!' },
+      { upper: 'Ă', lower: 'ă', sound: 'Á', letterName: 'Ă (Á)', ipa: '/ă/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Mặt Trăng', icon: '🌙', spelling: 'Á - Mặt Trăng', sentence: 'Chữ Ă phát âm là Á trong từ Mặt Trăng', sayPhonic: 'Á', sayExample: 'Á. Mặt Trăng!' },
+      { upper: 'Â', lower: 'â', sound: 'Ớ', letterName: 'Â (Ớ)', ipa: '/ɤ̆/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Cây Nấm', icon: '🍄', spelling: 'Ớ - Cây Nấm', sentence: 'Chữ Â phát âm là Ớ trong từ Cây Nấm', sayPhonic: 'Ớ', sayExample: 'Ớ. Cây Nấm!' },
+      { upper: 'B', lower: 'b', sound: 'Bờ', letterName: 'Bê (Bờ)', ipa: '/b/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Quả Bóng', icon: '⚽', spelling: 'Bờ - Quả Bóng', sentence: 'Chữ Bờ trong từ Quả Bóng', sayPhonic: 'Bờ', sayExample: 'Bờ. Quả Bóng!' },
+      { upper: 'C', lower: 'c', sound: 'Cờ', letterName: 'Cờ (Xê)', ipa: '/k/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Con Cá', icon: '🐟', spelling: 'Cờ - a - ca - sắc - cá', sentence: 'Chữ Cờ trong từ Con Cá', sayPhonic: 'Cờ', sayExample: 'Cờ. Con Cá!' },
+      { upper: 'D', lower: 'd', sound: 'Dờ', letterName: 'Dê (Dờ)', ipa: '/z/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Dưa Hấu', icon: '🍉', spelling: 'Dờ - ưa - dưa', sentence: 'Chữ Dờ trong từ Dưa Hấu', sayPhonic: 'Dờ', sayExample: 'Dờ. Dưa Hấu!' },
+      { upper: 'Đ', lower: 'đ', sound: 'Đờ', letterName: 'Đê (Đờ)', ipa: '/d/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Đồng Hồ', icon: '⏰', spelling: 'Đờ - Đồng Hồ', sentence: 'Chữ Đờ trong từ Đồng Hồ', sayPhonic: 'Đờ', sayExample: 'Đờ. Đồng Hồ!' },
+      { upper: 'E', lower: 'e', sound: 'E', letterName: 'E', ipa: '/ε/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Em Bé', icon: '👶', spelling: 'E - Em Bé', sentence: 'Chữ E trong từ Em Bé', sayPhonic: 'E', sayExample: 'E. Em Bé!' },
+      { upper: 'Ê', lower: 'ê', sound: 'Ê', letterName: 'Ê', ipa: '/e/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Con Ếch', icon: '🐸', spelling: 'Ê - Con Ếch', sentence: 'Chữ Ê trong từ Con Ếch', sayPhonic: 'Ê', sayExample: 'Ê. Con Ếch!' },
+      { upper: 'G', lower: 'g', sound: 'Gờ', letterName: 'Gờ (Giê)', ipa: '/ɣ/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Ghế Gỗ', icon: '🪑', spelling: 'Gờ - Ghế Gỗ', sentence: 'Chữ Gờ trong từ Ghế Gỗ', sayPhonic: 'Gờ', sayExample: 'Gờ. Ghế Gỗ!' },
+      { upper: 'H', lower: 'h', sound: 'Hờ', letterName: 'Hờ', ipa: '/h/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Bông Hoa', icon: '🌸', spelling: 'Hờ - oa - hoa', sentence: 'Chữ Hờ trong từ Bông Hoa', sayPhonic: 'Hờ', sayExample: 'Hờ. Bông Hoa!' },
+      { upper: 'I', lower: 'i', sound: 'I', letterName: 'I (i ngắn)', ipa: '/i/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Viên Bi', icon: '🔮', spelling: 'Bờ - i - bi', sentence: 'Chữ I trong từ Viên Bi', sayPhonic: 'I', sayExample: 'I. Viên Bi!' },
+      { upper: 'K', lower: 'k', sound: 'Cờ', letterName: 'Ca (ghi âm Cờ)', ipa: '/k/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Cây Kem', icon: '🍦', spelling: 'Cờ - em - kem', sentence: 'Chữ Ca ghi âm Cờ trong Cây Kem', sayPhonic: 'Cờ', sayExample: 'Cờ. Cây Kem!' },
+      { upper: 'L', lower: 'l', sound: 'Lờ', letterName: 'Lờ', ipa: '/l/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Chiếc Lá', icon: '🍃', spelling: 'Lờ - a - la - sắc - lá', sentence: 'Chữ Lờ trong từ Chiếc Lá', sayPhonic: 'Lờ', sayExample: 'Lờ. Chiếc Lá!' },
+      { upper: 'M', lower: 'm', sound: 'Mờ', letterName: 'Mờ', ipa: '/m/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Con Mèo', icon: '🐱', spelling: 'Mờ - eo - meo - huyền - mèo', sentence: 'Chữ Mờ trong từ Con Mèo', sayPhonic: 'Mờ', sayExample: 'Mờ. Con Mèo!' },
+      { upper: 'N', lower: 'n', sound: 'Nờ', letterName: 'Nờ', ipa: '/n/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Nụ Hoa', icon: '🌷', spelling: 'Nờ - u - nu - nặng - nụ', sentence: 'Chữ Nờ trong từ Nụ Hoa', sayPhonic: 'Nờ', sayExample: 'Nờ. Nụ Hoa!' },
+      { upper: 'O', lower: 'o', sound: 'O', letterName: 'O', ipa: '/ɔ/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Con Ong', icon: '🐝', spelling: 'O - Con Ong', sentence: 'Chữ O trong từ Con Ong', sayPhonic: 'O', sayExample: 'O. Con Ong!' },
+      { upper: 'Ô', lower: 'ô', sound: 'Ô', letterName: 'Ô', ipa: '/o/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Cái Ô', icon: '☂️', spelling: 'Ô - Cái Ô', sentence: 'Chữ Ô trong từ Cái Ô', sayPhonic: 'Ô', sayExample: 'Ô. Cái Ô!' },
+      { upper: 'Ơ', lower: 'ơ', sound: 'Ơ', letterName: 'Ơ', ipa: '/ɤ/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Lá Cờ', icon: '🚩', spelling: 'Cờ - ơ - cơ - huyền - cờ', sentence: 'Chữ Ơ trong từ Lá Cờ', sayPhonic: 'Ơ', sayExample: 'Ơ. Lá Cờ!' },
+      { upper: 'P', lower: 'p', sound: 'Pờ', letterName: 'Pê (Pờ)', ipa: '/p/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Đèn Pin', icon: '🔦', spelling: 'Pờ - in - pin', sentence: 'Chữ Pờ trong từ Đèn Pin', sayPhonic: 'Pờ', sayExample: 'Pờ. Đèn Pin!' },
+      { upper: 'Q', lower: 'q', sound: 'Quờ', letterName: 'Quy (Quờ)', ipa: '/k/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Quả Quýt', icon: '🍊', spelling: 'Quờ - yt - quyt - sắc - quýt', sentence: 'Chữ Quờ trong từ Quả Quýt', sayPhonic: 'Quờ', sayExample: 'Quờ. Quả Quýt!' },
+      { upper: 'R', lower: 'r', sound: 'Rờ', letterName: 'Rờ', ipa: '/ʐ/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Con Rùa', icon: '🐢', spelling: 'Rờ - ua - rua - huyền - rùa', sentence: 'Chữ Rờ trong từ Con Rùa', sayPhonic: 'Rờ', sayExample: 'Rờ. Con Rùa!' },
+      { upper: 'S', lower: 's', sound: 'Sờ', letterName: 'Sờ (uốn lưỡi)', ipa: '/ʂ/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Ngôi Sao', icon: '⭐', spelling: 'Sờ - ao - sao', sentence: 'Chữ Sờ trong từ Ngôi Sao', sayPhonic: 'Sờ', sayExample: 'Sờ. Ngôi Sao!' },
+      { upper: 'T', lower: 't', sound: 'Tờ', letterName: 'Tê (Tờ)', ipa: '/t/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Con Tôm', icon: '🦐', spelling: 'Tờ - ôm - tôm', sentence: 'Chữ Tờ trong từ Con Tôm', sayPhonic: 'Tờ', sayExample: 'Tờ. Con Tôm!' },
+      { upper: 'U', lower: 'u', sound: 'U', letterName: 'U', ipa: '/u/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Búp Bê', icon: '🪆', spelling: 'Bờ - up - bup - sắc - búp', sentence: 'Chữ U trong từ Búp Bê', sayPhonic: 'U', sayExample: 'U. Búp Bê!' },
+      { upper: 'Ư', lower: 'ư', sound: 'Ư', letterName: 'Ư', ipa: '/ɯ/', category: 'vowel', categoryName: 'Nguyên âm đơn', word: 'Con Hươu', icon: '🦌', spelling: 'Hờ - ươu - hươu', sentence: 'Chữ Ư trong từ Con Hươu', sayPhonic: 'Ư', sayExample: 'Ư. Con Hươu!' },
+      { upper: 'V', lower: 'v', sound: 'Vờ', letterName: 'Vê (Vờ)', ipa: '/v/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Con Vịt', icon: '🦆', spelling: 'Vờ - it - vit - nặng - vịt', sentence: 'Chữ Vờ trong từ Con Vịt', sayPhonic: 'Vờ', sayExample: 'Vờ. Con Vịt!' },
+      { upper: 'X', lower: 'x', sound: 'Xờ', letterName: 'Xờ (xờ nhẹ)', ipa: '/s/', category: 'consonant', categoryName: 'Phụ âm đầu', word: 'Xe Đạp', icon: '🚲', spelling: 'Xờ - e - xe', sentence: 'Chữ Xờ trong từ Xe Đạp', sayPhonic: 'Xờ', sayExample: 'Xờ. Xe Đạp!' },
+      { upper: 'Y', lower: 'y', sound: 'I', letterName: 'I dài (y)', ipa: '/i/', category: 'vowel', categoryName: 'Bán nguyên âm', word: 'Chim Yến', icon: '🐦', spelling: 'I - ên - yên - sắc - yến', sentence: 'Chữ Y dài trong Chim Yến', sayPhonic: 'I', sayExample: 'I. Chim Yến!' },
+
+      // 2. 11 PHỤ ÂM GHÉP CHUẨN ÂM VỊ HỌC BỘ GIÁO DỤC
+      { upper: 'CH', lower: 'ch', sound: 'Chờ', letterName: 'Chờ', ipa: '/c/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Con Chim', icon: '🐦', spelling: 'Chờ - im - chim', sentence: 'Chờ trong từ Con Chim', sayPhonic: 'Chờ', sayExample: 'Chờ. Con Chim!' },
+      { upper: 'GH', lower: 'gh', sound: 'Gờ', letterName: 'Gờ kép (gh)', ipa: '/ɣ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Ghế Gỗ', icon: '🪑', spelling: 'Gờ - ê - gê - sắc - ghế', sentence: 'Gờ kép trong Ghế Gỗ (đi với e, ê, i)', sayPhonic: 'Gờ', sayExample: 'Gờ kép. Ghế Gỗ!' },
+      { upper: 'GI', lower: 'gi', sound: 'Gi', letterName: 'Gi', ipa: '/z/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Giỏ Hoa', icon: '🧺', spelling: 'Gi - o - gio - hỏi - giỏ', sentence: 'Gi trong từ Giỏ Hoa', sayPhonic: 'Gi', sayExample: 'Gi. Giỏ Hoa!' },
+      { upper: 'KH', lower: 'kh', sound: 'Khờ', letterName: 'Khờ', ipa: '/χ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Cây Khế', icon: '⭐', spelling: 'Khờ - ê - khê - sắc - khế', sentence: 'Khờ trong từ Cây Khế', sayPhonic: 'Khờ', sayExample: 'Khờ. Cây Khế!' },
+      { upper: 'NG', lower: 'ng', sound: 'Ngờ', letterName: 'Ngờ đơn (ng)', ipa: '/ŋ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Con Ngựa', icon: '🐴', spelling: 'Ngờ - ưa - ngưa - nặng - ngựa', sentence: 'Ngờ đơn trong từ Con Ngựa', sayPhonic: 'Ngờ', sayExample: 'Ngờ đơn. Con Ngựa!' },
+      { upper: 'NGH', lower: 'ngh', sound: 'Ngờ', letterName: 'Ngờ kép (ngh)', ipa: '/ŋ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Con Nghé', icon: '🐃', spelling: 'Ngờ - e - nge - sắc - nghé', sentence: 'Ngờ kép trong Con Nghé (đi với e, ê, i)', sayPhonic: 'Ngờ', sayExample: 'Ngờ kép. Con Nghé!' },
+      { upper: 'NH', lower: 'nh', sound: 'Nhờ', letterName: 'Nhờ', ipa: '/ɲ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Ngôi Nhà', icon: '🏠', spelling: 'Nhờ - a - nha - huyền - nhà', sentence: 'Nhờ trong từ Ngôi Nhà', sayPhonic: 'Nhờ', sayExample: 'Nhờ. Ngôi Nhà!' },
+      { upper: 'PH', lower: 'ph', sound: 'Phờ', letterName: 'Phờ', ipa: '/f/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Phố Cổ', icon: '🏮', spelling: 'Phờ - ô - phô - sắc - phố', sentence: 'Phờ trong từ Phố Cổ', sayPhonic: 'Phờ', sayExample: 'Phờ. Phố Cổ!' },
+      { upper: 'QU', lower: 'qu', sound: 'Quờ', letterName: 'Quờ', ipa: '/kʷ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Quả Quýt', icon: '🍊', spelling: 'Quờ - yt - quyt - sắc - quýt', sentence: 'Quờ trong từ Quả Quýt', sayPhonic: 'Quờ', sayExample: 'Quờ. Quả Quýt!' },
+      { upper: 'TH', lower: 'th', sound: 'Thờ', letterName: 'Thờ', ipa: '/tʼ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Chú Thỏ', icon: '🐰', spelling: 'Thờ - o - tho - hỏi - thỏ', sentence: 'Thờ trong từ Chú Thỏ', sayPhonic: 'Thờ', sayExample: 'Thờ. Chú Thỏ!' },
+      { upper: 'TR', lower: 'tr', sound: 'Trờ', letterName: 'Trờ', ipa: '/ʈ/', category: 'compound', categoryName: 'Phụ âm ghép', word: 'Cây Tre', icon: '🎋', spelling: 'Trờ - e - tre', sentence: 'Trờ trong từ Cây Tre', sayPhonic: 'Trờ', sayExample: 'Trờ. Cây Tre!' },
+
+      // 3. 3 NGUYÊN ÂM ĐÔI (Chuẩn KidsUP & Bộ Giáo Dục)
+      { upper: 'IA - IÊ', lower: 'ia - iê', sound: 'Ia', letterName: 'Vần ia / iê', ipa: '/ie/', category: 'diphthong', categoryName: 'Nguyên âm đôi', word: 'Cây Mía', icon: '🎋', spelling: 'Mờ - ia - mia - sắc - mía', sentence: 'Vần ia trong từ Cây Mía (iê trong con kiến)', sayPhonic: 'Ia', sayExample: 'Ia. Cây Mía!' },
+      { upper: 'UA - UÔ', lower: 'ua - uô', sound: 'Ua', letterName: 'Vần ua / uô', ipa: '/uo/', category: 'diphthong', categoryName: 'Nguyên âm đôi', word: 'Con Cua', icon: '🦀', spelling: 'Cờ - ua - cua', sentence: 'Vần ua trong từ Con Cua (uô trong quả chuối)', sayPhonic: 'Ua', sayExample: 'Ua. Con Cua!' },
+      { upper: 'ƯA - ƯƠ', lower: 'ưa - ươ', sound: 'Ưa', letterName: 'Vần ưa / ươ', ipa: '/ɯɤ/', category: 'diphthong', categoryName: 'Nguyên âm đôi', word: 'Cơn Mưa', icon: '🌧️', spelling: 'Mờ - ưa - mưa', sentence: 'Vần ưa trong từ Cơn Mưa (ươ trong con hươu)', sayPhonic: 'Ưa', sayExample: 'Ưa. Cơn Mưa!' }
     ];
 
     this.isUppercase = true;
+    this.currentCategory = 'all'; // 'all', 'vowel', 'consonant', 'compound', 'diphthong'
+    this.pronounceMode = 'phonic'; // 'phonic' (chuẩn BGD: Bờ, Cờ...) hoặc 'letter_name' (Bê, Xê...)
     this.selectedLetter = this.alphabetData[0];
 
     // Scores
@@ -64,13 +85,25 @@ class VietnameseApp {
     this.gridEl = document.getElementById('alphabetGrid');
     this.btnUpper = document.getElementById('btnLetterUpper');
     this.btnLower = document.getElementById('btnLetterLower');
+    this.btnPronouncePhonic = document.getElementById('btnPronouncePhonic');
+    this.btnPronounceName = document.getElementById('btnPronounceName');
+    this.filterChips = document.querySelectorAll('#alphabetFilterChips .filter-chip');
 
-    // Detail card elements
+    // Detail card elements (Phonics Flashcard)
     this.detailLetterBox = document.getElementById('detailLetterBox');
+    this.detailCategoryBadge = document.getElementById('detailCategoryBadge');
+    this.detailIpaBadge = document.getElementById('detailIpaBadge');
     this.detailIllustration = document.getElementById('detailIllustration');
     this.detailWord = document.getElementById('detailWord');
+    this.detailSoundPreview = document.getElementById('detailSoundPreview');
+    this.detailPhonicBadge = document.getElementById('detailPhonicBadge');
+    this.detailLetterNameBadge = document.getElementById('detailLetterNameBadge');
+    this.detailSpellingText = document.getElementById('detailSpellingText');
     this.detailSentence = document.getElementById('detailSentence');
-    this.btnPlayLetterSound = document.getElementById('btnPlayLetterSound');
+    this.btnPlayPhonicSound = document.getElementById('btnPlayPhonicSound');
+    this.btnPlayPhonicLabel = document.getElementById('btnPlayPhonicLabel');
+    this.btnPlayExampleSound = document.getElementById('btnPlayExampleSound');
+    this.btnPlayLetterSound = document.getElementById('btnPlayLetterSound'); // alias
 
     // Quiz elements
     this.quizQArea = document.getElementById('vnQuizQuestionArea');
@@ -174,6 +207,36 @@ class VietnameseApp {
       });
     });
 
+    // Phonics Category Filter Chips
+    if (this.filterChips) {
+      this.filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          this.filterChips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          this.currentCategory = chip.dataset.cat || 'all';
+          this.renderAlphabetGrid();
+        });
+      });
+    }
+
+    // Pronunciation Mode Toggles (Phonics vs Letter Name)
+    if (this.btnPronouncePhonic && this.btnPronounceName) {
+      this.btnPronouncePhonic.addEventListener('click', () => {
+        this.pronounceMode = 'phonic';
+        this.btnPronouncePhonic.classList.add('active');
+        this.btnPronounceName.classList.remove('active');
+        this.showLetterDetail(this.selectedLetter);
+        window.soundSys.speak("Bé đã chọn chế độ phát âm âm vị học chuẩn Bộ Giáo Dục nhé!");
+      });
+      this.btnPronounceName.addEventListener('click', () => {
+        this.pronounceMode = 'letter_name';
+        this.btnPronounceName.classList.add('active');
+        this.btnPronouncePhonic.classList.remove('active');
+        this.showLetterDetail(this.selectedLetter);
+        window.soundSys.speak("Bé đã chọn chế độ đọc theo tên chữ cái nhé!");
+      });
+    }
+
     // Upper/Lower toggle
     if (this.btnUpper && this.btnLower) {
       this.btnUpper.addEventListener('click', () => {
@@ -191,6 +254,17 @@ class VietnameseApp {
       });
     }
 
+    // Buttons on Letter Detail Flashcard
+    if (this.btnPlayPhonicSound) {
+      this.btnPlayPhonicSound.addEventListener('click', () => {
+        this.speakPhonicSound();
+      });
+    }
+    if (this.btnPlayExampleSound) {
+      this.btnPlayExampleSound.addEventListener('click', () => {
+        this.speakExampleSound();
+      });
+    }
     if (this.btnPlayLetterSound) {
       this.btnPlayLetterSound.addEventListener('click', () => {
         this.speakCurrentLetter();
@@ -235,13 +309,38 @@ class VietnameseApp {
     if (!this.gridEl) return;
     this.gridEl.innerHTML = '';
 
-    this.alphabetData.forEach(item => {
+    // Filter items based on selected category
+    let items = this.alphabetData;
+    if (this.currentCategory === 'all') {
+      // 29 main letters
+      items = this.alphabetData.filter(i => i.category === 'vowel' || i.category === 'consonant');
+    } else if (this.currentCategory === 'vowel') {
+      // 11 single vowels
+      items = this.alphabetData.filter(i => i.category === 'vowel' && !i.categoryName.includes('Bán'));
+    } else if (this.currentCategory === 'consonant') {
+      // 17 single consonants
+      items = this.alphabetData.filter(i => i.category === 'consonant');
+    } else if (this.currentCategory === 'compound') {
+      // 11 compound consonants
+      items = this.alphabetData.filter(i => i.category === 'compound');
+    } else if (this.currentCategory === 'diphthong') {
+      // 3 diphthongs
+      items = this.alphabetData.filter(i => i.category === 'diphthong');
+    }
+
+    if (!items.includes(this.selectedLetter) && items.length > 0) {
+      this.selectedLetter = items[0];
+      this.showLetterDetail(this.selectedLetter);
+    }
+
+    items.forEach(item => {
       const card = document.createElement('div');
       card.className = 'letter-card';
       if (this.selectedLetter === item) card.classList.add('active-selected');
 
       const char = this.isUppercase ? item.upper : item.lower;
       card.innerHTML = `
+        <span class="letter-phonic-badge">${item.sound}</span>
         <span class="letter-main">${char}</span>
         <span class="letter-sub-word">${item.icon}</span>
       `;
@@ -251,7 +350,6 @@ class VietnameseApp {
         card.classList.add('active-selected');
         this.selectedLetter = item;
         this.showLetterDetail(item);
-        window.soundSys.playPop();
         this.speakCurrentLetter();
       });
 
@@ -260,18 +358,62 @@ class VietnameseApp {
   }
 
   showLetterDetail(item) {
-    if (!this.detailLetterBox) return;
-    this.detailLetterBox.textContent = `${item.upper} ${item.lower}`;
-    this.detailIllustration.textContent = item.icon;
-    this.detailWord.textContent = `${item.word} (${item.icon})`;
-    this.detailSentence.textContent = item.sentence;
+    if (!item) return;
+    if (this.detailLetterBox) {
+      this.detailLetterBox.textContent = `${item.upper} ${item.lower}`;
+    }
+    if (this.detailCategoryBadge) {
+      this.detailCategoryBadge.textContent = item.categoryName || 'Âm vị học';
+    }
+    if (this.detailIpaBadge) {
+      this.detailIpaBadge.textContent = `IPA: ${item.ipa}`;
+    }
+    if (this.detailIllustration) {
+      this.detailIllustration.textContent = item.icon;
+    }
+    if (this.detailWord) {
+      this.detailWord.textContent = `${item.word} ${item.icon}`;
+    }
+    if (this.detailSoundPreview) {
+      this.detailSoundPreview.textContent = item.sound;
+    }
+    if (this.detailPhonicBadge) {
+      this.detailPhonicBadge.innerHTML = `Phát âm: <strong>${item.sound}</strong>`;
+    }
+    if (this.detailLetterNameBadge) {
+      this.detailLetterNameBadge.innerHTML = `Tên chữ: <strong>${item.letterName}</strong>`;
+    }
+    if (this.detailSpellingText) {
+      this.detailSpellingText.textContent = item.spelling;
+    }
+    if (this.detailSentence) {
+      this.detailSentence.textContent = item.sentence;
+    }
+    if (this.btnPlayPhonicLabel) {
+      this.btnPlayPhonicLabel.textContent = `Nghe Phát Âm "${item.sound}"`;
+    }
   }
 
+  // Nghe chỉ riêng âm vị học chuẩn của chữ (ví dụ: "Bờ", "Hờ", "Á", "Ớ", "Cờ")
+  speakPhonicSound() {
+    if (!this.selectedLetter) return;
+    window.soundSys.speak(this.selectedLetter.sound);
+  }
+
+  // Nghe đánh vần và câu ví dụ theo chuẩn Bộ Giáo Dục
+  speakExampleSound() {
+    if (!this.selectedLetter) return;
+    window.soundSys.speak(this.selectedLetter.sayExample);
+  }
+
+  // Phát âm chữ cái khi click vào ô: phát âm trực tiếp âm của chữ (ví dụ: bấm A đọc "a", B đọc "bờ", Ă đọc "á", Â đọc "ớ")
   speakCurrentLetter() {
     if (!this.selectedLetter) return;
-    const char = this.isUppercase ? this.selectedLetter.upper : this.selectedLetter.lower;
-    const textToSay = `Chữ ${char} nè bé. ${this.selectedLetter.word}!`;
-    window.soundSys.speak(textToSay);
+    if (this.pronounceMode === 'letter_name') {
+      window.soundSys.speak(`Chữ ${this.selectedLetter.letterName}`);
+    } else {
+      window.soundSys.speak(this.selectedLetter.sound);
+    }
   }
 
   // ================= 2. BÀI TẬP 5 DẤU THANH (SGK LỚP 1) =================
@@ -308,6 +450,8 @@ class VietnameseApp {
       <div class="math-prompt-hint">Bé hãy cho cô biết: Tiếng <strong>"${q.word}"</strong> mang dấu thanh nào?</div>
     `;
 
+    window.soundSys.preloadAudio(`Đúng rồi bé ơi! ${q.say} nhé!`);
+
     allToneChoices.forEach(t => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
@@ -322,6 +466,7 @@ class VietnameseApp {
 
         if (isCorrect) {
           btn.classList.add('correct');
+          window.soundSys.playCorrect();
           this.tonesFeedback.className = 'feedback-box correct';
           this.tonesFeedback.textContent = `🎉 Hoan hô! ${q.say} là chính xác rồi nè!`;
           this.tonesScore += 1;
@@ -483,6 +628,8 @@ class VietnameseApp {
       <div class="math-prompt-hint">${q.hint} <br><em>(Mẹo: ${q.rule})</em></div>
     `;
 
+    window.soundSys.preloadAudio(`Chính xác rồi! Điền chữ ${q.ans} tạo thành từ ${q.full} nhé!`);
+
     q.options.forEach(opt => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
@@ -496,6 +643,7 @@ class VietnameseApp {
 
         if (isCorrect) {
           btn.classList.add('correct');
+          window.soundSys.playCorrect();
           this.spellingFeedback.className = 'feedback-box correct';
           this.spellingFeedback.textContent = `🎉 Hoan hô! Điền đúng là: "${q.full}" nhé!`;
           this.spellingScore += 1;
@@ -538,9 +686,9 @@ class VietnameseApp {
       { full: 'Quả quýt', missing: '_ _ ýt', ans: 'qu', icon: '🍊', choices: ['qu', 'cu', 'kh', 'ph'], say: 'Quả quýt có âm quờ' },
       { full: 'Cây tre', missing: '_ _ e', ans: 'tr', icon: '🎋', choices: ['tr', 'ch', 'th', 'nh'], say: 'Cây tre có âm trờ' },
       { full: 'Giỏ hoa', missing: '_ _ ỏ', ans: 'gi', icon: '🧺', choices: ['gi', 'd', 'r', 'g'], say: 'Giỏ hoa có âm gi' },
-      { full: 'Ghế gỗ', missing: '_ _ ế', ans: 'gh', icon: '🪑', choices: ['gh', 'g', 'kh', 'ngh'], say: 'Ghế gỗ có âm ghê' },
+      { full: 'Ghế gỗ', missing: '_ _ ế', ans: 'gh', icon: '🪑', choices: ['gh', 'g', 'kh', 'ngh'], say: 'Ghế gỗ có âm gờ kép' },
       { full: 'Con ngựa', missing: '_ _ ựa', ans: 'ng', icon: '🐴', choices: ['ng', 'ngh', 'nh', 'm'], say: 'Con ngựa có âm ngờ' },
-      { full: 'Củ nghệ', missing: '_ _ ệ', ans: 'ngh', icon: '🍠', choices: ['ngh', 'ng', 'gh', 'nh'], say: 'Củ nghệ có âm nghê' },
+      { full: 'Củ nghệ', missing: '_ _ ệ', ans: 'ngh', icon: '🍠', choices: ['ngh', 'ng', 'gh', 'nh'], say: 'Củ nghệ có âm ngờ kép' },
       { full: 'Con trâu', missing: '_ _ âu', ans: 'tr', icon: '🐃', choices: ['tr', 'ch', 'th', 'ph'], say: 'Con trâu có âm trờ' },
       { full: 'Khỉ con', missing: '_ _ ỉ', ans: 'kh', icon: '🐵', choices: ['kh', 'th', 'ph', 'ch'], say: 'Khỉ con có âm khờ' }
     ];
@@ -552,6 +700,8 @@ class VietnameseApp {
       <div class="math-question-text" style="font-size: 3rem; color: #7209b7;">${q.missing}</div>
       <div class="math-prompt-hint">Hình ảnh: <strong>${q.full}</strong>. Bé hãy chọn âm ghép thích hợp điền vào nhé:</div>
     `;
+
+    window.soundSys.preloadAudio(`Đúng rồi bé ơi! ${q.say} nhé!`);
 
     q.choices.sort(() => Math.random() - 0.5).forEach(c => {
       const btn = document.createElement('button');
@@ -566,6 +716,7 @@ class VietnameseApp {
 
         if (isCorrect) {
           btn.classList.add('correct');
+          window.soundSys.playCorrect();
           this.compoundsFeedback.className = 'feedback-box correct';
           this.compoundsFeedback.textContent = `🎉 Hoan hô! Ghép đúng âm "${q.ans}" thành từ "${q.full}" rồi!`;
           this.compoundsScore += 1;
@@ -617,6 +768,8 @@ class VietnameseApp {
       <div class="math-prompt-hint">Từ mẫu: ${target.word}</div>
     `;
 
+    window.soundSys.preloadAudio(`Chính xác rồi nè! Chữ ${target.sound || target.upper} giỏi quá!`);
+
     choices.forEach(item => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
@@ -629,13 +782,14 @@ class VietnameseApp {
 
         if (isCorrect) {
           btn.classList.add('correct');
+          window.soundSys.playCorrect();
           this.quizFeedback.className = 'feedback-box correct';
           this.quizFeedback.textContent = `🎉 Hoan hô! Đây đúng là chữ "${item.upper}" rồi nè!`;
           this.quizScore += 1;
           this.quizScoreEl.textContent = this.quizScore;
           window.rewards.addStars(1, "Bé nhận biết chữ cái rất chuẩn nè!");
           window.rewards.recordActivity('vnScore', 1);
-          const praiseMsg = `Chính xác rồi nè! Chữ ${item.upper} giỏi quá!`;
+          const praiseMsg = `Chính xác rồi nè! Chữ ${item.sound || item.upper} giỏi quá!`;
           window.soundSys.speakThen(praiseMsg, () => this.loadQuizQuestion(), 700);
         } else {
           btn.classList.add('wrong');
@@ -652,7 +806,7 @@ class VietnameseApp {
     });
 
     setTimeout(() => {
-      window.soundSys.speak(`Bé hãy tìm chữ ${target.upper} của từ ${target.word} nhé!`);
+      window.soundSys.speak(`Bé hãy tìm chữ ${target.sound || target.upper} của từ ${target.word} nhé!`);
     }, 200);
   }
 
@@ -690,6 +844,8 @@ class VietnameseApp {
       <div class="math-prompt-hint">Hình minh họa: <strong>${q.say}</strong>. Điền chữ còn thiếu vào dấu gạch [ _ ] nhé:</div>
     `;
 
+    window.soundSys.preloadAudio(`Đúng rồi nè! Bé ghép được từ ${q.say} giỏi quá!`);
+
     q.choices.sort(() => Math.random() - 0.5).forEach(letter => {
       const btn = document.createElement('button');
       btn.className = 'answer-choice-btn';
@@ -702,6 +858,7 @@ class VietnameseApp {
 
         if (isCorrect) {
           btn.classList.add('correct');
+          window.soundSys.playCorrect();
           this.rhymeFeedback.className = 'feedback-box correct';
           this.rhymeFeedback.textContent = `🎉 Chuẩn luôn nè! Ghép được từ "${q.full}" (${q.say}) rồi!`;
           this.rhymeScore += 1;

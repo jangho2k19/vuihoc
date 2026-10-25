@@ -57,13 +57,71 @@ def fetch_google_tts(text):
             return resp.read()
     return None
 
+def normalize_phonic_text(text: str) -> str:
+    """
+    Chuẩn hóa phát âm Tiếng Việt theo chuẩn âm vị học của Bộ Giáo Dục & Đào Tạo:
+    - BỎ hoàn toàn từ 'Âm' phía trước các chữ cái/âm vị (ví dụ a -> a, b -> bờ, c -> cờ)
+    - Ă đọc là Á, Â đọc là Ớ (giáo viên mầm non & tiểu học dạy chữ cái độc lập)
+    - Bờ, Cờ, Dờ, Đờ, Gờ, Hờ, Cờ (K), Lờ, Mờ, Nờ, Pờ, Quờ, Rờ, Sờ, Tờ, Vờ, Xờ, I (Y)
+    - Loại bỏ tên chữ kiểu cũ (Hát, Xê, Dê, Ét-xì, Ích)
+    - Gh / Ngh đọc là Gờ kép / Ngờ kép
+    """
+    if not text:
+        return text
+    
+    t = text.strip()
+    import re
+
+    # Direct mapping for single letters
+    letter_map = {
+        'A': 'A', 'Ă': 'Á', 'Â': 'Ớ', 'B': 'Bờ', 'C': 'Cờ', 'D': 'Dờ', 'Đ': 'Đờ',
+        'E': 'E', 'Ê': 'Ê', 'G': 'Gờ', 'H': 'Hờ', 'I': 'I', 'K': 'Cờ', 'L': 'Lờ',
+        'M': 'Mờ', 'N': 'Nờ', 'O': 'O', 'Ô': 'Ô', 'Ơ': 'Ơ', 'P': 'Pờ', 'Q': 'Quờ',
+        'R': 'Rờ', 'S': 'Sờ', 'T': 'Tờ', 'U': 'U', 'Ư': 'Ư', 'V': 'Vờ', 'X': 'Xờ', 'Y': 'I'
+    }
+
+    if t.upper() in letter_map:
+        return letter_map[t.upper()]
+
+    # Specific check for Ă / Â with or without prefix
+    if re.fullmatch(r'(?:âm\s+)?ă', t, re.IGNORECASE):
+        return 'Á'
+    if re.fullmatch(r'(?:âm\s+)?â', t, re.IGNORECASE):
+        return 'Ớ'
+
+    # Remove leading "Âm " prefix
+    t = re.sub(r'^âm\s+', '', t, flags=re.IGNORECASE)
+
+    legacy_replacements = [
+        (r'\b(chữ|âm)\s+hát\b', r'\1 Hờ'),
+        (r'\b(chữ|âm)\s+xê\b', r'\1 Cờ'),
+        (r'\b(chữ|âm)\s+ét[- ]?xì\b', r'\1 Sờ'),
+        (r'\b(chữ|âm)\s+ích\b', r'\1 Xờ'),
+        (r'\b(chữ|âm)\s+ghê\b', r'\1 Gờ kép'),
+        (r'\b(chữ|âm)\s+nghê\b', r'\1 Ngờ kép'),
+        (r'\b(chữ|âm)\s+ca\b', r'\1 Cờ'),
+        (r'\b(chữ|âm)\s+qui\b', r'\1 Quờ'),
+        (r'\b(chữ|âm)\s+dê\b', r'\1 Dờ'),
+        (r'\b(chữ|âm)\s+đê\b', r'\1 Đờ'),
+        (r'\b(chữ|âm)\s+ve\b', r'\1 Vờ'),
+        (r'\b(chữ|âm)\s+e[- ]?lờ\b', r'\1 Lờ'),
+        (r'\b(chữ|âm)\s+em[- ]?mờ\b', r'\1 Mờ'),
+        (r'\b(chữ|âm)\s+en[- ]?nờ\b', r'\1 Nờ'),
+        (r'\b(chữ|âm)\s+te\b', r'\1 Tờ'),
+        (r'\b(chữ|âm)\s+pe\b', r'\1 Pờ'),
+    ]
+    for pattern, repl in legacy_replacements:
+        t = re.sub(pattern, repl, t, flags=re.IGNORECASE)
+        
+    return t
+
 class EduTTSHandler(SimpleHTTPRequestHandler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
 
     def do_HEAD(self):
         parsed = urllib.parse.urlparse(self.path)
-        if parsed.path in ["/api/tts", "/api/voices", "/api/health", "/api/precache"]:
+        if parsed.path in ["/api/tts", "/api/voices", "/api/health", "/api/precache", "/api/voice-status"]:
             self.send_response(200)
             self.send_header("Access-Control-Allow-Origin", "*")
             self.send_header("Content-Type", "audio/mpeg" if parsed.path == "/api/tts" else "application/json")
@@ -77,7 +135,8 @@ class EduTTSHandler(SimpleHTTPRequestHandler):
         # API: Real-time Vietnamese TTS with Voice & Speed Rate
         if parsed.path == "/api/tts":
             query = urllib.parse.parse_qs(parsed.query)
-            text = query.get("text", [""])[0].strip()
+            raw_text = query.get("text", [""])[0].strip()
+            text = normalize_phonic_text(raw_text)
             # Exclusively use Cô giáo Hoài My
             voice = DEFAULT_VOICE
             rate = query.get("rate", ["+0%"])[0].strip() or "+0%"

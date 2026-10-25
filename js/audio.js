@@ -183,6 +183,9 @@ class SoundSystem {
     this.initAudioContext();
     this.initAudioPlayer();
     this.loadVoices();
+    this.audioPool = new Map();
+    this.currentPoolAudio = null;
+    this.preloadCommonSounds();
   }
 
   initAudioPlayer() {
@@ -415,12 +418,12 @@ class SoundSystem {
 
   playCorrect() {
     if (!this.soundEnabled) return;
-    // Chime C5 -> E5 -> G5 -> C6
-    const notes = [523.25, 659.25, 783.99, 1046.50];
+    // Cheerful, crisp ascending chime: C5 -> G5 -> C6 (snappy & sweet, ~160ms)
+    const notes = [523.25, 783.99, 1046.50];
     notes.forEach((freq, idx) => {
       setTimeout(() => {
-        this.playTone(freq, 'sine', 0.22, 0.12);
-      }, idx * 75);
+        this.playTone(freq, 'sine', 0.16, 0.09);
+      }, idx * 50);
     });
   }
 
@@ -548,7 +551,18 @@ class SoundSystem {
       this.speechTimer = null;
     }
 
-    // 3. Immediately halt and reset single audio player
+    // 3. Immediately halt any playing pooled audio
+    if (this.currentPoolAudio) {
+      try {
+        this.currentPoolAudio.pause();
+        this.currentPoolAudio.currentTime = 0;
+        this.currentPoolAudio.onended = null;
+        this.currentPoolAudio.onerror = null;
+      } catch (e) {}
+      this.currentPoolAudio = null;
+    }
+
+    // 4. Immediately halt and reset single audio player
     if (this.audioPlayer) {
       try {
         this.audioPlayer.pause();
@@ -692,6 +706,108 @@ class SoundSystem {
     return !!this.isSpeakingNow;
   }
 
+  // --- Vietnamese Educational Phonics Normalizer (Chuẩn Bộ GD&ĐT - BỎ TỪ "ÂM", Ă -> Á, Â -> Ớ) ---
+  normalizePhonicSpeech(text) {
+    if (!text) return '';
+    let s = String(text).trim();
+
+    const phonicLetters = {
+      'A': 'A', 'Ă': 'Á', 'Â': 'Ớ',
+      'B': 'Bờ', 'C': 'Cờ', 'D': 'Dờ', 'Đ': 'Đờ',
+      'E': 'E', 'Ê': 'Ê', 'G': 'Gờ', 'H': 'Hờ',
+      'I': 'I', 'K': 'Cờ', 'L': 'Lờ', 'M': 'Mờ',
+      'N': 'Nờ', 'O': 'O', 'Ô': 'Ô', 'Ơ': 'Ơ',
+      'P': 'Pờ', 'Q': 'Quờ', 'R': 'Rờ', 'S': 'Sờ',
+      'T': 'Tờ', 'U': 'U', 'Ư': 'Ư', 'V': 'Vờ',
+      'X': 'Xờ', 'Y': 'I'
+    };
+
+    // Single letter check -> pure phonic sound
+    if (s.length === 1 && phonicLetters[s.toUpperCase()]) {
+      return phonicLetters[s.toUpperCase()];
+    }
+
+    // Direct words check
+    if (s === 'Ă' || s === 'ă') return 'Á';
+    if (s === 'Â' || s === 'â') return 'Ớ';
+
+    // Eliminate invalid legacy letter names
+    s = s.replace(/\bchữ\s+Hát\b/gi, 'Hờ');
+    s = s.replace(/\bâm\s+Hát\b/gi, 'Hờ');
+    s = s.replace(/\bchữ\s+xê\b/gi, 'Cờ');
+    s = s.replace(/\bchữ\s+dê\b/gi, 'Dờ');
+    s = s.replace(/\bchữ\s+đê\b/gi, 'Đờ');
+    s = s.replace(/\bchữ\s+ét-xì\b/gi, 'Sờ');
+    s = s.replace(/\bchữ\s+ích\b/gi, 'Xờ');
+    s = s.replace(/\bâm\s+ghê\b/gi, 'Gờ kép');
+    s = s.replace(/\bâm\s+nghê\b/gi, 'Ngờ kép');
+
+    // Remove leading "Âm " prefix
+    s = s.replace(/^Âm\s+/i, '');
+
+    // Standardize "chữ [X]", "bóng chữ [X]", "tìm chữ [X]"
+    s = s.replace(/\b(chữ|bóng chữ|tìm chữ)\s+([A-Za-zĂăÂâĐđÊêÔôƠơƯư])\b/gi, (match, prefix, char) => {
+      const upper = char.toUpperCase();
+      const sound = phonicLetters[upper] || char;
+      return `${prefix} ${sound}`;
+    });
+
+    return s;
+  }
+
+  // Pre-fetch specific praise or question audio in advance for 0ms instant playback
+  preloadAudio(text) {
+    if (!text || !this.soundEnabled) return;
+    const cleanText = this.normalizePhonicSpeech(String(text).trim());
+    if (!cleanText) return;
+    if (this.audioPool && this.audioPool.has(cleanText)) return;
+
+    let rateParam = '+0%';
+    if (this.speechRatePreset === 'slow') rateParam = '-15%';
+    else if (this.speechRatePreset === 'fast') rateParam = '+10%';
+
+    const targetVoice = 'vi-VN-HoaiMyNeural';
+    const h1 = computeMd5(`${cleanText}_${targetVoice}_${rateParam}`);
+    const h2 = computeMd5(`${cleanText}_${targetVoice}`);
+    const h3 = computeMd5(`${cleanText}_${targetVoice}_+0%`);
+
+    const hasManifest = (typeof window !== 'undefined' && window.AUDIO_CACHE_MANIFEST && window.AUDIO_CACHE_MANIFEST.size > 0);
+    let targetHash = null;
+    if (hasManifest) {
+      if (window.AUDIO_CACHE_MANIFEST.has(h1)) targetHash = h1;
+      else if (window.AUDIO_CACHE_MANIFEST.has(h2)) targetHash = h2;
+      else if (window.AUDIO_CACHE_MANIFEST.has(h3)) targetHash = h3;
+    } else {
+      targetHash = h1;
+    }
+
+    if (targetHash) {
+      try {
+        const audio = new Audio();
+        audio.preload = 'auto';
+        audio.src = `audio_cache/${targetHash}.mp3`;
+        if (!this.audioPool) this.audioPool = new Map();
+        this.audioPool.set(cleanText, audio);
+      } catch (e) {}
+    }
+  }
+
+  // Preload common letter sounds for instant 0ms playback on click
+  preloadCommonSounds() {
+    if (!this.audioPool) this.audioPool = new Map();
+    const commonSounds = [
+      'A', 'Á', 'Ớ', 'Bờ', 'Cờ', 'Dờ', 'Đờ', 'E', 'Ê', 'Gờ', 'Hờ', 'I', 'Lờ', 'Mờ', 'Nờ', 'O', 'Ô', 'Ơ', 'Pờ', 'Quờ', 'Rờ', 'Sờ', 'Tờ', 'U', 'Ư', 'Vờ', 'Xờ',
+      'Chờ', 'Gờ kép', 'Gi', 'Khờ', 'Ngờ', 'Ngờ kép', 'Nhờ', 'Phờ', 'Thờ', 'Trờ', 'Ia', 'Ua', 'Ưa'
+    ];
+    commonSounds.forEach(sound => {
+      const h1 = computeMd5(`${sound}_vi-VN-HoaiMyNeural_+0%`);
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.src = `audio_cache/${h1}.mp3`;
+      this.audioPool.set(sound, audio);
+    });
+  }
+
   speakWithVoice(text, voiceId, onEnd) {
     if (!this.soundEnabled || !text || !String(text).trim()) {
       if (typeof onEnd === 'function') onEnd();
@@ -716,83 +832,140 @@ class SoundSystem {
     else if (this.speechRatePreset === 'fast') rateParam = '+10%';
 
     const targetVoice = 'vi-VN-HoaiMyNeural';
-    const cleanText = String(text).trim();
+    const cleanText = this.normalizePhonicSpeech(String(text).trim());
 
-    // Strategy 4: Browser Web Speech API fallback (100% offline, zero server required)
-    const tryWebSpeech = () => {
-      if (this.speechToken !== currentToken) return;
-      if (!this.speechSynth) {
-        this.finishSpeech(currentToken);
-        return;
-      }
-      try {
-        this.speechSynth.cancel();
-        const utter = new SpeechSynthesisUtterance(cleanText);
-        utter.lang = 'vi-VN';
-        if (this.vietnameseVoice) {
-          utter.voice = this.vietnameseVoice;
+    const fallbackFlow = () => {
+      // Strategy 4: Browser Web Speech API fallback (100% offline, zero server required)
+      const tryWebSpeech = () => {
+        if (this.speechToken !== currentToken) return;
+        if (!this.speechSynth) {
+          this.finishSpeech(currentToken);
+          return;
         }
-        utter.rate = this.voiceRate || 0.88;
-        utter.pitch = this.voicePitch || 1.15;
-        utter.onend = () => {
-          if (this.speechToken === currentToken) {
-            this.finishSpeech(currentToken);
+        try {
+          this.speechSynth.cancel();
+          const utter = new SpeechSynthesisUtterance(cleanText);
+          utter.lang = 'vi-VN';
+          if (this.vietnameseVoice) {
+            utter.voice = this.vietnameseVoice;
           }
-        };
-        utter.onerror = () => {
-          if (this.speechToken === currentToken) {
-            this.finishSpeech(currentToken);
-          }
-        };
-        this.speechSynth.speak(utter);
-      } catch (e) {
-        this.finishSpeech(currentToken);
-      }
-    };
+          utter.rate = this.voiceRate || 0.88;
+          utter.pitch = this.voicePitch || 1.15;
+          utter.onend = () => {
+            if (this.speechToken === currentToken) {
+              this.finishSpeech(currentToken);
+            }
+          };
+          utter.onerror = () => {
+            if (this.speechToken === currentToken) {
+              this.finishSpeech(currentToken);
+            }
+          };
+          this.speechSynth.speak(utter);
+        } catch (e) {
+          this.finishSpeech(currentToken);
+        }
+      };
 
-    // Strategy 3: Google Translate Vietnamese TTS (works natively with no-referrer on GitHub Pages)
-    const tryGoogleTts = () => {
-      if (this.speechToken !== currentToken) return;
-      if (cleanText.length > 200) {
-        tryWebSpeech();
-        return;
-      }
-      const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(cleanText)}`;
-      this.playAudioUrl(gUrl, currentToken, () => {
-        tryWebSpeech();
-      });
-    };
+      // Strategy 3: Google Translate Vietnamese TTS (works natively with no-referrer on GitHub Pages)
+      const tryGoogleTts = () => {
+        if (this.speechToken !== currentToken) return;
+        if (cleanText.length > 200) {
+          tryWebSpeech();
+          return;
+        }
+        const gUrl = `https://translate.google.com/translate_tts?ie=UTF-8&tl=vi&client=tw-ob&q=${encodeURIComponent(cleanText)}`;
+        this.playAudioUrl(gUrl, currentToken, () => {
+          tryWebSpeech();
+        });
+      };
 
-    // Strategy 2: Local Python Server (only when running on localhost / 127.0.0.1 / file:)
-    const tryLocalServer = () => {
+      // Strategy 2: Local Python Server (only when running on localhost / 127.0.0.1 / file:)
+      const tryLocalServer = () => {
+        const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
+        if (!isLocal) {
+          tryGoogleTts();
+          return;
+        }
+        let serverBase = '';
+        if (window.location.protocol === 'file:') {
+          serverBase = 'http://localhost:8000';
+        } else if (window.location.port !== '8000') {
+          serverBase = `${window.location.protocol}//${window.location.hostname}:8000`;
+        }
+        const serverUrl = `${serverBase}/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(targetVoice)}&rate=${encodeURIComponent(rateParam)}`;
+        this.playAudioUrl(serverUrl, currentToken, () => {
+          tryGoogleTts();
+        });
+      };
+
+      // Strategy 1: Pre-cached static Neural AI MP3 from audio_cache/ (fast 0ms on GitHub Pages!)
+      const h1 = computeMd5(`${cleanText}_${targetVoice}_${rateParam}`);
+      const h2 = computeMd5(`${cleanText}_${targetVoice}`);
+      const h3 = computeMd5(`${cleanText}_${targetVoice}_+0%`);
+
+      const hasManifest = (typeof window !== 'undefined' && window.AUDIO_CACHE_MANIFEST && window.AUDIO_CACHE_MANIFEST.size > 0);
       const isLocal = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:');
-      if (!isLocal) {
-        tryGoogleTts();
-        return;
+
+      let targetHash = null;
+      if (hasManifest) {
+        if (window.AUDIO_CACHE_MANIFEST.has(h1)) targetHash = h1;
+        else if (window.AUDIO_CACHE_MANIFEST.has(h2)) targetHash = h2;
+        else if (window.AUDIO_CACHE_MANIFEST.has(h3)) targetHash = h3;
+      } else {
+        targetHash = h1;
       }
-      let serverBase = '';
-      if (window.location.protocol === 'file:') {
-        serverBase = 'http://localhost:8000';
-      } else if (window.location.port !== '8000') {
-        serverBase = `${window.location.protocol}//${window.location.hostname}:8000`;
+
+      if (targetHash) {
+        const staticUrl = `audio_cache/${targetHash}.mp3`;
+        this.playAudioUrl(staticUrl, currentToken, () => {
+          if (isLocal) {
+            tryLocalServer();
+          } else {
+            tryGoogleTts();
+          }
+        });
+      } else {
+        // Not in manifest -> skips 404 network delays!
+        if (isLocal) {
+          tryLocalServer();
+        } else {
+          tryGoogleTts();
+        }
       }
-      const serverUrl = `${serverBase}/api/tts?text=${encodeURIComponent(cleanText)}&voice=${encodeURIComponent(targetVoice)}&rate=${encodeURIComponent(rateParam)}`;
-      this.playAudioUrl(serverUrl, currentToken, () => {
-        tryGoogleTts();
-      });
     };
 
-    // Strategy 1: Pre-cached static Neural AI MP3 from audio_cache/ (fast 0ms on GitHub Pages!)
-    const h1 = computeMd5(`${cleanText}_${targetVoice}_${rateParam}`);
-    const h2 = computeMd5(`${cleanText}_${targetVoice}`);
-    const staticUrl1 = `audio_cache/${h1}.mp3`;
-    const staticUrl2 = `audio_cache/${h2}.mp3`;
+    // 0ms Playback from Preloaded in-memory Pool if available
+    if (this.audioPool && this.audioPool.has(cleanText)) {
+      const preloaded = this.audioPool.get(cleanText);
+      try {
+        preloaded.currentTime = 0;
+        this.currentPoolAudio = preloaded;
+        preloaded.onended = () => {
+          this.currentPoolAudio = null;
+          if (this.speechToken === currentToken) this.finishSpeech(currentToken);
+        };
+        preloaded.onerror = () => {
+          this.currentPoolAudio = null;
+          if (this.speechToken === currentToken) fallbackFlow();
+        };
+        const p = preloaded.play();
+        if (p !== undefined) {
+          p.catch(() => {
+            this.currentPoolAudio = null;
+            fallbackFlow();
+          });
+          return;
+        }
+        return;
+      } catch (e) {
+        this.currentPoolAudio = null;
+        fallbackFlow();
+        return;
+      }
+    }
 
-    this.playAudioUrl(staticUrl1, currentToken, () => {
-      this.playAudioUrl(staticUrl2, currentToken, () => {
-        tryLocalServer();
-      });
-    });
+    fallbackFlow();
   }
 
   // --- English Speech Synthesis for Grade 1 English module ---

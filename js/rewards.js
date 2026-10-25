@@ -127,9 +127,11 @@ class RewardManager {
     }
   }
 
-  addStars(count = 1, reason = "Bé làm đúng rồi! Hoan hô!") {
+  addStars(count = 1, reason = "Bé làm đúng rồi! Hoan hô!", playSound = false) {
     this.state.stars += count;
-    window.soundSys.playCorrect();
+    if (playSound && window.soundSys) {
+      window.soundSys.playCorrect();
+    }
     this.showToast(`⭐ +${count} Sao! ${reason}`);
     this.checkBadges();
     this.saveState();

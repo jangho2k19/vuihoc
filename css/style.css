@@ -987,16 +987,85 @@ body.night-mode .nav-back-btn {
 
 .math-question-text {
   font-family: var(--font-heading);
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   font-weight: 800;
-  color: var(--primary-dark);
-  margin-bottom: 12px;
+  color: #1d4ed8;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.math-addition-expr {
+  color: #2563eb;
+}
+
+.math-subtraction-expr {
+  color: #dc2626;
 }
 
 .math-prompt-hint {
-  font-size: 1.15rem;
-  color: #64748b;
-  font-weight: 600;
+  font-size: 1.25rem;
+  color: #1e293b;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.math-prompt-hint strong {
+  color: #2563eb;
+}
+
+/* Comparison Question specific styling */
+.comp-question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  font-size: 3.2rem;
+  font-weight: 800;
+  margin: 18px 0;
+  flex-wrap: wrap;
+}
+
+.comp-num {
+  font-family: var(--font-heading);
+  font-size: 3.4rem;
+  font-weight: 800;
+  color: #1d4ed8;
+  text-shadow: 0 2px 4px rgba(29, 78, 216, 0.15);
+}
+
+.comp-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  height: 60px;
+  padding: 4px 18px;
+  background: #fef3c7;
+  color: #d97706;
+  border: 3.5px dashed #f59e0b;
+  border-radius: 16px;
+  font-family: var(--font-heading);
+  font-size: 2.4rem;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(245, 158, 11, 0.25);
+  animation: pulseStar 2s infinite alternate;
+}
+
+.comp-operator-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  height: 56px;
+  padding: 4px 18px;
+  background: #fef3c7;
+  color: #d97706;
+  border: 3px dashed #f59e0b;
+  border-radius: 14px;
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  font-weight: 800;
 }
 
 /* Answers Area */
@@ -2496,6 +2565,101 @@ body.night-mode .constructed-sentence-box {
   background: #1e293b;
   border-color: #475569;
   color: #93c5fd;
+}
+
+body.night-mode .math-prompt-hint {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+body.night-mode .math-prompt-hint strong {
+  color: #fde047 !important;
+  text-shadow: 0 0 10px rgba(253, 224, 71, 0.5);
+}
+
+body.night-mode .math-question-text {
+  color: #38bdf8 !important;
+  text-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+}
+
+body.night-mode .math-addition-expr {
+  color: #38bdf8 !important;
+  text-shadow: 0 0 16px rgba(56, 189, 248, 0.5);
+}
+
+body.night-mode .math-subtraction-expr {
+  color: #fb7185 !important;
+  text-shadow: 0 0 16px rgba(251, 113, 133, 0.5);
+}
+
+body.night-mode .comp-num {
+  color: #38bdf8 !important;
+  text-shadow: 0 0 18px rgba(56, 189, 248, 0.65), 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+body.night-mode .comp-box,
+body.night-mode .comp-operator-box {
+  background: rgba(245, 158, 11, 0.25) !important;
+  color: #fde047 !important;
+  border-color: #f59e0b !important;
+  box-shadow: 0 0 18px rgba(245, 158, 11, 0.45);
+  text-shadow: 0 0 10px rgba(251, 191, 36, 0.6);
+}
+
+body.night-mode .item-group {
+  background: rgba(15, 23, 42, 0.75) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  color: #f8fafc !important;
+}
+
+body.night-mode .item-group strong {
+  color: #38bdf8 !important;
+}
+
+body.night-mode .math-operator-symbol {
+  color: #f59e0b !important;
+}
+
+body.night-mode .seq-box {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #3b82f6 !important;
+  box-shadow: 0 4px 0 #1e293b !important;
+}
+
+body.night-mode .seq-box.missing {
+  background: #831843 !important;
+  color: #fbcfe8 !important;
+  border-color: #f472b6 !important;
+}
+
+body.night-mode .seq-arrow {
+  color: #fde047 !important;
+}
+
+body.night-mode .tree-node {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border-color: #3b82f6 !important;
+}
+
+body.night-mode .tree-node.missing {
+  background: #831843 !important;
+  color: #fbcfe8 !important;
+  border-color: #f472b6 !important;
+}
+
+body.night-mode .tree-branches {
+  color: #94a3b8 !important;
+}
+
+body.night-mode .word-problem-card {
+  background: rgba(15, 23, 42, 0.75) !important;
+  border-color: #f59e0b !important;
+}
+
+body.night-mode .word-problem-text {
+  color: #fef3c7 !important;
 }
 
 /* ================= HEROES FOR NEW TABS ================= */

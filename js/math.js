@@ -273,7 +273,7 @@ class MathApp {
       visualGroup = `
         <div class="math-visual-items">
           <div class="item-group">${items1} <br><strong>(${num1})</strong></div>
-          <div class="math-operator-symbol" style="background:#fff3b0; padding:4px 20px; border-radius:12px; border:2px dashed #f59e0b;">?</div>
+          <div class="comp-operator-box">?</div>
           <div class="item-group">${items2} <br><strong>(${num2})</strong></div>
         </div>
       `;
@@ -283,7 +283,7 @@ class MathApp {
       html: `
         <div class="math-prompt-hint">Bé hãy chọn dấu thích hợp ( > , < , = ) để điền vào giữa nhé:</div>
         ${visualGroup}
-        <div class="math-question-text">${num1} [ ? ] ${num2}</div>
+        <div class="math-question-text comp-question"><span class="comp-num">${num1}</span> <span class="comp-box">?</span> <span class="comp-num">${num2}</span></div>
       `,
       speechText: `Số ${num1} với số ${num2}, số nào lớn hơn ta? Bé chọn dấu lớn hơn, nhỏ hơn hay bằng nhau nè?`,
       choices: ['>', '<', '='],
@@ -393,7 +393,7 @@ class MathApp {
     this.currentQuestion = {
       html: `
         <div class="math-prompt-hint">Bé tính kết quả của phép cộng này giúp cô nhé:</div>
-        <div class="math-question-text" style="font-size: 3.5rem; color:#4361ee; margin: 20px 0;">
+        <div class="math-question-text math-addition-expr" style="font-size: 3.5rem; margin: 20px 0;">
           ${a} + ${b} = ?
         </div>
       `,
@@ -433,7 +433,7 @@ class MathApp {
     this.currentQuestion = {
       html: `
         <div class="math-prompt-hint">Bé hãy tính kết quả của phép trừ này nhé:</div>
-        <div class="math-question-text" style="font-size: 3.5rem; color:#d90429; margin: 20px 0;">
+        <div class="math-question-text math-subtraction-expr" style="font-size: 3.5rem; margin: 20px 0;">
           ${total} - ${sub} = ?
         </div>
       `,

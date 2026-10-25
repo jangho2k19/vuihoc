@@ -28,14 +28,22 @@
   <!-- Header & Navigation -->
   <header class="main-header">
     <div class="header-container">
-      <div class="logo-area">
-        <div class="mascot-avatar" id="mascotAvatar" title="Nhấp để đổi bạn đồng hành!">
-          <span class="avatar-emoji">🐻</span>
-          <span class="sparkle-badge">✨</span>
-        </div>
-        <div class="site-title-box">
-          <h1 class="site-title">Vườn Tuổi Thơ</h1>
-          <p class="site-subtitle">Bé Vui Học Lớp 1 • Tự Tin Khám Phá 🎉</p>
+      <div class="header-left">
+        <!-- Back button: Visible on all tabs except Home -->
+        <button id="btnNavBack" class="pill-btn nav-back-btn" title="Quay lại trang trước" style="display: none;">
+          <span class="btn-icon">⬅️</span>
+          <span class="btn-text">Quay lại</span>
+        </button>
+
+        <div class="logo-area" onclick="if(window.app) window.app.switchTab('tab-home')" title="Về Trang Chủ">
+          <div class="mascot-avatar" id="mascotAvatar" title="Nhấp để đổi bạn đồng hành!" onclick="event.stopPropagation()">
+            <span class="avatar-emoji">🐻</span>
+            <span class="sparkle-badge">✨</span>
+          </div>
+          <div class="site-title-box">
+            <h1 class="site-title">Vườn Tuổi Thơ</h1>
+            <p class="site-subtitle">Bé Vui Học Lớp 1 • Tự Tin Khám Phá 🎉</p>
+          </div>
         </div>
       </div>
 

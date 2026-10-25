@@ -129,19 +129,30 @@ class ScienceApp {
     this.scoreEl = document.getElementById('scienceQuizScore');
   }
 
+  switchTopic(topicId, updateRoute = true) {
+    if (!topicId) topicId = 'body';
+    const topicBtns = document.querySelectorAll('#scienceTopicNav .sub-btn');
+    topicBtns.forEach(b => b.classList.toggle('active', b.dataset.topic === topicId));
+    this.currentTopic = topicId;
+    localStorage.setItem('vuon_tuoi_tho_sub_tab-science', topicId);
+
+    if (updateRoute && window.app && typeof window.app.updateCurrentRoute === 'function') {
+      window.app.updateCurrentRoute('tab-science', topicId);
+    }
+
+    if (this.currentMode === 'explore') {
+      this.renderLessons();
+    } else {
+      this.loadQuizQuestion();
+    }
+  }
+
   attachEvents() {
     // Topic Navigation
     const topicBtns = document.querySelectorAll('#scienceTopicNav .sub-btn');
     topicBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        topicBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.currentTopic = btn.dataset.topic;
-        if (this.currentMode === 'explore') {
-          this.renderLessons();
-        } else {
-          this.loadQuizQuestion();
-        }
+        this.switchTopic(btn.dataset.topic, true);
       });
     });
 

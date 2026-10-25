@@ -163,47 +163,57 @@ class VietnameseApp {
     this.storyCounterLabel = document.getElementById('storyCounterLabel');
   }
 
-  attachEvents() {
-    // Sub tabs
+  switchSubView(subId, updateRoute = true) {
+    if (!subId) subId = 'vn-alphabet';
     const subBtns = document.querySelectorAll('#tab-vietnamese .sub-btn');
     const subViews = document.querySelectorAll('.vn-sub-view');
 
+    subBtns.forEach(b => b.classList.toggle('active', b.dataset.sub === subId));
+    subViews.forEach(v => v.classList.toggle('active', v.id === ('sub-' + subId)));
+
+    if (window.soundSys) window.soundSys.stop();
+    this.stopFullStory();
+
+    switch (subId) {
+      case 'vn-tones':
+        this.loadTonesQuestion();
+        break;
+      case 'vn-spelling':
+        this.loadSpellingQuestion();
+        break;
+      case 'vn-compounds':
+        this.loadCompoundsQuestion();
+        break;
+      case 'vn-quiz':
+        this.loadQuizQuestion();
+        break;
+      case 'vn-rhyme':
+        this.loadRhymeQuestion();
+        break;
+      case 'vn-sentence':
+        this.loadSentenceQuestion();
+        break;
+      case 'vn-reading':
+        this.initReadingView();
+        break;
+      case 'vn-alphabet':
+      default:
+        break;
+    }
+
+    localStorage.setItem('vuon_tuoi_tho_sub_tab-vietnamese', subId);
+
+    if (updateRoute && window.app && typeof window.app.updateCurrentRoute === 'function') {
+      window.app.updateCurrentRoute('tab-vietnamese', subId);
+    }
+  }
+
+  attachEvents() {
+    // Sub tabs
+    const subBtns = document.querySelectorAll('#tab-vietnamese .sub-btn');
     subBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        subBtns.forEach(b => b.classList.remove('active'));
-        subViews.forEach(v => v.classList.remove('active'));
-
-        btn.classList.add('active');
-        const viewId = 'sub-' + btn.dataset.sub;
-        const targetView = document.getElementById(viewId);
-        if (targetView) targetView.classList.add('active');
-
-        if (window.soundSys) window.soundSys.stop();
-        this.stopFullStory();
-
-        switch (btn.dataset.sub) {
-          case 'vn-tones':
-            this.loadTonesQuestion();
-            break;
-          case 'vn-spelling':
-            this.loadSpellingQuestion();
-            break;
-          case 'vn-compounds':
-            this.loadCompoundsQuestion();
-            break;
-          case 'vn-quiz':
-            this.loadQuizQuestion();
-            break;
-          case 'vn-rhyme':
-            this.loadRhymeQuestion();
-            break;
-          case 'vn-sentence':
-            this.loadSentenceQuestion();
-            break;
-          case 'vn-reading':
-            this.initReadingView();
-            break;
-        }
+        this.switchSubView(btn.dataset.sub, true);
       });
     });
 

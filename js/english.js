@@ -140,19 +140,30 @@ class EnglishApp {
     this.scoreEl = document.getElementById('englishQuizScore');
   }
 
+  switchTheme(themeId, updateRoute = true) {
+    if (!themeId) themeId = 'alphabet';
+    const themeBtns = document.querySelectorAll('#englishThemeNav .sub-btn');
+    themeBtns.forEach(b => b.classList.toggle('active', b.dataset.theme === themeId));
+    this.currentTheme = themeId;
+    localStorage.setItem('vuon_tuoi_tho_sub_tab-english', themeId);
+
+    if (updateRoute && window.app && typeof window.app.updateCurrentRoute === 'function') {
+      window.app.updateCurrentRoute('tab-english', themeId);
+    }
+
+    if (this.currentViewMode === 'flashcards') {
+      this.renderThemeCards();
+    } else {
+      this.loadQuizQuestion();
+    }
+  }
+
   attachEvents() {
     // Theme buttons
     const themeBtns = document.querySelectorAll('#englishThemeNav .sub-btn');
     themeBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        themeBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.currentTheme = btn.dataset.theme;
-        if (this.currentViewMode === 'flashcards') {
-          this.renderThemeCards();
-        } else {
-          this.loadQuizQuestion();
-        }
+        this.switchTheme(btn.dataset.theme, true);
       });
     });
 

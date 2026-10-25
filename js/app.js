@@ -7,6 +7,9 @@
 class MainApp {
   constructor() {
     this.currentTab = 'tab-home';
+    this.currentSub = null;
+    this.historyStack = [];
+    this.isHandlingPopState = false;
     this.isNightMode = false;
     this.tips = [
       "Mỗi ngày học một chút điều mới, bé sẽ thông minh và đáng yêu hơn từng ngày! Chúc bé học thật vui nhé! 🌟",
@@ -23,6 +26,7 @@ class MainApp {
   init() {
     this.initTheme();
     this.bindNavigation();
+    this.bindHistoryRouting();
     this.bindHeaderButtons();
     this.bindMascotModal();
     this.bindVoiceModal();
@@ -38,6 +42,28 @@ class MainApp {
     window.balloonGame = new BalloonGame();
     window.memoryGame = new MemoryGame();
     window.drawingApp = new DrawingApp();
+
+    // Restore initial route on page load / refresh
+    const initialRoute = this.parseRoute();
+    if (initialRoute.tab && initialRoute.tab !== 'tab-home') {
+      this.historyStack = [
+        { tab: 'tab-home', sub: null },
+        { tab: initialRoute.tab, sub: initialRoute.sub }
+      ];
+      this.switchTab(initialRoute.tab, {
+        subId: initialRoute.sub,
+        pushState: false,
+        skipSound: true,
+        force: true
+      });
+    } else {
+      this.historyStack = [{ tab: 'tab-home', sub: null }];
+      const btnBack = document.getElementById('btnNavBack');
+      if (btnBack) btnBack.style.display = 'none';
+      if (!window.location.hash || window.location.hash === '#') {
+        window.history.replaceState({ tab: 'tab-home', sub: null }, '', '#tab-home');
+      }
+    }
 
     console.log("🌟 Vườn Tuổi Thơ 2.0 - Bé Vui Học Lớp 1 Ready!");
   }
@@ -85,6 +111,119 @@ class MainApp {
     }
   }
 
+  // --- Route Parsing & History Routing ---
+  parseRoute() {
+    let hash = window.location.hash || '';
+    if (hash.startsWith('#')) hash = hash.substring(1);
+
+    if (hash) {
+      const parts = hash.split('/');
+      let tab = parts[0];
+      const sub = parts[1] || null;
+
+      if (!tab.startsWith('tab-')) {
+        tab = 'tab-' + tab;
+      }
+
+      const pane = document.getElementById(tab);
+      if (pane && pane.classList.contains('tab-pane')) {
+        return { tab, sub, fromHash: true };
+      }
+    }
+
+    // Fallback to localStorage
+    const savedTab = localStorage.getItem('vuon_tuoi_tho_current_tab');
+    if (savedTab) {
+      const pane = document.getElementById(savedTab);
+      if (pane && pane.classList.contains('tab-pane')) {
+        const savedSub = localStorage.getItem('vuon_tuoi_tho_sub_' + savedTab) || null;
+        return { tab: savedTab, sub: savedSub, fromStorage: true };
+      }
+    }
+
+    return { tab: 'tab-home', sub: null };
+  }
+
+  bindHistoryRouting() {
+    // Listen for browser back / forward buttons and mobile back swipes
+    window.addEventListener('popstate', (e) => {
+      this.handlePopState(e);
+    });
+
+    // Hash change event as secondary sync
+    window.addEventListener('hashchange', () => {
+      if (this.isHandlingPopState) return;
+      const route = this.parseRoute();
+      if (route.tab !== this.currentTab || (route.sub && route.sub !== this.currentSub)) {
+        this.switchTab(route.tab, {
+          subId: route.sub,
+          pushState: false,
+          skipSound: false
+        });
+      }
+    });
+
+    // UI Back Button
+    const btnBack = document.getElementById('btnNavBack');
+    if (btnBack) {
+      btnBack.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.goBack();
+      });
+    }
+  }
+
+  handlePopState(event) {
+    this.isHandlingPopState = true;
+    try {
+      const state = event.state;
+      let tabId = state && state.tab ? state.tab : null;
+      let subId = state && state.sub ? state.sub : null;
+
+      if (!tabId) {
+        const route = this.parseRoute();
+        tabId = route.tab;
+        subId = route.sub;
+      }
+
+      if (this.historyStack.length > 1) {
+        this.historyStack.pop();
+      }
+
+      this.switchTab(tabId, {
+        subId: subId,
+        pushState: false,
+        skipSound: false,
+        force: true
+      });
+    } finally {
+      this.isHandlingPopState = false;
+    }
+  }
+
+  goBack() {
+    if (window.soundSys) window.soundSys.playPop();
+
+    if (this.historyStack.length > 1) {
+      window.history.back();
+    } else if (this.currentTab !== 'tab-home') {
+      this.switchTab('tab-home', { pushState: true });
+    }
+  }
+
+  updateCurrentRoute(tabId, subId) {
+    if (this.currentTab !== tabId) return;
+    this.currentSub = subId;
+
+    localStorage.setItem('vuon_tuoi_tho_sub_' + tabId, subId);
+
+    const hash = '#' + tabId + (subId ? '/' + subId : '');
+    if (!this.isHandlingPopState) {
+      window.history.pushState({ tab: tabId, sub: subId }, '', hash);
+      this.historyStack.push({ tab: tabId, sub: subId });
+    }
+  }
+
   // --- Navigation ---
   bindNavigation() {
     const tabs = document.querySelectorAll('.nav-tab');
@@ -96,8 +235,15 @@ class MainApp {
     });
   }
 
-  switchTab(targetId) {
-    if (this.currentTab === targetId) return;
+  switchTab(targetId, options = {}) {
+    const {
+      pushState = true,
+      subId = null,
+      skipSound = false,
+      force = false
+    } = options;
+
+    if (!force && this.currentTab === targetId && !subId) return;
 
     // Immediately stop any active speech or story reading when navigating
     if (window.soundSys) window.soundSys.stop();
@@ -105,7 +251,9 @@ class MainApp {
       window.vnApp.stopFullStory();
     }
 
-    window.soundSys.playPop();
+    if (!skipSound && window.soundSys) {
+      window.soundSys.playPop();
+    }
 
     // Update nav buttons
     const tabs = document.querySelectorAll('.nav-tab');
@@ -121,13 +269,55 @@ class MainApp {
 
     this.currentTab = targetId;
 
-    // Trigger tab-specific actions
+    // Save active tab to localStorage
+    localStorage.setItem('vuon_tuoi_tho_current_tab', targetId);
+
+    // Determine active sub-mode
+    const activeSub = subId || localStorage.getItem('vuon_tuoi_tho_sub_' + targetId) || null;
+    this.currentSub = activeSub;
+
+    // Synchronize URL and History State
+    const hash = targetId === 'tab-home' ? '#tab-home' : ('#' + targetId + (activeSub ? '/' + activeSub : ''));
+    if (pushState && !this.isHandlingPopState) {
+      window.history.pushState({ tab: targetId, sub: activeSub }, '', hash);
+      this.historyStack.push({ tab: targetId, sub: activeSub });
+    } else if (!pushState) {
+      window.history.replaceState({ tab: targetId, sub: activeSub }, '', hash);
+    }
+
+    // Toggle on-screen Back Button in Header
+    const btnBack = document.getElementById('btnNavBack');
+    if (btnBack) {
+      if (targetId === 'tab-home') {
+        btnBack.style.display = 'none';
+      } else {
+        btnBack.style.display = 'inline-flex';
+      }
+    }
+
+    // Trigger tab & sub-tab actions
     if (targetId === 'tab-math' && window.mathApp) {
-      window.mathApp.loadQuestion();
+      if (activeSub && typeof window.mathApp.switchMode === 'function') {
+        window.mathApp.switchMode(activeSub, false);
+      } else {
+        window.mathApp.loadQuestion();
+      }
+    } else if (targetId === 'tab-vietnamese' && window.vnApp) {
+      if (activeSub && typeof window.vnApp.switchSubView === 'function') {
+        window.vnApp.switchSubView(activeSub, false);
+      }
     } else if (targetId === 'tab-english' && window.englishApp) {
-      window.englishApp.renderThemeCards();
+      if (activeSub && typeof window.englishApp.switchTheme === 'function') {
+        window.englishApp.switchTheme(activeSub, false);
+      } else {
+        window.englishApp.renderThemeCards();
+      }
     } else if (targetId === 'tab-science' && window.scienceApp) {
-      window.scienceApp.renderLessons();
+      if (activeSub && typeof window.scienceApp.switchTopic === 'function') {
+        window.scienceApp.switchTopic(activeSub, false);
+      } else {
+        window.scienceApp.renderLessons();
+      }
     } else if (targetId === 'tab-music' && window.musicApp) {
       window.musicApp.updateSongGuideUI();
     } else if (targetId === 'tab-awards') {

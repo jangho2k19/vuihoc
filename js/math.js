@@ -27,15 +27,26 @@ class MathApp {
     this.btnSpeak = document.getElementById('btnMathSpeak');
   }
 
+  switchMode(modeId, updateRoute = true) {
+    if (!modeId) modeId = 'math-counting';
+    const subBtns = document.querySelectorAll('#tab-math .sub-btn');
+    subBtns.forEach(b => b.classList.toggle('active', b.dataset.sub === modeId));
+    this.currentMode = modeId;
+    localStorage.setItem('vuon_tuoi_tho_sub_tab-math', modeId);
+
+    if (updateRoute && window.app && typeof window.app.updateCurrentRoute === 'function') {
+      window.app.updateCurrentRoute('tab-math', modeId);
+    }
+
+    this.loadQuestion();
+  }
+
   attachEvents() {
     // Sub-mode tabs
     const subBtns = document.querySelectorAll('#tab-math .sub-btn');
     subBtns.forEach(btn => {
       btn.addEventListener('click', () => {
-        subBtns.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        this.currentMode = btn.dataset.sub;
-        this.loadQuestion();
+        this.switchMode(btn.dataset.sub, true);
       });
     });
 
